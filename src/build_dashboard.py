@@ -81,7 +81,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
 </div>
 
 <div class="periodBar" id="periodBar">
-  <span class="cap">등락 기간</span>
+  <span class="cap">등락 기간 (선택하면 해당 기간 기준으로 순위 재정렬)</span>
   {% for label, key, days in periods %}
   <button class="periodTab" data-k="{{ key }}" onclick="applyPeriod('{{ key }}')">{{ label }}</button>
   {% endfor %}
@@ -94,7 +94,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       <div class="card"><div class="n up" id="upCnt">0</div><div class="l"><span id="periodLabel"></span> 상승</div></div>
       <div class="card"><div class="n down" id="downCnt">0</div><div class="l">하락</div></div>
       <div class="card"><div class="n flat" id="flatCnt">0</div><div class="l">보합/정보없음</div></div>
-      <div class="card"><div class="n">{{ top_name }}</div><div class="l">저평가 1위 (스코어 {{ top_score }})</div></div>
+      <div class="card"><div class="n" id="topName">{{ top_name }}</div><div class="l">종합 1위 (스코어 <span id="topScore">{{ top_score }}</span>)</div></div>
     </div>
     <div class="tablebox">
       <table id="rankTable">
@@ -108,15 +108,15 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
         </tr></thead>
         <tbody>
         {% for r in rows %}
-          <tr class="dyn-row"{% for label,key,days in periods %} data-{{key}}="{{ r.rets[key] if r.rets[key] is not none else '' }}"{% endfor %}>
-            <td>{{ r.rank }}</td>
+          <tr class="dyn-row rankRow"{% for label,key,days in periods %} data-{{key}}="{{ r.rets[key] if r.rets[key] is not none else '' }}" data-sc-{{key}}="{{ r.pdata[key].sc if r.pdata[key].sc is not none else '' }}" data-rk-{{key}}="{{ r.pdata[key].rk if r.pdata[key].rk is not none else '' }}" data-mo-{{key}}="{{ r.pdata[key].mo if r.pdata[key].mo is not none else '' }}"{% endfor %}>
+            <td class="rankCell">{{ r.rank }}</td>
             <td class="l">{{ r.name }}</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.code }}</a></td>
             <td class="l">{{ r.industry }}</td>
-            <td class="score">{{ r.score }}<span class="bar" style="width:{{ r.barw }}px"></span></td>
+            <td class="score"><span class="scoreVal">{{ r.score }}</span><span class="bar" style="width:{{ r.barw }}px"></span></td>
             <td>{{ r.per }}</td><td>{{ r.pbr }}</td><td>{{ r.roe }}</td>
             <td class="{{ 'pos' if r.op_growth_raw is not none and r.op_growth_raw>0 else ('neg' if r.op_growth_raw is not none and r.op_growth_raw<0 else '') }}">{{ r.op_growth }}</td>
-            <td class="{{ 'pos' if r.momentum_raw is not none and r.momentum_raw>0 else ('neg' if r.momentum_raw is not none and r.momentum_raw<0 else '') }}">{{ r.momentum }}</td>
+            <td class="momCell">{{ r.momentum }}</td>
             <td>{{ r.news_buzz }}</td>
             <td>{{ r.market_cap_rank }}</td>
             <td class="retCell">-</td>
@@ -226,10 +226,14 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     document.querySelectorAll('.navTab').forEach(function(b){ b.classList.toggle('active', b.dataset.v===v); });
     document.getElementById('periodBar').style.display = (v==='score') ? 'none' : 'flex';
   }
+  function numAttr(tr, attr){ var v=tr.getAttribute(attr); return (v===null||v==='')?null:parseFloat(v); }
+
   function applyPeriod(key){
     document.querySelectorAll('.periodTab').forEach(function(b){ b.classList.toggle('active', b.dataset.k===key); });
     var lab=document.getElementById('periodLabel');
     document.querySelectorAll('.periodTab').forEach(function(b){ if(b.dataset.k===key && lab) lab.textContent=b.textContent; });
+
+    // 1) 모든 표의 등락/추세 셀 갱신 (랭킹 + 업종별)
     document.querySelectorAll('.dyn-row').forEach(function(tr){
       var raw = tr.getAttribute('data-'+key);
       var cell = tr.querySelector('.retCell');
@@ -247,8 +251,33 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
         badge.innerHTML='<span class="badge '+cls+'">'+t+'</span>';
       }
     });
+
+    // 2) 랭킹표: 기간별 스코어/순위/모멘텀 갱신 후 스코어 내림차순 재정렬
+    var tbody=document.querySelector('#rankTable tbody');
+    var rows=[].slice.call(tbody.querySelectorAll('tr.rankRow'));
+    var maxSc=1;
+    rows.forEach(function(tr){ var sc=numAttr(tr,'data-sc-'+key); if(sc!==null && sc>maxSc) maxSc=sc; });
+    rows.forEach(function(tr){
+      var sc=numAttr(tr,'data-sc-'+key), rk=tr.getAttribute('data-rk-'+key), mo=numAttr(tr,'data-mo-'+key);
+      var sv=tr.querySelector('.scoreVal'), bar=tr.querySelector('.bar'), rc=tr.querySelector('.rankCell'), mc=tr.querySelector('.momCell');
+      if(sv) sv.textContent=(sc===null?'-':sc.toFixed(1));
+      if(bar) bar.style.width=(sc===null?0:Math.round(sc/maxSc*60))+'px';
+      if(rc) rc.textContent=(rk===null||rk===''?'-':rk);
+      if(mc){ mc.textContent=(mo===null?'-':(mo>0?'+':'')+mo.toFixed(1)); mc.className='momCell '+(mo===null?'':(mo>0?'pos':(mo<0?'neg':''))); }
+    });
+    rows.sort(function(a,b){ var x=numAttr(a,'data-sc-'+key), y=numAttr(b,'data-sc-'+key); x=(x===null?-Infinity:x); y=(y===null?-Infinity:y); return y-x; });
+    rows.forEach(function(tr){ tbody.appendChild(tr); });
+
+    // 상단 '종합 1위' 카드 갱신
+    if(rows.length){
+      var tn=document.getElementById('topName'), ts=document.getElementById('topScore');
+      if(tn) tn.textContent=rows[0].cells[1].innerText;
+      if(ts){ var s0=numAttr(rows[0],'data-sc-'+key); ts.textContent=(s0===null?'-':s0.toFixed(1)); }
+    }
+
+    // 3) 요약 카운트
     var up=0,down=0,flat=0;
-    document.querySelectorAll('#rankTable tbody tr').forEach(function(tr){
+    rows.forEach(function(tr){
       var raw=tr.getAttribute('data-'+key);
       if(raw===null||raw===''){ flat++; return; }
       var n=parseFloat(raw); if(n>0)up++; else if(n<0)down++; else flat++;
@@ -301,6 +330,21 @@ def _rets_dict(row):
     return d
 
 
+def _pdata_dict(row):
+    """기간별 {score, rank, mom} — JS 재랭킹용."""
+    d = {}
+    for _label, key, _days in config.PERIODS:
+        sc = row.get(f"pscore_{key}")
+        rk = row.get(f"prank_{key}")
+        mo = row.get(f"pmom_{key}")
+        d[key] = {
+            "sc": None if (sc is None or pd.isna(sc)) else round(float(sc), 2),
+            "rk": None if (rk is None or pd.isna(rk)) else int(rk),
+            "mo": None if (mo is None or pd.isna(mo)) else round(float(mo), 2),
+        }
+    return d
+
+
 def _row_view(r, max_score):
     return {
         "rank": int(r["rank"]),
@@ -317,6 +361,7 @@ def _row_view(r, max_score):
         "momentum_raw": None if pd.isna(r.get("momentum")) else float(r.get("momentum")),
         "news_buzz": _fmt(None if pd.isna(r.get("news_buzz")) else int(r.get("news_buzz"))),
         "rets": _rets_dict(r),
+        "pdata": _pdata_dict(r),
     }
 
 
