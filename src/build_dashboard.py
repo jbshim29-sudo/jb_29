@@ -69,6 +69,10 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .sectorGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:14px; }
   .sectorCard { background:#fff; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden; }
   .sectorCard h3 { margin:0; font-size:14px; padding:11px 14px; background:#0f2540; color:#fff; }
+  .sectorCard h3 .secAvg { font-weight:700; font-size:12px; margin-left:7px; padding:1px 8px; border-radius:9px; }
+  .secAvg.up { background:rgba(224,80,73,.28); color:#ffb3ad; }
+  .secAvg.down { background:rgba(59,125,216,.30); color:#aecbf5; }
+  .secAvg.flat { background:rgba(255,255,255,.15); color:#cfd7e2; }
   .sectorCard table { font-size:12.5px; }
   .medal { font-weight:700; }
   .m1{color:#d4af37;} .m2{color:#9aa0a6;} .m3{color:#cd7f32;}
@@ -428,7 +432,13 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
           '<span class="pc '+(up?'up':(has&&v<0?'down':''))+'">'+pc+'</span></div>'+
           '<div class="track"><div class="fill '+(up?'up':'down')+'" style="width:'+w+'%"></div></div></div>';
       }).join('');
-      return '<div class="sectorCard"><h3>'+s.name+' <span style="opacity:.7;font-weight:400">· '+s.count+'종목</span></h3><div class="stList">'+rows+'</div></div>';
+      var avgOk = c.avg!==-Infinity && isFinite(c.avg);
+      var avgCls = !avgOk?'flat':(c.avg>0?'up':(c.avg<0?'down':'flat'));
+      var avgTxt = !avgOk?'-':((c.avg>0?'+':'')+c.avg.toFixed(2)+'%');
+      return '<div class="sectorCard"><h3>'+s.name+
+        ' <span style="opacity:.7;font-weight:400">· '+s.count+'종목</span>'+
+        ' <span class="secAvg '+avgCls+'">평균 '+avgTxt+'</span></h3>'+
+        '<div class="stList">'+rows+'</div></div>';
     }).join('');
   }
 

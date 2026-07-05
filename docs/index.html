@@ -45,6 +45,10 @@
   .sectorGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:14px; }
   .sectorCard { background:#fff; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden; }
   .sectorCard h3 { margin:0; font-size:14px; padding:11px 14px; background:#0f2540; color:#fff; }
+  .sectorCard h3 .secAvg { font-weight:700; font-size:12px; margin-left:7px; padding:1px 8px; border-radius:9px; }
+  .secAvg.up { background:rgba(224,80,73,.28); color:#ffb3ad; }
+  .secAvg.down { background:rgba(59,125,216,.30); color:#aecbf5; }
+  .secAvg.flat { background:rgba(255,255,255,.15); color:#cfd7e2; }
   .sectorCard table { font-size:12.5px; }
   .medal { font-weight:700; }
   .m1{color:#d4af37;} .m2{color:#9aa0a6;} .m3{color:#cd7f32;}
@@ -129,7 +133,7 @@
 <body>
 <header>
   <h1>KOSPI 200 저평가 종목 스크리너</h1>
-  <div class="sub">데이터 출처: 네이버 금융 · 생성 시각: 2026-07-05 12:31 KST · 종목 수: 199개</div>
+  <div class="sub">데이터 출처: 네이버 금융 · 생성 시각: 2026-07-05 12:42 KST · 종목 수: 199개</div>
 </header>
 
 <div class="nav">
@@ -4240,23 +4244,8 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-total="-7.28" data-sc-total="23.31" data-rk-total="173" data-mo-total="-7.28" data-d1="0.0" data-sc-d1="33.71" data-rk-d1="147" data-mo-d1="0.0" data-d3="0.5357" data-sc-d3="32.04" data-rk-d3="147" data-mo-d3="0.54" data-w1="3.8745" data-sc-w1="32.28" data-rk-w1="159" data-mo-w1="3.87" data-w2="-16.716" data-sc-w2="23.94" data-rk-w2="174" data-mo-w2="-16.72" data-m1="-19.341" data-sc-m1="25.19" data-rk-m1="171" data-mo-m1="-19.34" data-m3="-11.1987" data-sc-m3="28.3" data-rk-m3="169" data-mo-m3="-11.2" data-m6="-14.3075" data-sc-m6="28.22" data-rk-m6="174" data-mo-m6="-14.31">
-            <td class="rankCell">173</td>
-            <td class="l">LG화학</td>
-            <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=051910" target="_blank">051910</a></td>
-            <td class="l">화학</td>
-            <td class="score"><span class="scoreVal">23.3</span><span class="bar" style="width:16px"></span></td>
-            <td>-</td><td>0.63</td><td>-5.50</td>
-            <td class="pos">35.0</td>
-            <td class="momCell">-7.3</td>
-            <td>20</td>
-            <td>39</td>
-            <td class="retCell">-</td>
-            <td class="l trendCell"></td>
-          </tr>
-        
           <tr class="dyn-row rankRow" data-total="-6.38" data-sc-total="23.31" data-rk-total="174" data-mo-total="-6.38" data-d1="-1.1442" data-sc-d1="24.46" data-rk-d1="176" data-mo-d1="-1.14" data-d3="-2.2624" data-sc-d3="27.15" data-rk-d3="163" data-mo-d3="-2.26" data-w1="-4.6358" data-sc-w1="19.64" data-rk-w1="189" data-mo-w1="-4.64" data-w2="-8.9568" data-sc-w2="32.24" data-rk-w2="153" data-mo-w2="-8.96" data-m1="-18.797" data-sc-m1="22.71" data-rk-m1="178" data-mo-m1="-18.8" data-m3="7.4627" data-sc-m3="44.44" data-rk-m3="111" data-mo-m3="7.46" data-m6="62.406" data-sc-m6="51.46" data-rk-m6="78" data-mo-m6="62.41">
-            <td class="rankCell">174</td>
+            <td class="rankCell">173</td>
             <td class="l">SK텔레콤</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=017670" target="_blank">017670</a></td>
             <td class="l">무선통신서비스</td>
@@ -4266,6 +4255,21 @@
             <td class="momCell">-6.4</td>
             <td>20</td>
             <td>41</td>
+            <td class="retCell">-</td>
+            <td class="l trendCell"></td>
+          </tr>
+        
+          <tr class="dyn-row rankRow" data-total="-7.28" data-sc-total="23.31" data-rk-total="173" data-mo-total="-7.28" data-d1="0.0" data-sc-d1="33.71" data-rk-d1="147" data-mo-d1="0.0" data-d3="0.5357" data-sc-d3="32.04" data-rk-d3="147" data-mo-d3="0.54" data-w1="3.8745" data-sc-w1="32.28" data-rk-w1="159" data-mo-w1="3.87" data-w2="-16.716" data-sc-w2="23.94" data-rk-w2="174" data-mo-w2="-16.72" data-m1="-19.341" data-sc-m1="25.19" data-rk-m1="171" data-mo-m1="-19.34" data-m3="-11.1987" data-sc-m3="28.3" data-rk-m3="169" data-mo-m3="-11.2" data-m6="-14.3075" data-sc-m6="28.22" data-rk-m6="174" data-mo-m6="-14.31">
+            <td class="rankCell">174</td>
+            <td class="l">LG화학</td>
+            <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=051910" target="_blank">051910</a></td>
+            <td class="l">화학</td>
+            <td class="score"><span class="scoreVal">23.3</span><span class="bar" style="width:16px"></span></td>
+            <td>-</td><td>0.63</td><td>-5.50</td>
+            <td class="pos">35.0</td>
+            <td class="momCell">-7.3</td>
+            <td>20</td>
+            <td>39</td>
             <td class="retCell">-</td>
             <td class="l trendCell"></td>
           </tr>
@@ -4766,7 +4770,13 @@
           '<span class="pc '+(up?'up':(has&&v<0?'down':''))+'">'+pc+'</span></div>'+
           '<div class="track"><div class="fill '+(up?'up':'down')+'" style="width:'+w+'%"></div></div></div>';
       }).join('');
-      return '<div class="sectorCard"><h3>'+s.name+' <span style="opacity:.7;font-weight:400">· '+s.count+'종목</span></h3><div class="stList">'+rows+'</div></div>';
+      var avgOk = c.avg!==-Infinity && isFinite(c.avg);
+      var avgCls = !avgOk?'flat':(c.avg>0?'up':(c.avg<0?'down':'flat'));
+      var avgTxt = !avgOk?'-':((c.avg>0?'+':'')+c.avg.toFixed(2)+'%');
+      return '<div class="sectorCard"><h3>'+s.name+
+        ' <span style="opacity:.7;font-weight:400">· '+s.count+'종목</span>'+
+        ' <span class="secAvg '+avgCls+'">평균 '+avgTxt+'</span></h3>'+
+        '<div class="stList">'+rows+'</div></div>';
     }).join('');
   }
 
