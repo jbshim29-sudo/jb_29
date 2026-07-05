@@ -224,12 +224,13 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
           <div class="ph"><b>💡 유망종목 TOP 10</b><span class="hint">종합 스코어 상위 · {{ s.period_label }} 누적상승률</span></div>
           <div class="pb">
             <table class="t10">
-              <thead><tr><th class="l">#</th><th class="l">종목 / 섹터</th><th>누적상승률</th><th>PER</th><th>PBR</th><th>시그널</th></tr></thead>
+              <thead><tr><th class="l">#</th><th class="l">종목 / 섹터</th><th>현재가</th><th>누적상승률</th><th>PER</th><th>PBR</th><th>시그널</th></tr></thead>
               <tbody>
               {% for r in s.top10 %}
                 <tr>
                   <td class="l rk">{{ r.rank }}</td>
                   <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.name }}</a></span><span class="sec">{{ r.industry }}</span></td>
+                  <td>{{ r.price }}</td>
                   <td class="sret {{ 'up' if r.ret_raw is not none and r.ret_raw>0 else 'down' }}">{{ r.ret }}</td>
                   <td>{{ r.per }}</td><td>{{ r.pbr }}</td>
                   <td><span class="sig {{ r.sig_class }}">{{ r.sig }}</span></td>
@@ -288,13 +289,13 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       <div class="panel">
         <div class="ph"><b>📈 상승률 상위</b><span class="hint">선택 기간 등락률 기준 · 국내 주식형 ETF</span></div>
         <div class="pb"><table class="t10 etfTable"><thead><tr>
-          <th class="l">#</th><th class="l">ETF</th><th>등락률</th><th>종합</th><th>거래대금</th>
+          <th class="l">#</th><th class="l">ETF</th><th>현재가</th><th>등락률</th><th>종합</th><th>거래대금</th>
         </tr></thead><tbody id="etfUp"></tbody></table></div>
       </div>
       <div class="panel">
         <div class="ph"><b>📉 하락률 상위</b><span class="hint">선택 기간 등락률 기준 · 국내 주식형 ETF</span></div>
         <div class="pb"><table class="t10 etfTable"><thead><tr>
-          <th class="l">#</th><th class="l">ETF</th><th>등락률</th><th>종합</th><th>거래대금</th>
+          <th class="l">#</th><th class="l">ETF</th><th>현재가</th><th>등락률</th><th>종합</th><th>거래대금</th>
         </tr></thead><tbody id="etfDown"></tbody></table></div>
       </div>
     </div>
@@ -313,7 +314,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       <table id="rankTable">
         <thead><tr>
           <th data-t="num">순위</th><th class="l" data-t="str">종목명</th><th class="l" data-t="str">코드</th>
-          <th class="l" data-t="str">업종</th><th data-t="num">종합<br>스코어</th>
+          <th class="l" data-t="str">업종</th><th data-t="num">현재가</th><th data-t="num">종합<br>스코어</th>
           <th data-t="num">PER</th><th data-t="num">PBR</th><th data-t="num">ROE(%)</th>
           <th data-t="num">영업이익<br>증가율(%)</th><th data-t="num">모멘텀<br>(1·3개월)</th>
           <th data-t="num">뉴스<br>(7일)</th>
@@ -326,6 +327,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
             <td class="l">{{ r.name }}</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.code }}</a></td>
             <td class="l">{{ r.industry }}</td>
+            <td>{{ r.price }}</td>
             <td class="score"><span class="scoreVal">{{ r.score }}</span><span class="bar" style="width:{{ r.barw }}px"></span></td>
             <td>{{ r.per }}</td><td>{{ r.pbr }}</td><td>{{ r.roe }}</td>
             <td class="{{ 'pos' if r.op_growth_raw is not none and r.op_growth_raw>0 else ('neg' if r.op_growth_raw is not none and r.op_growth_raw<0 else '') }}">{{ r.op_growth }}</td>
@@ -579,6 +581,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     var chgc = (v>0)?'sret up':((v<0)?'sret down':'');
     return '<tr><td class="l rk">'+(i+1)+'</td>'+
       '<td class="l"><span class="nm"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+e.code+'">'+e.name+'</a></span>'+lev+'</td>'+
+      '<td>'+(e.now?Number(e.now).toLocaleString():'-')+'</td>'+
       '<td class="'+chgc+'">'+etfPct(v)+'</td>'+
       '<td>'+etfSig(e.sc)+'</td>'+
       '<td>'+etfAmt(e.amt)+'</td></tr>';
@@ -753,6 +756,7 @@ def _row_view(r, max_score):
         "score": _fmt(r["score"], 1),
         "barw": int(round((r["score"] / max_score) * 60)) if max_score else 0,
         "per": _fmt(r["per"]), "pbr": _fmt(r["pbr"]), "roe": _fmt(r["roe"]),
+        "price": _fmt(None if pd.isna(r.get("last_close")) else int(r["last_close"])),
         "eps": _fmt(None if pd.isna(r["eps"]) else int(r["eps"])),
         "op_profit": _fmt(None if pd.isna(r["op_profit"]) else int(r["op_profit"])),
         "op_growth": _fmt(r["op_growth"], 1),
@@ -896,6 +900,7 @@ def _prepare_summary(df, market, period_key):
             "industry": r.get("industry") or "-",
             "ret": "-" if pd.isna(rv) else ("+" if rv > 0 else "") + f"{rv:,.1f}%",
             "ret_raw": None if pd.isna(rv) else float(rv),
+            "price": _fmt(None if pd.isna(r.get("last_close")) else int(r["last_close"])),
             "per": _fmt(r["per"]), "pbr": _fmt(r["pbr"]),
             "sig": str(int(round(sc))), "sig_class": _sig_class(sc),
         })
@@ -941,6 +946,7 @@ def _prepare_etf(market):
         rets = e.get("rets") if isinstance(e.get("rets"), dict) else {}
         out.append({
             "name": e["name"], "code": e["code"],
+            "now": None if pd.isna(e.get("now")) else e.get("now"),
             "amt": None if pd.isna(e.get("amount_eok")) else float(e.get("amount_eok")),
             "lev": bool(e.get("leverage")),
             "sc": None if pd.isna(e.get("sc")) else int(e.get("sc")),
