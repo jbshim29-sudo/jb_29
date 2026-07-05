@@ -72,6 +72,18 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .sectorCard table { font-size:12.5px; }
   .medal { font-weight:700; }
   .m1{color:#d4af37;} .m2{color:#9aa0a6;} .m3{color:#cd7f32;}
+  /* 업종별 종목 등락률 바 */
+  .stList { padding:8px 12px 12px; }
+  .stRow { padding:5px 2px; }
+  .stRow .lab { display:flex; justify-content:space-between; align-items:baseline; font-size:12px; margin-bottom:3px; }
+  .stRow .lab .nm { font-weight:600; color:#2b3138; }
+  .stRow .lab .nm .rk { color:#b7bec8; font-weight:700; margin-right:5px; }
+  .stRow .lab .nm .per { color:#9aa2ad; font-weight:400; font-size:10.5px; margin-left:5px; }
+  .stRow .lab .pc { font-weight:700; } .stRow .lab .pc.up{color:#c0392b;} .stRow .lab .pc.down{color:#2563d1;}
+  .stRow .track { background:#eef1f5; border-radius:5px; height:10px; overflow:hidden; }
+  .stRow .fill { height:100%; border-radius:5px; }
+  .stRow .fill.up { background:linear-gradient(90deg,#f0a39c,#c0392b); }
+  .stRow .fill.down { background:linear-gradient(90deg,#a9c6f0,#2563d1); }
   /* 설명 페이지 */
   .doc { background:#fff; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.08); padding:26px 30px; max-width:900px; line-height:1.7; }
   .doc h2 { margin-top:26px; } .doc h2:first-child { margin-top:0; }
@@ -303,34 +315,11 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     </div>
   </div>
 
-  <!-- ============ 업종별 TOP3 ============ -->
+  <!-- ============ 업종별 종목 등락률 ============ -->
   <div class="view" id="view-sector" style="display:none">
-    <h2>업종 테마별 저평가 상위 종목 (업종 내 종합 스코어 1~3위)</h2>
-    <div class="sectorGrid">
-      {% for s in sectors %}
-      <div class="sectorCard">
-        <h3>{{ s.name }} <span style="opacity:.7;font-weight:400">· {{ s.count }}종목</span></h3>
-        <table>
-          <thead><tr>
-            <th class="l">순위</th><th class="l">종목명</th><th>스코어</th>
-            <th>PER</th><th>PBR</th><th>ROE</th><th>등락(%)</th><th class="l">추세</th>
-          </tr></thead>
-          <tbody>
-          {% for r in s.rows %}
-            <tr class="dyn-row"{% for label,key,days in periods %} data-{{key}}="{{ r.rets[key] if r.rets[key] is not none else '' }}"{% endfor %}>
-              <td class="l medal m{{ r.medal }}">{{ r.medal }}위</td>
-              <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.name }}</a></td>
-              <td class="score">{{ r.score }}</td>
-              <td>{{ r.per }}</td><td>{{ r.pbr }}</td><td>{{ r.roe }}</td>
-              <td class="retCell">-</td><td class="l trendCell"></td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% endfor %}
-    </div>
-    <div class="foot">각 업종에서 종합 스코어 상위 1~3위 종목입니다. 상단 기간 탭이 등락/추세에 함께 적용됩니다.</div>
+    <h2>업종별 종목 등락률 — 선택 기간 · 상승률 순</h2>
+    <div class="sectorGrid" id="sectorGrid"></div>
+    <div class="foot">각 업종 내 종목을 <b>선택한 기간의 등락률 높은 순</b>으로 정렬한 막대입니다. 막대 길이는 업종 내 최대 변동폭 기준 상대값이며, 상단 기간 탭(토탈 포함)이 함께 적용됩니다. 업종 카드는 평균 등락률이 높은 순으로 배치됩니다.</div>
   </div>
 
   <!-- ============ 스코어 산정 방식 ============ -->
@@ -410,6 +399,39 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     if(v==='etf' && !document.getElementById('etfUp').innerHTML){ renderEtf('total'); }
   }
 
+  // ---- 업종별 종목 등락률 ----
+  var SECTORS = {{ sectors_json }};
+  function renderSectors(key){
+    var grid=document.getElementById('sectorGrid'); if(!grid) return;
+    var barMax=1;
+    SECTORS.forEach(function(s){ s.stocks.forEach(function(st){ var v=st.rets[key]; if(v!==null&&v!==undefined&&Math.abs(v)>barMax) barMax=Math.abs(v); }); });
+    var cards = SECTORS.map(function(s){
+      var vals = s.stocks.map(function(st){return st.rets[key];}).filter(function(v){return v!==null&&v!==undefined;});
+      var avg = vals.length? vals.reduce(function(a,b){return a+b;},0)/vals.length : -Infinity;
+      return {s:s, avg:avg};
+    });
+    cards.sort(function(a,b){ return b.avg-a.avg; });
+    grid.innerHTML = cards.map(function(c){
+      var s=c.s;
+      var stocks = s.stocks.slice().sort(function(a,b){
+        var x=a.rets[key], y=b.rets[key];
+        x=(x===null||x===undefined)?-Infinity:x; y=(y===null||y===undefined)?-Infinity:y; return y-x;
+      });
+      var rows = stocks.map(function(st,i){
+        var v=st.rets[key], has=(v!==null&&v!==undefined), up=has&&v>0;
+        var w = has? Math.max(2, Math.min(100, Math.abs(v)/barMax*100)) : 0;
+        var pc = has? ((v>0?'+':'')+v.toFixed(2)+'%') : '-';
+        var per = (st.per!==null&&st.per!==undefined)? '<span class="per">PER '+st.per+'</span>' : '';
+        return '<div class="stRow"><div class="lab">'+
+          '<span class="nm"><span class="rk">'+(i+1)+'</span>'+
+          '<a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+st.code+'">'+st.name+'</a>'+per+'</span>'+
+          '<span class="pc '+(up?'up':(has&&v<0?'down':''))+'">'+pc+'</span></div>'+
+          '<div class="track"><div class="fill '+(up?'up':'down')+'" style="width:'+w+'%"></div></div></div>';
+      }).join('');
+      return '<div class="sectorCard"><h3>'+s.name+' <span style="opacity:.7;font-weight:400">· '+s.count+'종목</span></h3><div class="stList">'+rows+'</div></div>';
+    }).join('');
+  }
+
   // ---- ETF 페이지 ----
   var ETFS = {{ etf_json }};
   function etfPct(v){ if(v===null||v===undefined) return '-'; return (v>0?'+':'')+v.toFixed(2)+'%'; }
@@ -455,6 +477,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
 
     // 요약 대시보드: 기간 블록 토글 + 상승비율 카드 갱신
     document.querySelectorAll('.sumBlock').forEach(function(b){ b.style.display = (b.dataset.k===key)?'block':'none'; });
+    renderSectors(key);  // 업종별 등락률 바 재구성
     var su=document.getElementById('sumUp'), sl=document.getElementById('sumPlabel'), sb=document.getElementById('sumBreadth');
     if(sl) sl.textContent=plabel;
     if(su && SUM_UP[key]!==undefined){
@@ -781,21 +804,20 @@ def build(df, generated, market=None):
     max_score = df["score"].max() or 1
     rows = [_row_view(r, max_score) for _, r in df.iterrows()]
 
-    # 업종별 TOP3
-    sectors = []
+    # 업종별 종목 등락률 데이터 (JS 렌더링용)
+    sectors_data = []
     for name, g in df.groupby("industry", dropna=False):
-        if not name or (isinstance(name, float) and pd.isna(name)):
-            name = "기타"
-        g = g.sort_values("score", ascending=False)
-        top = g.head(3)
-        srows = []
-        for i, (_, r) in enumerate(top.iterrows(), start=1):
-            v = _row_view(r, max_score)
-            v["medal"] = i
-            srows.append(v)
-        sectors.append({"name": name, "count": int(len(g)), "rows": srows,
-                        "max_score": float(g["score"].max())})
-    sectors.sort(key=lambda s: s["max_score"], reverse=True)
+        nm = name if (name and not (isinstance(name, float) and pd.isna(name))) else "기타"
+        stocks = []
+        for _, r in g.iterrows():
+            per = r.get("per")
+            stocks.append({
+                "name": r["name"], "code": r["code"],
+                "per": None if (per is None or pd.isna(per)) else round(float(per), 2),
+                "rets": _rets_dict(r),
+            })
+        sectors_data.append({"name": nm, "count": len(stocks), "stocks": stocks})
+    sectors_json = json.dumps(sectors_data, ensure_ascii=False)
 
     top = df.iloc[0]
     w = config.SCORE_WEIGHTS
@@ -808,7 +830,7 @@ def build(df, generated, market=None):
     html = TEMPLATE.render(
         generated=generated, total=len(df), periods=UI_PERIODS,
         default_key=config.DEFAULT_PERIOD_KEY,
-        rows=rows, sectors=sectors,
+        rows=rows, sectors_json=sectors_json,
         sum_list=sum_list, sdef=sdef, up_by_period=json.dumps(up_by_period),
         etf_json=etf_json,
         top_name=top["name"], top_score=_fmt(top["score"], 1),
