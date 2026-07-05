@@ -135,6 +135,11 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .bubbleWrap svg { display:block; min-width:820px; width:100%; height:auto; }
   .blegend { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:#6b7480; padding:0 16px 12px; }
   .blegend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  .bub { cursor:pointer; transition:fill-opacity .1s; }
+  .bub:hover { fill-opacity:0.95 !important; stroke:#0f2540; stroke-width:1.5; }
+  .bubTip { position:absolute; display:none; z-index:999; pointer-events:none; background:#0f2540; color:#fff;
+            padding:6px 10px; border-radius:7px; font-size:12px; line-height:1.4; box-shadow:0 2px 8px rgba(0,0,0,.25); white-space:nowrap; }
+  .bubTip b { font-size:13px; }
   /* ETF 카드 */
   .etfGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
   @media(max-width:1000px){ .etfGrid{grid-template-columns:1fr;} }
@@ -157,6 +162,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
 </style>
 </head>
 <body>
+<div id="bubTip" class="bubTip"></div>
 <header>
   <h1>KOSPI 200 저평가 종목 스크리너</h1>
   <div class="sub">데이터 출처: 네이버 금융 · 생성 시각: {{ generated }} · 종목 수: {{ total }}개</div>
@@ -581,6 +587,22 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       rows.forEach(function(r){ tbody.appendChild(r); });
     });
   });
+  // ---- 버블맵 마우스오버 툴팁 ----
+  (function(){
+    var tip=document.getElementById('bubTip');
+    function isBub(t){ return t && t.classList && t.classList.contains('bub'); }
+    document.addEventListener('mouseover', function(e){
+      if(isBub(e.target)){
+        tip.innerHTML='<b>'+e.target.getAttribute('data-nm')+'</b><br>PER '+e.target.getAttribute('data-per')+' · 등락 '+e.target.getAttribute('data-ret')+'%';
+        tip.style.display='block';
+      }
+    });
+    document.addEventListener('mousemove', function(e){
+      if(tip.style.display==='block'){ tip.style.left=(e.pageX+12)+'px'; tip.style.top=(e.pageY+14)+'px'; }
+    });
+    document.addEventListener('mouseout', function(e){ if(isBub(e.target)) tip.style.display='none'; });
+  })();
+
   // 초기화
   applyPeriod('{{ default_key }}');
   showView('summary');
@@ -726,11 +748,13 @@ def _bubble_svg(df, ret_col):
         color = "#d9534f" if ret > 0 else "#3b7dd8"
         if per <= 12 and ret > 0:
             color = "#e0a92e"
-        o.append(f'<circle cx="{sx(per):.1f}" cy="{sy(ret):.1f}" r="{rad(cap):.1f}" '
+        o.append(f'<circle class="bub" data-nm="{_esc(name)}" data-per="{per:.1f}" '
+                 f'data-ret="{ret:+.2f}" cx="{sx(per):.1f}" cy="{sy(ret):.1f}" r="{rad(cap):.1f}" '
                  f'fill="{color}" fill-opacity="0.60" stroke="#fff" stroke-width="1"/>')
-    for per, ret, cap, name in pts_sorted[:12]:
+    # 시가총액 상위 종목은 이름을 직접 표기(나머지는 마우스 오버 시 표시)
+    for per, ret, cap, name in pts_sorted[:16]:
         o.append(f'<text x="{sx(per):.1f}" y="{sy(ret)-rad(cap)-3:.1f}" font-size="10.5" '
-                 f'fill="#4a5360" text-anchor="middle">{_esc(name)}</text>')
+                 f'fill="#4a5360" text-anchor="middle" style="pointer-events:none">{_esc(name)}</text>')
     o.append('</svg>')
     return "".join(o)
 
