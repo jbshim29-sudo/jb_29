@@ -1,0 +1,13 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# 실행 시 생성되는 산출물 (매 실행 재생성 → 커밋 안 함)
+data/
+output/
+
+# 임시 파일
+*.tmp
+
+# GitHub Pages 서빙용 docs/index.html 은 커밋 대상이므로 무시하지 않음
