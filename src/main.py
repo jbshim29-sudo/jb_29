@@ -79,11 +79,20 @@ def main():
 
     log(f"수집 완료 {len(records)}개. 시장 데이터(지수·ETF) 수집 중...")
     etf_list = fetch_market.fetch_etf_list(sess)
+    # ETF 기간별(당일·1주·1개월·3개월) 수익률 병렬 수집
+    with ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as ex:
+        futs = {ex.submit(fetch_market.fetch_etf_returns, naver.make_session(), e["code"]): e
+                for e in etf_list}
+        for fut in as_completed(futs):
+            try:
+                futs[fut]["rets"] = fut.result()
+            except Exception:
+                futs[fut]["rets"] = {}
     market = {
         "index": fetch_market.fetch_index(sess),
         "etf_list": etf_list,
     }
-    log(f"  지수 + 국내 ETF {len(etf_list)}개 수집")
+    log(f"  지수 + 국내 ETF {len(etf_list)}개 수집(기간별 수익률 포함)")
 
     log("스코어 계산 중...")
     df = score_mod.compute_scores(records)

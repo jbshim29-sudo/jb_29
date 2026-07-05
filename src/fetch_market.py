@@ -62,6 +62,28 @@ def fetch_etf_list(session, min_amount_eok=30):
     return out
 
 
+ETF_PERIODS = [("당일", "d1", 1), ("1주일", "w1", 5), ("1개월", "m1", 20), ("3개월", "m3", 60)]
+_ETF_PRICE_URL = "https://m.stock.naver.com/api/stock/{code}/price?pageSize=60&page=1"
+
+
+def fetch_etf_returns(session, code):
+    """ETF 기간별(당일·1주·1개월·3개월) 등락률 dict. 실패/결측은 None."""
+    out = {k: None for _l, k, _n in ETF_PERIODS}
+    data = naver.get_json(session, _ETF_PRICE_URL.format(code=code))
+    if not isinstance(data, list) or len(data) < 2:
+        return out
+    closes = [naver.to_float(x.get("closePrice")) for x in data]
+    closes = [c for c in closes if c is not None]
+    if len(closes) < 2:
+        return out
+    latest = closes[0]
+    for _l, k, nd in ETF_PERIODS:
+        idx = min(nd, len(closes) - 1)
+        if closes[idx]:
+            out[k] = round((latest - closes[idx]) / closes[idx] * 100, 2)
+    return out
+
+
 def theme_top(etf_list, top_n=6):
     """일반(비레버리지) 업종/테마 ETF 중 3개월 수익률 상위."""
     cand = [e for e in etf_list if not e["leverage"] and e["rate3m"] is not None

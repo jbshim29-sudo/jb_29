@@ -149,6 +149,8 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .etfTabs { display:flex; gap:8px; align-items:center; margin-bottom:16px; }
   .etfTab { background:#fff; border:1px solid #cfd6df; color:#333; padding:8px 16px; border-radius:8px; font-size:13.5px; cursor:pointer; font-weight:600; }
   .etfTab.active { background:#0f2540; color:#fff; border-color:#0f2540; }
+  .etfPTab { background:#fff; border:1px solid #cfd6df; color:#333; padding:6px 13px; border-radius:16px; font-size:13px; cursor:pointer; }
+  .etfPTab.active { background:#c0392b; color:#fff; border-color:#c0392b; font-weight:700; }
   .etfNote { font-size:12px; color:#9aa2ad; margin-left:6px; }
   .levTag { font-size:10px; background:#fbeaea; color:#c0392b; padding:1px 5px; border-radius:4px; margin-left:4px; }
   .etfTable td.l .nm { font-weight:600; }
@@ -254,22 +256,29 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   <!-- ============ ETF 등락률 ============ -->
   <div class="view" id="view-etf" style="display:none">
     <div class="etfTabs">
-      <button class="etfTab active" data-c="total" onclick="renderEtf('total')">토탈</button>
-      <button class="etfTab" data-c="lev" onclick="renderEtf('lev')">레버리지 / 인버스</button>
-      <button class="etfTab" data-c="normal" onclick="renderEtf('normal')">일반</button>
+      <button class="etfTab active" data-c="total" onclick="etfSetCat('total')">토탈</button>
+      <button class="etfTab" data-c="lev" onclick="etfSetCat('lev')">레버리지 / 인버스</button>
+      <button class="etfTab" data-c="normal" onclick="etfSetCat('normal')">일반</button>
       <span class="etfNote" id="etfCount"></span>
+    </div>
+    <div class="etfTabs">
+      <span style="font-size:12px;color:#8a93a0;margin-right:2px;align-self:center">기간</span>
+      <button class="etfPTab active" data-p="d1" onclick="etfSetPeriod('d1')">당일</button>
+      <button class="etfPTab" data-p="w1" onclick="etfSetPeriod('w1')">1주일</button>
+      <button class="etfPTab" data-p="m1" onclick="etfSetPeriod('m1')">1개월</button>
+      <button class="etfPTab" data-p="m3" onclick="etfSetPeriod('m3')">3개월</button>
     </div>
     <div class="panels">
       <div class="panel">
-        <div class="ph"><b>📈 상승률 상위</b><span class="hint">일간 등락률 기준 · 국내 주식형 ETF</span></div>
+        <div class="ph"><b>📈 상승률 상위</b><span class="hint">선택 기간 등락률 기준 · 국내 주식형 ETF</span></div>
         <div class="pb"><table class="t10 etfTable"><thead><tr>
-          <th class="l">#</th><th class="l">ETF</th><th>종합</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
+          <th class="l">#</th><th class="l">ETF</th><th>등락률</th><th>종합</th><th>거래대금</th>
         </tr></thead><tbody id="etfUp"></tbody></table></div>
       </div>
       <div class="panel">
-        <div class="ph"><b>📉 하락률 상위</b><span class="hint">일간 등락률 기준 · 국내 주식형 ETF</span></div>
+        <div class="ph"><b>📉 하락률 상위</b><span class="hint">선택 기간 등락률 기준 · 국내 주식형 ETF</span></div>
         <div class="pb"><table class="t10 etfTable"><thead><tr>
-          <th class="l">#</th><th class="l">ETF</th><th>종합</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
+          <th class="l">#</th><th class="l">ETF</th><th>등락률</th><th>종합</th><th>거래대금</th>
         </tr></thead><tbody id="etfDown"></tbody></table></div>
       </div>
     </div>
@@ -400,7 +409,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     document.getElementById('view-'+v).style.display='block';
     document.querySelectorAll('.navTab').forEach(function(b){ b.classList.toggle('active', b.dataset.v===v); });
     document.getElementById('periodBar').style.display = (v==='score' || v==='etf') ? 'none' : 'flex';
-    if(v==='etf' && !document.getElementById('etfUp').innerHTML){ renderEtf('total'); }
+    if(v==='etf' && !document.getElementById('etfUp').innerHTML){ renderEtf(); }
   }
 
   // ---- 업종별 종목 등락률 ----
@@ -451,24 +460,27 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     var c = sc>=75?'s1':(sc>=60?'s2':(sc>=45?'s3':'s4'));
     return '<span class="sig '+c+'">'+sc+'</span>';
   }
+  var etfCat='total', etfPeriod='d1';
+  function etfR(e){ return (e.rets && e.rets[etfPeriod]!==undefined) ? e.rets[etfPeriod] : null; }
   function etfRow(e,i){
     var lev = e.lev ? ' <span class="levTag">레버리지</span>' : '';
-    var chgc = e.chg>0?'sret up':(e.chg<0?'sret down':'');
-    var r3c = (e.r3m>0)?'sret up':((e.r3m<0)?'sret down':'');
+    var v = etfR(e);
+    var chgc = (v>0)?'sret up':((v<0)?'sret down':'');
     return '<tr><td class="l rk">'+(i+1)+'</td>'+
       '<td class="l"><span class="nm"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+e.code+'">'+e.name+'</a></span>'+lev+'</td>'+
+      '<td class="'+chgc+'">'+etfPct(v)+'</td>'+
       '<td>'+etfSig(e.sc)+'</td>'+
-      '<td>'+(e.now?e.now.toLocaleString():'-')+'</td>'+
-      '<td class="'+chgc+'">'+etfPct(e.chg)+'</td>'+
-      '<td class="'+r3c+'">'+etfPct(e.r3m)+'</td>'+
       '<td>'+etfAmt(e.amt)+'</td></tr>';
   }
-  function renderEtf(cat){
-    document.querySelectorAll('.etfTab').forEach(function(b){ b.classList.toggle('active', b.dataset.c===cat); });
-    var list = ETFS.filter(function(e){ return cat==='total' ? true : (cat==='lev'?e.lev:!e.lev); });
-    var withChg = list.filter(function(e){ return e.chg!==null && e.chg!==undefined; });
-    var up = withChg.slice().sort(function(a,b){ return b.chg-a.chg; }).slice(0,20);
-    var down = withChg.slice().sort(function(a,b){ return a.chg-b.chg; }).slice(0,20);
+  function etfSetCat(c){ etfCat=c; renderEtf(); }
+  function etfSetPeriod(p){ etfPeriod=p; renderEtf(); }
+  function renderEtf(){
+    document.querySelectorAll('.etfTab').forEach(function(b){ b.classList.toggle('active', b.dataset.c===etfCat); });
+    document.querySelectorAll('.etfPTab').forEach(function(b){ b.classList.toggle('active', b.dataset.p===etfPeriod); });
+    var list = ETFS.filter(function(e){ return etfCat==='total' ? true : (etfCat==='lev'?e.lev:!e.lev); });
+    var withR = list.filter(function(e){ var v=etfR(e); return v!==null && v!==undefined; });
+    var up = withR.slice().sort(function(a,b){ return etfR(b)-etfR(a); }).slice(0,20);
+    var down = withR.slice().sort(function(a,b){ return etfR(a)-etfR(b); }).slice(0,20);
     document.getElementById('etfUp').innerHTML = up.map(etfRow).join('');
     document.getElementById('etfDown').innerHTML = down.map(etfRow).join('');
     var c=document.getElementById('etfCount'); if(c) c.textContent='총 '+list.length+'개';
@@ -797,14 +809,14 @@ def _prepare_etf(market):
     dfe["sc"] = ((d_pct * 0.5 + r_pct * 0.5) * 100).round(0)
     out = []
     for _, e in dfe.iterrows():
+        rets = e.get("rets") if isinstance(e.get("rets"), dict) else {}
         out.append({
             "name": e["name"], "code": e["code"],
-            "now": None if pd.isna(e.get("now")) else e.get("now"),
-            "chg": None if pd.isna(e.get("change_rate")) else float(e.get("change_rate")),
-            "r3m": None if pd.isna(e.get("rate3m")) else float(e.get("rate3m")),
             "amt": None if pd.isna(e.get("amount_eok")) else float(e.get("amount_eok")),
             "lev": bool(e.get("leverage")),
             "sc": None if pd.isna(e.get("sc")) else int(e.get("sc")),
+            "rets": {k: (None if rets.get(k) is None else float(rets.get(k)))
+                     for k in ["d1", "w1", "m1", "m3"]},
         })
     return out
 
