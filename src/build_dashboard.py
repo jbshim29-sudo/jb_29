@@ -159,6 +159,13 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .etfNote { font-size:12px; color:#9aa2ad; margin-left:6px; }
   .levTag { font-size:10px; background:#fbeaea; color:#c0392b; padding:1px 5px; border-radius:4px; margin-left:4px; }
   .etfTable td.l .nm { font-weight:600; }
+  /* test 모의투자 2섹션 */
+  .pfSec { margin-bottom:6px; }
+  .pfH { font-size:16px; margin:6px 0 12px; }
+  .pfH small { font-weight:400; color:#8a93a0; font-size:12.5px; margin-left:6px; }
+  .pfDiv { border-top:2px dashed #d7dde4; margin:22px 0; }
+  .pfCmp { background:#fff; border:1px solid #e7ebf0; border-radius:10px; padding:10px 16px; margin-bottom:12px; font-size:13.5px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .pfCmp .up{color:#c0392b;} .pfCmp .down{color:#2563d1;}
 </style>
 </head>
 <body>
@@ -508,6 +515,27 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     return o.join('');
   }
   function paperSel(k){ renderPaper(k); }
+  function paperHoldTable(holds){
+    var rows=holds.slice().sort(function(a,b){return (b.ret||0)-(a.ret||0);}).map(function(h,i){
+      return '<tr><td class="l rk">'+(i+1)+'</td>'+
+        '<td class="l"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+h.code+'">'+h.name+'</a></td>'+
+        '<td>'+Math.round(h.buy_price).toLocaleString()+'</td>'+
+        '<td>'+Math.round(h.last_price).toLocaleString()+'</td>'+
+        '<td class="'+(h.ret>0?'sret up':(h.ret<0?'sret down':''))+'">'+pcT(h.ret)+'</td>'+
+        '<td>'+wonC(h.value)+'</td></tr>';
+    }).join('');
+    return '<table class="t10"><thead><tr><th class="l">#</th><th class="l">종목</th><th>매수가</th><th>현재가</th><th>수익률</th><th>평가액</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  }
+  function renderTrack(t, extraStat, chartHint){
+    var stats='<div class="statRow">'+
+      '<div class="stat"><div class="t">평가액</div><div class="v" style="font-size:20px">'+wonC(t.value)+'</div><div class="s">원금 '+wonC(t.invested)+'</div></div>'+
+      '<div class="stat"><div class="t">총 수익률</div><div class="v '+updn(t.ret)+'" style="font-size:24px">'+pcT(t.ret)+'</div></div>'+
+      '<div class="stat"><div class="t">평가손익</div><div class="v '+updn(t.profit)+'" style="font-size:20px">'+(t.profit>0?'+':'')+wonC(t.profit)+'</div></div>'+
+      extraStat+'</div>';
+    var chart='<div class="panel" style="margin-bottom:12px"><div class="ph"><b>📈 수익률 추이</b><span class="hint">'+chartHint+'</span></div><div style="padding:10px 12px">'+paperChart(t.history)+'</div></div>';
+    var table='<div class="panel"><div class="ph"><b>보유 종목</b><span class="hint">수익률 순</span></div><div class="pb">'+paperHoldTable(t.holdings)+'</div></div>';
+    return stats+chart+table;
+  }
   function renderPaper(pkey){
     paperCur=pkey;
     document.querySelectorAll('#paperTabs .etfPTab').forEach(function(b){ b.classList.toggle('active', b.dataset.p===pkey); });
@@ -519,24 +547,19 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       return;
     }
     var p=PAPER.periods[pkey]; if(!p){ body.innerHTML=''; return; }
-    var stats='<div class="statRow">'+
-      '<div class="stat"><div class="t">투자원금</div><div class="v" style="font-size:20px">'+wonC(p.invested)+'</div><div class="s">'+p.holdings.length+'종목 × 1천만원</div></div>'+
-      '<div class="stat"><div class="t">현재 평가액</div><div class="v" style="font-size:20px">'+wonC(p.value)+'</div><div class="s">매수일 '+(PAPER.buy_date||'')+'</div></div>'+
-      '<div class="stat"><div class="t">총 수익률</div><div class="v '+updn(p.ret)+'" style="font-size:24px">'+pcT(p.ret)+'</div></div>'+
-      '<div class="stat"><div class="t">평가손익</div><div class="v '+updn(p.profit)+'" style="font-size:20px">'+(p.profit>0?'+':'')+wonC(p.profit)+'</div></div>'+
-      '</div>';
-    var chart='<div class="panel" style="margin-bottom:14px"><div class="ph"><b>📈 수익률 추이</b><span class="hint">추적 시작 이후</span></div><div style="padding:10px 12px">'+paperChart(p.history)+'</div></div>';
-    var rows=p.holdings.slice().sort(function(a,b){return (b.ret||0)-(a.ret||0);}).map(function(h,i){
-      return '<tr><td class="l rk">'+(i+1)+'</td>'+
-        '<td class="l"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+h.code+'">'+h.name+'</a></td>'+
-        '<td>'+Math.round(h.buy_price).toLocaleString()+'</td>'+
-        '<td>'+Math.round(h.last_price).toLocaleString()+'</td>'+
-        '<td class="'+(h.ret>0?'sret up':(h.ret<0?'sret down':''))+'">'+pcT(h.ret)+'</td>'+
-        '<td>'+wonC(h.value)+'</td></tr>';
-    }).join('');
-    var table='<div class="panel"><div class="ph"><b>보유 종목 ('+p.label+' 유망 TOP'+p.holdings.length+')</b><span class="hint">수익률 순</span></div>'+
-      '<div class="pb"><table class="t10"><thead><tr><th class="l">#</th><th class="l">종목</th><th>매수가</th><th>현재가</th><th>수익률</th><th>평가액</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
-    body.innerHTML=stats+chart+table;
+    var buyDay=(PAPER.buy_date||'').split(' ')[0];
+    var fixedStat='<div class="stat"><div class="t">매수일</div><div class="v" style="font-size:15px">'+buyDay+'</div><div class="s">한 번 매수 후 보유</div></div>';
+    var A=renderTrack(p.fixed, fixedStat, '매수 시점 대비');
+    var rebalStat='<div class="stat"><div class="t">재매입 횟수</div><div class="v" style="font-size:20px">'+(p.rebal.count||0)+'회</div><div class="s">누적세금 '+wonC(p.rebal.total_tax||0)+'</div></div>';
+    var B=renderTrack(p.rebal, rebalStat, p.rebal.interval+'일 주기 · 매도세 0.15% 반영');
+    var cmp='';
+    if(p.fixed.ret!=null && p.rebal.ret!=null){
+      var diff=(p.rebal.ret-p.fixed.ret);
+      cmp='<div class="pfCmp">주기적 재매입이 고정 보유 대비 <b class="'+updn(diff)+'">'+(diff>0?'+':'')+diff.toFixed(2)+'%p</b> '+(diff>=0?'우위':'열위')+'</div>';
+    }
+    body.innerHTML='<div class="pfSec"><h3 class="pfH">🅰 고정 보유 <small>한 번 사서 계속 보유</small></h3>'+A+'</div>'+
+      '<div class="pfDiv"></div>'+
+      '<div class="pfSec"><h3 class="pfH">🅱 주기적 재매입 <small>'+p.label+' 주기 리밸런싱 · 세금 반영</small></h3>'+cmp+B+'</div>';
   }
 
   // ---- ETF 페이지 ----
