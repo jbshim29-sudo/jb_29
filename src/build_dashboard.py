@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """HTML 대시보드 생성: 전체 랭킹(기간탭) + 업종별 TOP3 + 스코어 설명."""
+import math
 import os
 import sys
 
+import numpy as np
 import pandas as pd
 from jinja2 import Template
 
@@ -66,6 +68,54 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .wtable { border-collapse:collapse; margin:10px 0; }
   .wtable th,.wtable td { border:1px solid #e2e6ec; padding:7px 12px; text-align:left; font-size:13px; }
   .wtable th { background:#eef1f5; }
+
+  /* ===== 요약 대시보드 (화이트) ===== */
+  .statRow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+  .stat { background:#fff; border:1px solid #e7ebf0; border-radius:12px; padding:16px 18px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .stat .t { font-size:12px; color:#8a93a0; margin-bottom:8px; }
+  .stat .v { font-size:28px; font-weight:800; letter-spacing:-.5px; }
+  .stat .v .u { font-size:15px; font-weight:600; color:#6b7480; margin-left:2px; }
+  .stat .s { font-size:12.5px; margin-top:5px; color:#7b8492; }
+  .stat .s.up { color:#c0392b; font-weight:700; } .stat .s.down { color:#2563d1; font-weight:700; }
+  .panels { display:grid; grid-template-columns:1.35fr 1fr; gap:16px; margin-bottom:16px; }
+  @media(max-width:1000px){ .statRow{grid-template-columns:repeat(2,1fr);} .panels{grid-template-columns:1fr;} }
+  .panel { background:#fff; border:1px solid #e7ebf0; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .panel .ph { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid #eef1f4; }
+  .panel .ph b { font-size:14.5px; } .panel .ph .hint { font-size:11.5px; color:#9aa2ad; }
+  .panel .pb { padding:6px 8px 12px; }
+  .t10 { width:100%; border-collapse:collapse; font-size:13px; }
+  .t10 th,.t10 td { padding:8px 10px; border-bottom:1px solid #f0f2f5; white-space:nowrap; }
+  .t10 th { color:#8a93a0; font-weight:600; font-size:11.5px; text-align:right; }
+  .t10 th.l,.t10 td.l { text-align:left; } .t10 td { text-align:right; }
+  .t10 tbody tr:hover { background:#f7faff; }
+  .t10 .nm { font-weight:700; } .t10 .sec { font-size:11px; color:#9aa2ad; }
+  .t10 .rk { color:#b7bec8; font-weight:700; width:26px; }
+  .sig { display:inline-block; min-width:30px; padding:2px 8px; border-radius:6px; font-weight:800; font-size:12px; color:#fff; }
+  .sig.s1{background:#c0392b;} .sig.s2{background:#e0733a;} .sig.s3{background:#e0a92e;} .sig.s4{background:#8b93a1;}
+  .sret.up{color:#c0392b;font-weight:700;} .sret.down{color:#2563d1;font-weight:700;}
+  /* 섹터 강도 바 */
+  .sbar { display:grid; grid-template-columns:96px 1fr 34px; align-items:center; gap:10px; padding:6px 14px; }
+  .sbar .nm { font-size:12.5px; font-weight:600; } .sbar .nm small{ display:block; color:#9aa2ad; font-weight:400; font-size:10.5px; }
+  .sbar .track { background:#eef1f5; border-radius:6px; height:12px; overflow:hidden; }
+  .sbar .fill { height:100%; border-radius:6px; }
+  .sbar .fill.pos{ background:linear-gradient(90deg,#f6c65a,#e08a2e); }
+  .sbar .fill.neg{ background:linear-gradient(90deg,#8fb6ea,#3b7dd8); }
+  .sbar .sc { font-size:12.5px; font-weight:800; text-align:right; }
+  /* 버블맵 */
+  .bubbleWrap { padding:8px 12px 14px; overflow-x:auto; }
+  .bubbleWrap svg { display:block; min-width:820px; width:100%; height:auto; }
+  .blegend { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:#6b7480; padding:0 16px 12px; }
+  .blegend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  /* ETF 카드 */
+  .etfGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media(max-width:1000px){ .etfGrid{grid-template-columns:1fr;} }
+  .etf { background:#fff; border:1px solid #e7ebf0; border-radius:12px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .etf .en { font-weight:700; font-size:14px; } .etf .tag { display:inline-block; margin-top:4px; font-size:11px; color:#7b8492; background:#f0f2f5; padding:1px 7px; border-radius:5px; }
+  .etf .er { font-size:22px; font-weight:800; margin:8px 0 4px; }
+  .etf .er.up{color:#c0392b;} .etf .er.down{color:#2563d1;}
+  .etf .foot { display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#9aa2ad; }
+  .etf .track { background:#eef1f5; border-radius:5px; height:8px; margin-top:8px; overflow:hidden; }
+  .etf .track .fill { height:100%; background:linear-gradient(90deg,#f6c65a,#e08a2e); border-radius:5px; }
 </style>
 </head>
 <body>
@@ -75,7 +125,8 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
 </header>
 
 <div class="nav">
-  <button class="navTab active" data-v="rank" onclick="showView('rank')">💎 저평가 전체 랭킹</button>
+  <button class="navTab active" data-v="summary" onclick="showView('summary')">📊 요약 대시보드</button>
+  <button class="navTab" data-v="rank" onclick="showView('rank')">💎 저평가 전체 랭킹</button>
   <button class="navTab" data-v="sector" onclick="showView('sector')">🏭 업종별 TOP3</button>
   <button class="navTab" data-v="score" onclick="showView('score')">📐 스코어 산정 방식</button>
 </div>
@@ -88,8 +139,95 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
 </div>
 
 <div class="wrap">
+  <!-- ============ 요약 대시보드 ============ -->
+  <div class="view" id="view-summary">
+    <div class="statRow">
+      <div class="stat">
+        <div class="t">KOSPI 200 지수</div>
+        <div class="v">{{ summary.index.value }}</div>
+        <div class="s {{ 'up' if summary.index.up else 'down' }}">{{ '▲' if summary.index.up else '▼' }} {{ summary.index.change }} ({{ summary.index.rate }}%)</div>
+      </div>
+      <div class="stat">
+        <div class="t">상승 종목 비율 ({{ summary.period_label }} 누적)</div>
+        <div class="v">{{ summary.up_cnt }} <span class="u">/ {{ summary.total }}</span></div>
+        <div class="s {{ 'up' if summary.up_cnt*2 >= summary.total else 'down' }}">{{ '상승 우위 시장' if summary.up_cnt*2 >= summary.total else '하락 우위 시장' }}</div>
+      </div>
+      <div class="stat">
+        <div class="t">평균 PER</div>
+        <div class="v">{{ summary.avg_per }}<span class="u">배</span></div>
+        <div class="s">중앙값 {{ summary.med_per }}배</div>
+      </div>
+      <div class="stat">
+        <div class="t">평균 PBR</div>
+        <div class="v">{{ summary.avg_pbr }}<span class="u">배</span></div>
+        <div class="s">중앙값 {{ summary.med_pbr }}배</div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="ph"><b>💡 유망종목 TOP 10</b><span class="hint">종합 스코어 상위 · {{ summary.period_label }} 누적상승률</span></div>
+        <div class="pb">
+          <table class="t10">
+            <thead><tr><th class="l">#</th><th class="l">종목 / 섹터</th><th>누적상승률</th><th>PER</th><th>PBR</th><th>시그널</th></tr></thead>
+            <tbody>
+            {% for r in summary.top10 %}
+              <tr>
+                <td class="l rk">{{ r.rank }}</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.name }}</a></span><span class="sec">{{ r.industry }}</span></td>
+                <td class="sret {{ 'up' if r.ret_raw is not none and r.ret_raw>0 else 'down' }}">{{ r.ret }}</td>
+                <td>{{ r.per }}</td><td>{{ r.pbr }}</td>
+                <td><span class="sig {{ r.sig_class }}">{{ r.sig }}</span></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><b>🏭 섹터 강도 랭킹</b><span class="hint">{{ summary.period_label }} 평균 상승률 기준</span></div>
+        <div class="pb">
+          {% for s in summary.sectors %}
+          <div class="sbar">
+            <div class="nm">{{ s.name }}<small>평균 {{ s.avg }}</small></div>
+            <div class="track"><div class="fill {{ 'pos' if s.pos else 'neg' }}" style="width:{{ s.width }}%"></div></div>
+            <div class="sc">{{ s.strength }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px">
+      <div class="ph"><b>🫧 밸류에이션 맵 — PER vs {{ summary.period_label }} 누적상승률</b><span class="hint">버블 크기 = 시가총액</span></div>
+      <div class="bubbleWrap">{{ summary.svg }}</div>
+      <div class="blegend">
+        <span><i style="background:#d9534f"></i>상승 종목</span>
+        <span><i style="background:#3b7dd8"></i>하락 종목</span>
+        <span><i style="background:#e0a92e"></i>유망 구간 (저PER + 상승)</span>
+        <span>버블 크기 = 시가총액</span>
+      </div>
+    </div>
+
+    <div class="panel" style="border:0;box-shadow:none;background:transparent">
+      <div class="ph" style="border:0;padding-left:2px"><b>📦 ETF 테마 강도 — 누적수익률(3개월) 기준</b><span class="hint">거래대금 상위 국내 테마 ETF</span></div>
+      <div class="etfGrid">
+        {% for e in summary.etfs %}
+        <div class="etf">
+          <div class="en">{{ e.name }}</div><span class="tag">{{ e.tag }}</span>
+          <div class="er {{ 'up' if e.up else 'down' }}">{{ e.rate }}</div>
+          <div class="foot"><span>거래대금 {{ e.amount }}</span></div>
+          <div class="track"><div class="fill" style="width:{{ e.width }}%"></div></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="foot">⚠️ 개인 투자 참고용(네이버 금융 공개 데이터 가공). 누적상승률은 <b>{{ summary.period_label }}</b> 기준입니다. 투자 판단·책임은 이용자 본인에게 있습니다.</div>
+  </div>
+
   <!-- ============ 전체 랭킹 ============ -->
-  <div class="view" id="view-rank">
+  <div class="view" id="view-rank" style="display:none">
     <div class="cards">
       <div class="card"><div class="n up" id="upCnt">0</div><div class="l"><span id="periodLabel"></span> 상승</div></div>
       <div class="card"><div class="n down" id="downCnt">0</div><div class="l">하락</div></div>
@@ -224,7 +362,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     document.querySelectorAll('.view').forEach(function(x){ x.style.display='none'; });
     document.getElementById('view-'+v).style.display='block';
     document.querySelectorAll('.navTab').forEach(function(b){ b.classList.toggle('active', b.dataset.v===v); });
-    document.getElementById('periodBar').style.display = (v==='score') ? 'none' : 'flex';
+    document.getElementById('periodBar').style.display = (v==='score' || v==='summary') ? 'none' : 'flex';
   }
   function numAttr(tr, attr){ var v=tr.getAttribute(attr); return (v===null||v==='')?null:parseFloat(v); }
 
@@ -307,7 +445,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   });
   // 초기화
   applyPeriod('{{ default_key }}');
-  showView('rank');
+  showView('summary');
 </script>
 </body>
 </html>""")
@@ -365,7 +503,172 @@ def _row_view(r, max_score):
     }
 
 
-def build(df, generated):
+def _esc(s):
+    return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _sig_class(score):
+    if score >= 75:
+        return "s1"
+    if score >= 65:
+        return "s2"
+    if score >= 55:
+        return "s3"
+    return "s4"
+
+
+_ETF_TAGS = [("반도체", "반도체"), ("2차전지", "2차전지"), ("전지", "2차전지"), ("AI", "AI"),
+             ("전력", "전력"), ("바이오", "바이오"), ("헬스", "바이오"), ("로봇", "로봇"),
+             ("자동차", "자동차"), ("조선", "조선"), ("방산", "방산"), ("우주", "우주항공"),
+             ("금융", "금융"), ("은행", "금융"), ("인터넷", "인터넷"), ("게임", "게임"),
+             ("IT", "IT"), ("네트워크", "인프라"), ("인프라", "인프라"), ("소부장", "소부장")]
+
+
+def _etf_tag(name):
+    for kw, tag in _ETF_TAGS:
+        if kw in name:
+            return tag
+    return "테마"
+
+
+def _amount_fmt(eok):
+    if eok is None:
+        return "-"
+    if eok >= 10000:
+        return f"{eok/10000:,.1f}조"
+    return f"{eok:,.0f}억"
+
+
+def _bubble_svg(df, ret_col):
+    W, H, ML, MR, MT, MB = 1040, 440, 56, 24, 18, 42
+    x0, x1, y0, y1 = ML, W - MR, MT, H - MB
+    XMAX = 40.0
+    pts = []
+    for _, r in df.iterrows():
+        per, ret, cap = r.get("per"), r.get(ret_col), r.get("market_cap_eok")
+        if per is None or pd.isna(per) or per <= 0:
+            continue
+        if ret is None or pd.isna(ret):
+            continue
+        pts.append((float(per), float(ret),
+                    float(cap) if (cap is not None and not pd.isna(cap)) else 0.0,
+                    r["name"]))
+    if not pts:
+        return "<svg></svg>"
+    yabs = float(max(6.0, min(18.0, np.percentile([abs(p[1]) for p in pts], 92))))
+    maxcap = max(p[2] for p in pts) or 1.0
+
+    def sx(per):
+        return x0 + (min(per, XMAX) / XMAX) * (x1 - x0)
+
+    def sy(ret):
+        v = max(-yabs, min(yabs, ret))
+        return y0 + (1 - (v + yabs) / (2 * yabs)) * (y1 - y0)
+
+    def rad(cap):
+        return 4 + 20 * math.sqrt(max(cap, 0) / maxcap)
+
+    o = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">']
+    for gx in range(0, 41, 10):
+        X = sx(gx)
+        o.append(f'<line x1="{X:.1f}" y1="{y0}" x2="{X:.1f}" y2="{y1}" stroke="#eef1f4"/>')
+        o.append(f'<text x="{X:.1f}" y="{y1+16}" font-size="11" fill="#9aa2ad" text-anchor="middle">{gx}</text>')
+    o.append(f'<text x="{x1}" y="{y1+31}" font-size="11" fill="#8a93a0" text-anchor="end">PER(배)</text>')
+    for gy in [-yabs, -yabs/2, 0, yabs/2, yabs]:
+        Y = sy(gy)
+        col = "#d7dde4" if abs(gy) < 0.01 else "#f1f3f6"
+        o.append(f'<line x1="{x0}" y1="{Y:.1f}" x2="{x1}" y2="{Y:.1f}" stroke="{col}"/>')
+        o.append(f'<text x="{x0-8}" y="{Y+4:.1f}" font-size="11" fill="#9aa2ad" text-anchor="end">{gy:+.0f}%</text>')
+    rx0, ry0, ry1 = sx(0), sy(yabs), sy(0)
+    o.append(f'<rect x="{rx0:.1f}" y="{ry0:.1f}" width="{sx(12)-rx0:.1f}" height="{ry1-ry0:.1f}" '
+             f'rx="8" fill="#e0a92e" fill-opacity="0.09" stroke="#e0a92e" stroke-opacity="0.55" stroke-dasharray="5 4"/>')
+    o.append(f'<text x="{rx0+9:.1f}" y="{ry0+17:.1f}" font-size="11.5" fill="#b5851f" font-weight="700">★ 유망 구간 (저PER + 상승)</text>')
+    pts_sorted = sorted(pts, key=lambda p: p[2], reverse=True)
+    for per, ret, cap, name in pts_sorted:
+        color = "#d9534f" if ret > 0 else "#3b7dd8"
+        if per <= 12 and ret > 0:
+            color = "#e0a92e"
+        o.append(f'<circle cx="{sx(per):.1f}" cy="{sy(ret):.1f}" r="{rad(cap):.1f}" '
+                 f'fill="{color}" fill-opacity="0.60" stroke="#fff" stroke-width="1"/>')
+    for per, ret, cap, name in pts_sorted[:12]:
+        o.append(f'<text x="{sx(per):.1f}" y="{sy(ret)-rad(cap)-3:.1f}" font-size="10.5" '
+                 f'fill="#4a5360" text-anchor="middle">{_esc(name)}</text>')
+    o.append('</svg>')
+    return "".join(o)
+
+
+def _prepare_summary(df, market, period_key):
+    ret_col = f"ret_{period_key}"
+    plabel = next((l for l, k, d in config.PERIODS if k == period_key), period_key)
+    idx = market.get("index") or {}
+    index = {
+        "value": _fmt(idx.get("value"), 2), "change": _fmt(idx.get("change"), 2),
+        "rate": _fmt(idx.get("rate"), 2), "up": bool(idx.get("up")),
+    }
+    rr = df[ret_col]
+    up_cnt, total = int((rr > 0).sum()), len(df)
+    per_v = df["per"][df["per"] > 0]
+    pbr_v = df["pbr"][df["pbr"] > 0]
+
+    def _trimmed_mean(s):
+        """상·하위 5% 절사평균 (이상치로 인한 왜곡 방지)."""
+        s = s.dropna()
+        if len(s) < 5:
+            return s.mean()
+        lo, hi = s.quantile(0.05), s.quantile(0.95)
+        return s[(s >= lo) & (s <= hi)].mean()
+
+    top10 = []
+    for _, r in df.head(10).iterrows():
+        rv = r.get(ret_col)
+        top10.append({
+            "rank": int(r["rank"]), "code": r["code"], "name": r["name"],
+            "industry": r.get("industry") or "-",
+            "ret": "-" if pd.isna(rv) else ("+" if rv > 0 else "") + f"{rv:,.1f}%",
+            "ret_raw": None if pd.isna(rv) else float(rv),
+            "per": _fmt(r["per"]), "pbr": _fmt(r["pbr"]),
+            "sig": str(int(round(r["score"]))), "sig_class": _sig_class(r["score"]),
+        })
+
+    grp = df.groupby("industry").agg(avg=(ret_col, "mean"), n=(ret_col, "size"))
+    grp2 = grp[grp["n"] >= 2]
+    if len(grp2) >= 8:
+        grp = grp2
+    grp = grp.copy()
+    grp["strength"] = (grp["avg"].rank(pct=True) * 100).round(0)
+    grp = grp.sort_values("avg", ascending=False).head(11)
+    sectors = []
+    for name, row in grp.iterrows():
+        av = float(row["avg"])
+        sectors.append({
+            "name": name if (name and not (isinstance(name, float) and pd.isna(name))) else "기타",
+            "avg": ("+" if av > 0 else "") + f"{av:,.1f}%", "pos": av >= 0,
+            "strength": int(row["strength"]), "width": max(6, int(row["strength"])),
+        })
+
+    etfs = []
+    raw = market.get("etfs") or []
+    maxrate = max([abs(e["rate3m"]) for e in raw], default=1) or 1
+    for e in raw:
+        r3 = e["rate3m"]
+        etfs.append({
+            "name": e["name"], "tag": _etf_tag(e["name"]),
+            "rate": ("+" if r3 > 0 else "") + f"{r3:,.1f}%", "up": r3 >= 0,
+            "amount": _amount_fmt(e["amount_eok"]),
+            "width": max(6, int(abs(r3) / maxrate * 100)),
+        })
+
+    return {
+        "index": index, "up_cnt": up_cnt, "total": total, "period_label": plabel,
+        "avg_per": _fmt(_trimmed_mean(per_v), 1), "med_per": _fmt(per_v.median(), 1),
+        "avg_pbr": _fmt(_trimmed_mean(pbr_v), 2), "med_pbr": _fmt(pbr_v.median(), 2),
+        "top10": top10, "sectors": sectors, "etfs": etfs,
+        "svg": _bubble_svg(df, ret_col),
+    }
+
+
+def build(df, generated, market=None):
+    market = market or {}
     max_score = df["score"].max() or 1
     rows = [_row_view(r, max_score) for _, r in df.iterrows()]
 
@@ -387,10 +690,11 @@ def build(df, generated):
 
     top = df.iloc[0]
     w = config.SCORE_WEIGHTS
+    summary = _prepare_summary(df, market, config.DEFAULT_PERIOD_KEY)
     html = TEMPLATE.render(
         generated=generated, total=len(df), periods=config.PERIODS,
         default_key=config.DEFAULT_PERIOD_KEY,
-        rows=rows, sectors=sectors,
+        rows=rows, sectors=sectors, summary=summary,
         top_name=top["name"], top_score=_fmt(top["score"], 1),
         w=w, w_total=sum(w.values()),
     )

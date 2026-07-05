@@ -15,6 +15,7 @@ import fetch_constituents
 import fetch_fundamentals
 import fetch_prices
 import fetch_news
+import fetch_market
 import score as score_mod
 import build_dashboard
 
@@ -76,7 +77,13 @@ def main():
             if done % 40 == 0:
                 log(f"  진행 {done}/{len(constituents)}")
 
-    log(f"수집 완료 {len(records)}개. 스코어 계산 중...")
+    log(f"수집 완료 {len(records)}개. 시장 데이터(지수·ETF) 수집 중...")
+    market = {
+        "index": fetch_market.fetch_index(sess),
+        "etfs": fetch_market.fetch_theme_etfs(sess),
+    }
+
+    log("스코어 계산 중...")
     df = score_mod.compute_scores(records)
 
     # CSV 저장 (최신 + 일자별 히스토리)
@@ -91,7 +98,7 @@ def main():
     df[csv_cols].to_csv(os.path.join(config.DATA_DIR, f"{day}.csv"), index=False, encoding="utf-8-sig")
 
     generated = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
-    path = build_dashboard.build(df, generated)
+    path = build_dashboard.build(df, generated, market)
     log(f"대시보드 생성: {path}")
 
     # GitHub Pages용 사본 (docs/index.html)

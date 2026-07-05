@@ -55,16 +55,65 @@
   .wtable { border-collapse:collapse; margin:10px 0; }
   .wtable th,.wtable td { border:1px solid #e2e6ec; padding:7px 12px; text-align:left; font-size:13px; }
   .wtable th { background:#eef1f5; }
+
+  /* ===== 요약 대시보드 (화이트) ===== */
+  .statRow { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+  .stat { background:#fff; border:1px solid #e7ebf0; border-radius:12px; padding:16px 18px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .stat .t { font-size:12px; color:#8a93a0; margin-bottom:8px; }
+  .stat .v { font-size:28px; font-weight:800; letter-spacing:-.5px; }
+  .stat .v .u { font-size:15px; font-weight:600; color:#6b7480; margin-left:2px; }
+  .stat .s { font-size:12.5px; margin-top:5px; color:#7b8492; }
+  .stat .s.up { color:#c0392b; font-weight:700; } .stat .s.down { color:#2563d1; font-weight:700; }
+  .panels { display:grid; grid-template-columns:1.35fr 1fr; gap:16px; margin-bottom:16px; }
+  @media(max-width:1000px){ .statRow{grid-template-columns:repeat(2,1fr);} .panels{grid-template-columns:1fr;} }
+  .panel { background:#fff; border:1px solid #e7ebf0; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .panel .ph { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid #eef1f4; }
+  .panel .ph b { font-size:14.5px; } .panel .ph .hint { font-size:11.5px; color:#9aa2ad; }
+  .panel .pb { padding:6px 8px 12px; }
+  .t10 { width:100%; border-collapse:collapse; font-size:13px; }
+  .t10 th,.t10 td { padding:8px 10px; border-bottom:1px solid #f0f2f5; white-space:nowrap; }
+  .t10 th { color:#8a93a0; font-weight:600; font-size:11.5px; text-align:right; }
+  .t10 th.l,.t10 td.l { text-align:left; } .t10 td { text-align:right; }
+  .t10 tbody tr:hover { background:#f7faff; }
+  .t10 .nm { font-weight:700; } .t10 .sec { font-size:11px; color:#9aa2ad; }
+  .t10 .rk { color:#b7bec8; font-weight:700; width:26px; }
+  .sig { display:inline-block; min-width:30px; padding:2px 8px; border-radius:6px; font-weight:800; font-size:12px; color:#fff; }
+  .sig.s1{background:#c0392b;} .sig.s2{background:#e0733a;} .sig.s3{background:#e0a92e;} .sig.s4{background:#8b93a1;}
+  .sret.up{color:#c0392b;font-weight:700;} .sret.down{color:#2563d1;font-weight:700;}
+  /* 섹터 강도 바 */
+  .sbar { display:grid; grid-template-columns:96px 1fr 34px; align-items:center; gap:10px; padding:6px 14px; }
+  .sbar .nm { font-size:12.5px; font-weight:600; } .sbar .nm small{ display:block; color:#9aa2ad; font-weight:400; font-size:10.5px; }
+  .sbar .track { background:#eef1f5; border-radius:6px; height:12px; overflow:hidden; }
+  .sbar .fill { height:100%; border-radius:6px; }
+  .sbar .fill.pos{ background:linear-gradient(90deg,#f6c65a,#e08a2e); }
+  .sbar .fill.neg{ background:linear-gradient(90deg,#8fb6ea,#3b7dd8); }
+  .sbar .sc { font-size:12.5px; font-weight:800; text-align:right; }
+  /* 버블맵 */
+  .bubbleWrap { padding:8px 12px 14px; overflow-x:auto; }
+  .bubbleWrap svg { display:block; min-width:820px; width:100%; height:auto; }
+  .blegend { display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:#6b7480; padding:0 16px 12px; }
+  .blegend i { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  /* ETF 카드 */
+  .etfGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media(max-width:1000px){ .etfGrid{grid-template-columns:1fr;} }
+  .etf { background:#fff; border:1px solid #e7ebf0; border-radius:12px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  .etf .en { font-weight:700; font-size:14px; } .etf .tag { display:inline-block; margin-top:4px; font-size:11px; color:#7b8492; background:#f0f2f5; padding:1px 7px; border-radius:5px; }
+  .etf .er { font-size:22px; font-weight:800; margin:8px 0 4px; }
+  .etf .er.up{color:#c0392b;} .etf .er.down{color:#2563d1;}
+  .etf .foot { display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#9aa2ad; }
+  .etf .track { background:#eef1f5; border-radius:5px; height:8px; margin-top:8px; overflow:hidden; }
+  .etf .track .fill { height:100%; background:linear-gradient(90deg,#f6c65a,#e08a2e); border-radius:5px; }
 </style>
 </head>
 <body>
 <header>
   <h1>KOSPI 200 저평가 종목 스크리너</h1>
-  <div class="sub">데이터 출처: 네이버 금융 · 생성 시각: 2026-07-05 11:22 KST · 종목 수: 199개</div>
+  <div class="sub">데이터 출처: 네이버 금융 · 생성 시각: 2026-07-05 11:39 KST · 종목 수: 199개</div>
 </header>
 
 <div class="nav">
-  <button class="navTab active" data-v="rank" onclick="showView('rank')">💎 저평가 전체 랭킹</button>
+  <button class="navTab active" data-v="summary" onclick="showView('summary')">📊 요약 대시보드</button>
+  <button class="navTab" data-v="rank" onclick="showView('rank')">💎 저평가 전체 랭킹</button>
   <button class="navTab" data-v="sector" onclick="showView('sector')">🏭 업종별 TOP3</button>
   <button class="navTab" data-v="score" onclick="showView('score')">📐 스코어 산정 방식</button>
 </div>
@@ -89,8 +138,262 @@
 </div>
 
 <div class="wrap">
+  <!-- ============ 요약 대시보드 ============ -->
+  <div class="view" id="view-summary">
+    <div class="statRow">
+      <div class="stat">
+        <div class="t">KOSPI 200 지수</div>
+        <div class="v">1,299.30</div>
+        <div class="s up">▲ 79.68 (6.53%)</div>
+      </div>
+      <div class="stat">
+        <div class="t">상승 종목 비율 (최근 1주일 누적)</div>
+        <div class="v">168 <span class="u">/ 199</span></div>
+        <div class="s up">상승 우위 시장</div>
+      </div>
+      <div class="stat">
+        <div class="t">평균 PER</div>
+        <div class="v">21.9<span class="u">배</span></div>
+        <div class="s">중앙값 15.4배</div>
+      </div>
+      <div class="stat">
+        <div class="t">평균 PBR</div>
+        <div class="v">2.09<span class="u">배</span></div>
+        <div class="s">중앙값 1.21배</div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <div class="ph"><b>💡 유망종목 TOP 10</b><span class="hint">종합 스코어 상위 · 최근 1주일 누적상승률</span></div>
+        <div class="pb">
+          <table class="t10">
+            <thead><tr><th class="l">#</th><th class="l">종목 / 섹터</th><th>누적상승률</th><th>PER</th><th>PBR</th><th>시그널</th></tr></thead>
+            <tbody>
+            
+              <tr>
+                <td class="l rk">1</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=071050" target="_blank">한국금융지주</a></span><span class="sec">증권</span></td>
+                <td class="sret up">+21.0%</td>
+                <td>6.02</td><td>1.11</td>
+                <td><span class="sig s1">87</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">2</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=139130" target="_blank">iM금융지주</a></span><span class="sec">은행</span></td>
+                <td class="sret up">+11.9%</td>
+                <td>6.49</td><td>0.45</td>
+                <td><span class="sig s1">81</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">3</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=111770" target="_blank">영원무역</a></span><span class="sec">섬유,의류,신발,호화품</span></td>
+                <td class="sret up">+19.9%</td>
+                <td>6.76</td><td>0.84</td>
+                <td><span class="sig s1">80</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">4</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=039490" target="_blank">키움증권</a></span><span class="sec">증권</span></td>
+                <td class="sret up">+13.7%</td>
+                <td>7.01</td><td>1.32</td>
+                <td><span class="sig s1">80</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">5</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=005940" target="_blank">NH투자증권</a></span><span class="sec">증권</span></td>
+                <td class="sret up">+13.4%</td>
+                <td>8.81</td><td>1.18</td>
+                <td><span class="sig s1">78</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">6</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=069620" target="_blank">대웅제약</a></span><span class="sec">제약</span></td>
+                <td class="sret up">+23.5%</td>
+                <td>7.68</td><td>1.49</td>
+                <td><span class="sig s1">78</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">7</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=016360" target="_blank">삼성증권</a></span><span class="sec">증권</span></td>
+                <td class="sret up">+14.7%</td>
+                <td>8.79</td><td>1.30</td>
+                <td><span class="sig s1">75</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">8</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=086790" target="_blank">하나금융지주</a></span><span class="sec">은행</span></td>
+                <td class="sret up">+14.5%</td>
+                <td>8.65</td><td>0.75</td>
+                <td><span class="sig s2">75</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">9</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=138930" target="_blank">BNK금융지주</a></span><span class="sec">은행</span></td>
+                <td class="sret up">+18.3%</td>
+                <td>6.88</td><td>0.54</td>
+                <td><span class="sig s2">74</span></td>
+              </tr>
+            
+              <tr>
+                <td class="l rk">10</td>
+                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code=009970" target="_blank">영원무역홀딩스</a></span><span class="sec">섬유,의류,신발,호화품</span></td>
+                <td class="sret up">+10.4%</td>
+                <td>6.22</td><td>0.68</td>
+                <td><span class="sig s2">74</span></td>
+              </tr>
+            
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><b>🏭 섹터 강도 랭킹</b><span class="hint">최근 1주일 평균 상승률 기준</span></div>
+        <div class="pb">
+          
+          <div class="sbar">
+            <div class="nm">섬유,의류,신발,호화품<small>평균 +14.7%</small></div>
+            <div class="track"><div class="fill pos" style="width:100%"></div></div>
+            <div class="sc">100</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">화장품<small>평균 +14.1%</small></div>
+            <div class="track"><div class="fill pos" style="width:97%"></div></div>
+            <div class="sc">97</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">증권<small>평균 +13.5%</small></div>
+            <div class="track"><div class="fill pos" style="width:95%"></div></div>
+            <div class="sc">95</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">은행<small>평균 +13.3%</small></div>
+            <div class="track"><div class="fill pos" style="width:92%"></div></div>
+            <div class="sc">92</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">우주항공과국방<small>평균 +11.3%</small></div>
+            <div class="track"><div class="fill pos" style="width:89%"></div></div>
+            <div class="sc">89</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">제약<small>평균 +11.0%</small></div>
+            <div class="track"><div class="fill pos" style="width:87%"></div></div>
+            <div class="sc">87</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">게임엔터테인먼트<small>평균 +10.6%</small></div>
+            <div class="track"><div class="fill pos" style="width:84%"></div></div>
+            <div class="sc">84</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">항공사<small>평균 +9.6%</small></div>
+            <div class="track"><div class="fill pos" style="width:82%"></div></div>
+            <div class="sc">82</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">건설<small>평균 +9.0%</small></div>
+            <div class="track"><div class="fill pos" style="width:79%"></div></div>
+            <div class="sc">79</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">포장재<small>평균 +8.7%</small></div>
+            <div class="track"><div class="fill pos" style="width:76%"></div></div>
+            <div class="sc">76</div>
+          </div>
+          
+          <div class="sbar">
+            <div class="nm">식품<small>평균 +8.5%</small></div>
+            <div class="track"><div class="fill pos" style="width:74%"></div></div>
+            <div class="sc">74</div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px">
+      <div class="ph"><b>🫧 밸류에이션 맵 — PER vs 최근 1주일 누적상승률</b><span class="hint">버블 크기 = 시가총액</span></div>
+      <div class="bubbleWrap"><svg viewBox="0 0 1040 440" xmlns="http://www.w3.org/2000/svg"><line x1="56.0" y1="18" x2="56.0" y2="398" stroke="#eef1f4"/><text x="56.0" y="414" font-size="11" fill="#9aa2ad" text-anchor="middle">0</text><line x1="296.0" y1="18" x2="296.0" y2="398" stroke="#eef1f4"/><text x="296.0" y="414" font-size="11" fill="#9aa2ad" text-anchor="middle">10</text><line x1="536.0" y1="18" x2="536.0" y2="398" stroke="#eef1f4"/><text x="536.0" y="414" font-size="11" fill="#9aa2ad" text-anchor="middle">20</text><line x1="776.0" y1="18" x2="776.0" y2="398" stroke="#eef1f4"/><text x="776.0" y="414" font-size="11" fill="#9aa2ad" text-anchor="middle">30</text><line x1="1016.0" y1="18" x2="1016.0" y2="398" stroke="#eef1f4"/><text x="1016.0" y="414" font-size="11" fill="#9aa2ad" text-anchor="middle">40</text><text x="1016" y="429" font-size="11" fill="#8a93a0" text-anchor="end">PER(배)</text><line x1="56" y1="398.0" x2="1016" y2="398.0" stroke="#f1f3f6"/><text x="48" y="402.0" font-size="11" fill="#9aa2ad" text-anchor="end">-17%</text><line x1="56" y1="303.0" x2="1016" y2="303.0" stroke="#f1f3f6"/><text x="48" y="307.0" font-size="11" fill="#9aa2ad" text-anchor="end">-9%</text><line x1="56" y1="208.0" x2="1016" y2="208.0" stroke="#d7dde4"/><text x="48" y="212.0" font-size="11" fill="#9aa2ad" text-anchor="end">+0%</text><line x1="56" y1="113.0" x2="1016" y2="113.0" stroke="#f1f3f6"/><text x="48" y="117.0" font-size="11" fill="#9aa2ad" text-anchor="end">+9%</text><line x1="56" y1="18.0" x2="1016" y2="18.0" stroke="#f1f3f6"/><text x="48" y="22.0" font-size="11" fill="#9aa2ad" text-anchor="end">+17%</text><rect x="56.0" y="18.0" width="288.0" height="190.0" rx="8" fill="#e0a92e" fill-opacity="0.09" stroke="#e0a92e" stroke-opacity="0.55" stroke-dasharray="5 4"/><text x="65.0" y="35.0" font-size="11.5" fill="#b5851f" font-weight="700">★ 유망 구간 (저PER + 상승)</text><circle cx="656.5" cy="304.9" r="24.0" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="618.3" cy="309.7" r="23.5" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="379.8" cy="291.5" r="10.8" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="210.2" r="9.7" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="420.1" cy="181.8" r="8.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="696.3" cy="333.5" r="8.1" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="753.7" cy="343.2" r="7.9" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="144.3" r="7.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="941.6" cy="30.2" r="7.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="740.2" cy="182.7" r="7.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="314.0" cy="55.3" r="7.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="261.2" cy="72.7" r="7.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="139.1" r="7.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="301.5" cy="20.1" r="7.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="516.3" cy="376.1" r="7.3" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="365.6" cy="191.1" r="7.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="899.1" cy="91.0" r="7.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="263.6" cy="49.1" r="6.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="64.9" r="6.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="131.0" r="6.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="569.8" cy="108.4" r="6.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="901.8" cy="235.4" r="6.6" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="130.3" r="6.6" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="464.0" cy="211.3" r="6.6" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="424.6" cy="204.6" r="6.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="298.6" cy="163.6" r="6.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="811.5" cy="154.1" r="6.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="123.7" cy="174.0" r="6.3" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="377.8" cy="139.9" r="6.3" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="614.0" cy="146.8" r="6.3" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="214.8" r="6.3" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="231.0" cy="115.2" r="6.2" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="314.4" r="6.2" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="702.1" cy="18.0" r="6.2" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="949.8" cy="184.2" r="6.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="277.5" r="6.1" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="259.0" cy="74.0" r="6.0" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="258.8" r="6.0" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="469.8" cy="157.6" r="6.0" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="357.0" cy="156.5" r="6.0" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="111.1" r="6.0" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="209.8" cy="116.6" r="5.9" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="312.8" cy="129.5" r="5.9" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="822.8" cy="130.3" r="5.9" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="830.2" cy="180.2" r="5.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="91.9" r="5.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="622.6" cy="176.3" r="5.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="267.7" cy="107.1" r="5.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="149.1" r="5.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="179.7" r="5.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="212.3" r="5.7" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="266.5" cy="176.5" r="5.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="200.5" cy="18.0" r="5.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="785.8" cy="80.7" r="5.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="383.1" cy="18.0" r="5.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="897.4" cy="76.7" r="5.6" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="267.4" cy="61.6" r="5.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="361.8" cy="38.7" r="5.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="267.0" cy="46.4" r="5.5" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="470.7" cy="176.7" r="5.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="536.7" cy="69.2" r="5.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="819.4" cy="210.5" r="5.5" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="211.5" cy="80.5" r="5.5" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="419.4" cy="32.1" r="5.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="224.2" cy="57.8" r="5.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="29.1" r="5.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="362.2" cy="120.4" r="5.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="517.8" cy="208.0" r="5.4" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="235.3" cy="114.3" r="5.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="184.6" r="5.3" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="601.3" cy="164.5" r="5.3" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="429.9" cy="221.1" r="5.3" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="916.6" cy="18.0" r="5.3" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="182.0" cy="23.8" r="5.2" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="177.4" r="5.2" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="304.9" cy="83.9" r="5.2" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="520.4" cy="164.4" r="5.2" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="258.4" r="5.2" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="140.8" r="5.2" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="406.4" cy="129.6" r="5.2" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="331.3" cy="209.5" r="5.2" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="879.0" cy="18.0" r="5.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="221.1" cy="18.0" r="5.1" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="280.4" cy="117.5" r="5.1" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="346.4" cy="122.5" r="5.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="351.0" cy="102.1" r="5.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="701.6" cy="142.0" r="5.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="134.5" r="5.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="377.1" cy="122.1" r="5.1" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="485.4" cy="398.0" r="5.1" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="224.2" cy="49.7" r="5.0" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="750.3" cy="254.4" r="5.0" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="934.6" cy="170.7" r="5.0" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="560.5" cy="77.6" r="5.0" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="117.0" cy="220.2" r="5.0" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="138.9" r="4.9" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="182.0" cy="195.6" r="4.9" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="524.5" cy="323.4" r="4.9" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="133.4" r="4.9" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="218.2" cy="18.0" r="4.9" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="145.6" r="4.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="326.0" cy="149.0" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="274.2" cy="112.9" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="130.9" cy="134.7" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="289.5" cy="166.8" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="197.8" cy="124.5" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="365.6" cy="190.7" r="4.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="525.4" cy="197.5" r="4.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="211.8" cy="77.8" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="268.8" r="4.8" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="321.9" cy="160.4" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="481.0" cy="18.0" r="4.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="249.7" cy="112.0" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="473.1" cy="147.2" r="4.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="752.5" cy="309.5" r="4.8" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="251.4" cy="124.2" r="4.8" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="486.8" cy="64.7" r="4.8" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="338.5" cy="18.0" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="188.2" cy="127.3" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="219.2" cy="67.7" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="529.5" cy="95.3" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="205.3" cy="93.5" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="497.8" cy="152.8" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="241.0" cy="157.3" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="353.4" cy="18.0" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="439.8" cy="18.0" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="307.5" cy="152.5" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="345.7" cy="124.8" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="300.1" cy="126.5" r="4.7" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="685.0" cy="26.6" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="398.7" cy="176.8" r="4.7" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="348.8" cy="31.0" r="4.6" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="300.8" cy="145.6" r="4.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="495.0" cy="18.0" r="4.6" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="504.8" cy="155.8" r="4.6" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="230.2" cy="134.7" r="4.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="115.3" r="4.6" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="338.0" cy="103.4" r="4.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="240.3" cy="18.0" r="4.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="140.0" cy="112.4" r="4.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="274.4" cy="113.0" r="4.6" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="150.6" cy="262.9" r="4.5" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="394.6" cy="190.8" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="483.2" cy="118.8" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="149.8" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="411.7" cy="171.8" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="282.6" cy="147.3" r="4.5" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="440.7" cy="213.1" r="4.5" fill="#3b7dd8" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="708.1" cy="147.3" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="381.4" cy="119.0" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="190.6" cy="75.2" r="4.5" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="735.9" cy="107.3" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="346.9" cy="124.2" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="402.1" cy="87.5" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="430.4" cy="158.8" r="4.5" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="541.0" cy="131.6" r="4.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="114.3" cy="160.6" r="4.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="1016.0" cy="72.8" r="4.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="263.6" cy="198.0" r="4.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="317.8" cy="142.0" r="4.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="402.1" cy="77.3" r="4.4" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="287.1" cy="113.4" r="4.4" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="253.5" cy="76.6" r="4.3" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="925.5" cy="204.1" r="4.3" fill="#d9534f" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><circle cx="334.2" cy="151.3" r="4.3" fill="#e0a92e" fill-opacity="0.60" stroke="#fff" stroke-width="1"/><text x="656.5" y="277.9" font-size="10.5" fill="#4a5360" text-anchor="middle">삼성전자</text><text x="618.3" y="283.2" font-size="10.5" fill="#4a5360" text-anchor="middle">SK하이닉스</text><text x="379.8" y="277.7" font-size="10.5" fill="#4a5360" text-anchor="middle">SK스퀘어</text><text x="1016.0" y="197.5" font-size="10.5" fill="#4a5360" text-anchor="middle">삼성전기</text><text x="420.1" y="170.0" font-size="10.5" fill="#4a5360" text-anchor="middle">현대차</text><text x="696.3" y="322.3" font-size="10.5" fill="#4a5360" text-anchor="middle">삼성생명</text><text x="753.7" y="332.3" font-size="10.5" fill="#4a5360" text-anchor="middle">삼성물산</text><text x="1016.0" y="133.5" font-size="10.5" fill="#4a5360" text-anchor="middle">삼성바이오로직스</text><text x="941.6" y="19.5" font-size="10.5" fill="#4a5360" text-anchor="middle">한화에어로스페이스</text><text x="740.2" y="172.1" font-size="10.5" fill="#4a5360" text-anchor="middle">HD현대중공업</text><text x="314.0" y="44.6" font-size="10.5" fill="#4a5360" text-anchor="middle">KB금융</text><text x="261.2" y="62.1" font-size="10.5" fill="#4a5360" text-anchor="middle">기아</text></svg></div>
+      <div class="blegend">
+        <span><i style="background:#d9534f"></i>상승 종목</span>
+        <span><i style="background:#3b7dd8"></i>하락 종목</span>
+        <span><i style="background:#e0a92e"></i>유망 구간 (저PER + 상승)</span>
+        <span>버블 크기 = 시가총액</span>
+      </div>
+    </div>
+
+    <div class="panel" style="border:0;box-shadow:none;background:transparent">
+      <div class="ph" style="border:0;padding-left:2px"><b>📦 ETF 테마 강도 — 누적수익률(3개월) 기준</b><span class="hint">거래대금 상위 국내 테마 ETF</span></div>
+      <div class="etfGrid">
+        
+        <div class="etf">
+          <div class="en">SOL AI반도체TOP2플러스</div><span class="tag">반도체</span>
+          <div class="er up">+152.0%</div>
+          <div class="foot"><span>거래대금 1.3조</span></div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+        </div>
+        
+        <div class="etf">
+          <div class="en">HANARO Fn K-반도체</div><span class="tag">반도체</span>
+          <div class="er up">+129.3%</div>
+          <div class="foot"><span>거래대금 9,468억</span></div>
+          <div class="track"><div class="fill" style="width:85%"></div></div>
+        </div>
+        
+        <div class="etf">
+          <div class="en">TIGER 200 IT</div><span class="tag">IT</span>
+          <div class="er up">+129.0%</div>
+          <div class="foot"><span>거래대금 4,838억</span></div>
+          <div class="track"><div class="fill" style="width:84%"></div></div>
+        </div>
+        
+        <div class="etf">
+          <div class="en">KODEX 200IT TR</div><span class="tag">IT</span>
+          <div class="er up">+127.8%</div>
+          <div class="foot"><span>거래대금 305억</span></div>
+          <div class="track"><div class="fill" style="width:84%"></div></div>
+        </div>
+        
+        <div class="etf">
+          <div class="en">RISE 네트워크인프라</div><span class="tag">인프라</span>
+          <div class="er up">+123.4%</div>
+          <div class="foot"><span>거래대금 839억</span></div>
+          <div class="track"><div class="fill" style="width:81%"></div></div>
+        </div>
+        
+        <div class="etf">
+          <div class="en">KODEX AI반도체TOP2플러스</div><span class="tag">반도체</span>
+          <div class="er up">+108.4%</div>
+          <div class="foot"><span>거래대금 6,504억</span></div>
+          <div class="track"><div class="fill" style="width:71%"></div></div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="foot">⚠️ 개인 투자 참고용(네이버 금융 공개 데이터 가공). 누적상승률은 <b>최근 1주일</b> 기준입니다. 투자 판단·책임은 이용자 본인에게 있습니다.</div>
+  </div>
+
   <!-- ============ 전체 랭킹 ============ -->
-  <div class="view" id="view-rank">
+  <div class="view" id="view-rank" style="display:none">
     <div class="cards">
       <div class="card"><div class="n up" id="upCnt">0</div><div class="l"><span id="periodLabel"></span> 상승</div></div>
       <div class="card"><div class="n down" id="downCnt">0</div><div class="l">하락</div></div>
@@ -514,12 +817,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="3.3123" data-sc-d1="63.77" data-rk-d1="34" data-mo-d1="3.31" data-d3="11.7747" data-sc-d3="66.68" data-rk-d3="32" data-mo-d3="11.77" data-w1="18.231" data-sc-w1="65.44" data-rk-w1="28" data-mo-w1="18.23" data-w2="-2.819" data-sc-w2="52.99" data-rk-w2="70" data-mo-w2="-2.82" data-m1="-0.4559" data-sc-m1="57.96" data-rk-m1="56" data-mo-m1="-0.46" data-m3="-11.7251" data-sc-m3="50.6" data-rk-m3="85" data-mo-m3="-11.73" data-m6="-29.8715" data-sc-m6="39.59" data-rk-m6="126" data-mo-m6="-29.87">
+          <tr class="dyn-row rankRow" data-d1="3.3123" data-sc-d1="63.79" data-rk-d1="34" data-mo-d1="3.31" data-d3="11.7747" data-sc-d3="66.71" data-rk-d3="32" data-mo-d3="11.77" data-w1="18.231" data-sc-w1="65.46" data-rk-w1="28" data-mo-w1="18.23" data-w2="-2.819" data-sc-w2="53.02" data-rk-w2="70" data-mo-w2="-2.82" data-m1="-0.4559" data-sc-m1="57.98" data-rk-m1="56" data-mo-m1="-0.46" data-m3="-11.7251" data-sc-m3="50.63" data-rk-m3="85" data-mo-m3="-11.73" data-m6="-29.8715" data-sc-m6="39.61" data-rk-m6="125" data-mo-m6="-29.87">
             <td class="rankCell">28</td>
             <td class="l">HD현대마린엔진</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=071970" target="_blank">071970</a></td>
             <td class="l">조선</td>
-            <td class="score"><span class="scoreVal">65.4</span><span class="bar" style="width:45px"></span></td>
+            <td class="score"><span class="scoreVal">65.5</span><span class="bar" style="width:45px"></span></td>
             <td>12.39</td><td>4.45</td><td>41.36</td>
             <td class="pos">128.6</td>
             <td class="momCell">18.2</td>
@@ -724,7 +1027,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-3.681" data-sc-d1="30.29" data-rk-d1="159" data-mo-d1="-3.68" data-d3="-0.2119" data-sc-d3="42.01" data-rk-d3="117" data-mo-d3="-0.21" data-w1="15.4412" data-sc-w1="61.45" data-rk-w1="42" data-mo-w1="15.44" data-w2="-2.4845" data-sc-w2="50.35" data-rk-w2="82" data-mo-w2="-2.48" data-m1="-8.5437" data-sc-m1="41.55" data-rk-m1="118" data-mo-m1="-8.54" data-m3="-0.4228" data-sc-m3="52.62" data-rk-m3="78" data-mo-m3="-0.42" data-m6="-5.0403" data-sc-m6="40.42" data-rk-m6="120" data-mo-m6="-5.04">
+          <tr class="dyn-row rankRow" data-d1="-3.681" data-sc-d1="30.29" data-rk-d1="158" data-mo-d1="-3.68" data-d3="-0.2119" data-sc-d3="42.01" data-rk-d3="117" data-mo-d3="-0.21" data-w1="15.4412" data-sc-w1="61.45" data-rk-w1="42" data-mo-w1="15.44" data-w2="-2.4845" data-sc-w2="50.35" data-rk-w2="82" data-mo-w2="-2.48" data-m1="-8.5437" data-sc-m1="41.55" data-rk-m1="118" data-mo-m1="-8.54" data-m3="-0.4228" data-sc-m3="52.62" data-rk-m3="78" data-mo-m3="-0.42" data-m6="-5.0403" data-sc-m6="40.42" data-rk-m6="120" data-mo-m6="-5.04">
             <td class="rankCell">42</td>
             <td class="l">크래프톤</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=259960" target="_blank">259960</a></td>
@@ -1024,7 +1327,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="0.428" data-sc-d1="53.25" data-rk-d1="70" data-mo-d1="0.43" data-d3="0.2849" data-sc-d3="50.63" data-rk-d3="76" data-mo-d3="0.28" data-w1="6.0241" data-sc-w1="54.41" data-rk-w1="62" data-mo-w1="6.02" data-w2="-7.4901" data-sc-w2="52.36" data-rk-w2="73" data-mo-w2="-7.49" data-m1="-9.1613" data-sc-m1="49.0" data-rk-m1="86" data-mo-m1="-9.16" data-m3="-23.3115" data-sc-m3="38.57" data-rk-m3="133" data-mo-m3="-23.31" data-m6="-38.5153" data-sc-m6="33.0" data-rk-m6="155" data-mo-m6="-38.52">
+          <tr class="dyn-row rankRow" data-d1="0.428" data-sc-d1="53.25" data-rk-d1="70" data-mo-d1="0.43" data-d3="0.2849" data-sc-d3="50.63" data-rk-d3="76" data-mo-d3="0.28" data-w1="6.0241" data-sc-w1="54.41" data-rk-w1="62" data-mo-w1="6.02" data-w2="-7.4901" data-sc-w2="52.36" data-rk-w2="73" data-mo-w2="-7.49" data-m1="-9.1613" data-sc-m1="49.0" data-rk-m1="87" data-mo-m1="-9.16" data-m3="-23.3115" data-sc-m3="38.57" data-rk-m3="133" data-mo-m3="-23.31" data-m6="-38.5153" data-sc-m6="33.0" data-rk-m6="155" data-mo-m6="-38.52">
             <td class="rankCell">62</td>
             <td class="l">유한양행</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=000100" target="_blank">000100</a></td>
@@ -1054,7 +1357,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-0.8048" data-sc-d1="45.35" data-rk-d1="100" data-mo-d1="-0.8" data-d3="4.1183" data-sc-d3="59.16" data-rk-d3="50" data-mo-d3="4.12" data-w1="7.6419" data-sc-w1="54.04" data-rk-w1="64" data-mo-w1="7.64" data-w2="-4.8263" data-sc-w2="53.83" data-rk-w2="66" data-mo-w2="-4.83" data-m1="-3.7109" data-sc-m1="55.88" data-rk-m1="63" data-mo-m1="-3.71" data-m3="-6.2738" data-sc-m3="51.62" data-rk-m3="81" data-mo-m3="-6.27" data-m6="28.8889" data-sc-m6="59.89" data-rk-m6="39" data-mo-m6="28.89">
+          <tr class="dyn-row rankRow" data-d1="-0.8048" data-sc-d1="45.33" data-rk-d1="100" data-mo-d1="-0.8" data-d3="4.1183" data-sc-d3="59.14" data-rk-d3="50" data-mo-d3="4.12" data-w1="7.6419" data-sc-w1="54.01" data-rk-w1="64" data-mo-w1="7.64" data-w2="-4.8263" data-sc-w2="53.81" data-rk-w2="66" data-mo-w2="-4.83" data-m1="-3.7109" data-sc-m1="55.86" data-rk-m1="63" data-mo-m1="-3.71" data-m3="-6.2738" data-sc-m3="51.6" data-rk-m3="81" data-mo-m3="-6.27" data-m6="28.8889" data-sc-m6="59.87" data-rk-m6="39" data-mo-m6="28.89">
             <td class="rankCell">64</td>
             <td class="l">팬오션</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=028670" target="_blank">028670</a></td>
@@ -1129,12 +1432,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.4301" data-sc-d1="48.72" data-rk-d1="82" data-mo-d1="-1.43" data-d3="1.7026" data-sc-d3="52.68" data-rk-d3="67" data-mo-d3="1.7" data-w1="5.5359" data-sc-w1="51.63" data-rk-w1="69" data-mo-w1="5.54" data-w2="-5.6842" data-sc-w2="55.81" data-rk-w2="61" data-mo-w2="-5.68" data-m1="-6.7638" data-sc-m1="54.71" data-rk-m1="69" data-mo-m1="-6.76" data-m3="-6.2762" data-sc-m3="53.91" data-rk-m3="73" data-mo-m3="-6.28" data-m6="4.6729" data-sc-m6="56.7" data-rk-m6="53" data-mo-m6="4.67">
+          <tr class="dyn-row rankRow" data-d1="-1.4301" data-sc-d1="48.74" data-rk-d1="82" data-mo-d1="-1.43" data-d3="1.7026" data-sc-d3="52.7" data-rk-d3="67" data-mo-d3="1.7" data-w1="5.5359" data-sc-w1="51.66" data-rk-w1="69" data-mo-w1="5.54" data-w2="-5.6842" data-sc-w2="55.84" data-rk-w2="61" data-mo-w2="-5.68" data-m1="-6.7638" data-sc-m1="54.73" data-rk-m1="69" data-mo-m1="-6.76" data-m3="-6.2762" data-sc-m3="53.93" data-rk-m3="73" data-mo-m3="-6.28" data-m6="4.6729" data-sc-m6="56.72" data-rk-m6="53" data-mo-m6="4.67">
             <td class="rankCell">69</td>
             <td class="l">롯데정밀화학</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=004000" target="_blank">004000</a></td>
             <td class="l">화학</td>
-            <td class="score"><span class="scoreVal">51.6</span><span class="bar" style="width:36px"></span></td>
+            <td class="score"><span class="scoreVal">51.7</span><span class="bar" style="width:36px"></span></td>
             <td>9.44</td><td>0.47</td><td>4.42</td>
             <td class="pos">47.6</td>
             <td class="momCell">5.5</td>
@@ -1369,7 +1672,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="0.7299" data-sc-d1="46.81" data-rk-d1="91" data-mo-d1="0.73" data-d3="4.2296" data-sc-d3="50.63" data-rk-d3="77" data-mo-d3="4.23" data-w1="7.6443" data-sc-w1="47.69" data-rk-w1="85" data-mo-w1="7.64" data-w2="-1.2876" data-sc-w2="53.56" data-rk-w2="67" data-mo-w2="-1.29" data-m1="-7.2581" data-sc-m1="46.25" data-rk-m1="101" data-mo-m1="-7.26" data-m3="-22.3847" data-sc-m3="34.85" data-rk-m3="144" data-mo-m3="-22.38" data-m6="-17.2662" data-sc-m6="31.45" data-rk-m6="159" data-mo-m6="-17.27">
+          <tr class="dyn-row rankRow" data-d1="0.7299" data-sc-d1="46.81" data-rk-d1="92" data-mo-d1="0.73" data-d3="4.2296" data-sc-d3="50.63" data-rk-d3="77" data-mo-d3="4.23" data-w1="7.6443" data-sc-w1="47.69" data-rk-w1="85" data-mo-w1="7.64" data-w2="-1.2876" data-sc-w2="53.56" data-rk-w2="67" data-mo-w2="-1.29" data-m1="-7.2581" data-sc-m1="46.25" data-rk-m1="101" data-mo-m1="-7.26" data-m3="-22.3847" data-sc-m3="34.85" data-rk-m3="144" data-mo-m3="-22.38" data-m6="-17.2662" data-sc-m6="31.45" data-rk-m6="159" data-mo-m6="-17.27">
             <td class="rankCell">85</td>
             <td class="l">종근당</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=185750" target="_blank">185750</a></td>
@@ -1384,7 +1687,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="2.1466" data-sc-d1="53.39" data-rk-d1="68" data-mo-d1="2.15" data-d3="3.7214" data-sc-d3="45.63" data-rk-d3="102" data-mo-d3="3.72" data-w1="8.6303" data-sc-w1="47.48" data-rk-w1="86" data-mo-w1="8.63" data-w2="-4.1278" data-sc-w2="46.48" data-rk-w2="99" data-mo-w2="-4.13" data-m1="-4.3627" data-sc-m1="45.79" data-rk-m1="104" data-mo-m1="-4.36" data-m3="-19.7119" data-sc-m3="33.39" data-rk-m3="150" data-mo-m3="-19.71" data-m6="-21.8036" data-sc-m6="30.04" data-rk-m6="168" data-mo-m6="-21.8">
+          <tr class="dyn-row rankRow" data-d1="2.1466" data-sc-d1="53.42" data-rk-d1="68" data-mo-d1="2.15" data-d3="3.7214" data-sc-d3="45.66" data-rk-d3="102" data-mo-d3="3.72" data-w1="8.6303" data-sc-w1="47.51" data-rk-w1="86" data-mo-w1="8.63" data-w2="-4.1278" data-sc-w2="46.5" data-rk-w2="99" data-mo-w2="-4.13" data-m1="-4.3627" data-sc-m1="45.82" data-rk-m1="104" data-mo-m1="-4.36" data-m3="-19.7119" data-sc-m3="33.42" data-rk-m3="150" data-mo-m3="-19.71" data-m6="-21.8036" data-sc-m6="30.06" data-rk-m6="168" data-mo-m6="-21.8">
             <td class="rankCell">86</td>
             <td class="l">동원시스템즈</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=014820" target="_blank">014820</a></td>
@@ -1399,7 +1702,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-3.176" data-sc-d1="25.47" data-rk-d1="174" data-mo-d1="-3.18" data-d3="-3.345" data-sc-d3="28.57" data-rk-d3="159" data-mo-d3="-3.34" data-w1="7.0899" data-sc-w1="47.22" data-rk-w1="87" data-mo-w1="7.09" data-w2="-13.8003" data-sc-w2="29.37" data-rk-w2="161" data-mo-w2="-13.8" data-m1="-1.6864" data-sc-m1="46.02" data-rk-m1="102" data-mo-m1="-1.69" data-m3="26.2058" data-sc-m3="57.23" data-rk-m3="50" data-mo-m3="26.21" data-m6="80.1084" data-sc-m6="58.66" data-rk-m6="45" data-mo-m6="80.11">
+          <tr class="dyn-row rankRow" data-d1="-3.176" data-sc-d1="25.47" data-rk-d1="174" data-mo-d1="-3.18" data-d3="-3.345" data-sc-d3="28.57" data-rk-d3="159" data-mo-d3="-3.34" data-w1="7.0899" data-sc-w1="47.22" data-rk-w1="87" data-mo-w1="7.09" data-w2="-13.8003" data-sc-w2="29.37" data-rk-w2="160" data-mo-w2="-13.8" data-m1="-1.6864" data-sc-m1="46.02" data-rk-m1="102" data-mo-m1="-1.69" data-m3="26.2058" data-sc-m3="57.23" data-rk-m3="50" data-mo-m3="26.21" data-m6="80.1084" data-sc-m6="58.66" data-rk-m6="45" data-mo-m6="80.11">
             <td class="rankCell">87</td>
             <td class="l">효성중공업</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=298040" target="_blank">298040</a></td>
@@ -1429,7 +1732,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.3301" data-sc-d1="46.79" data-rk-d1="92" data-mo-d1="1.33" data-d3="6.2104" data-sc-d3="46.37" data-rk-d3="100" data-mo-d3="6.21" data-w1="12.3324" data-sc-w1="46.91" data-rk-w1="89" data-mo-w1="12.33" data-w2="-4.8808" data-sc-w2="43.8" data-rk-w2="108" data-mo-w2="-4.88" data-m1="1.0856" data-sc-m1="49.99" data-rk-m1="81" data-mo-m1="1.09" data-m3="-18.7984" data-sc-m3="35.09" data-rk-m3="142" data-mo-m3="-18.8" data-m6="-37.9259" data-sc-m6="33.04" data-rk-m6="154" data-mo-m6="-37.93">
+          <tr class="dyn-row rankRow" data-d1="1.3301" data-sc-d1="46.82" data-rk-d1="91" data-mo-d1="1.33" data-d3="6.2104" data-sc-d3="46.4" data-rk-d3="100" data-mo-d3="6.21" data-w1="12.3324" data-sc-w1="46.94" data-rk-w1="89" data-mo-w1="12.33" data-w2="-4.8808" data-sc-w2="43.82" data-rk-w2="108" data-mo-w2="-4.88" data-m1="1.0856" data-sc-m1="50.01" data-rk-m1="81" data-mo-m1="1.09" data-m3="-18.7984" data-sc-m3="35.12" data-rk-m3="142" data-mo-m3="-18.8" data-m6="-37.9259" data-sc-m6="33.07" data-rk-m6="154" data-mo-m6="-37.93">
             <td class="rankCell">89</td>
             <td class="l">SK케미칼</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=285130" target="_blank">285130</a></td>
@@ -1504,12 +1807,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.8904" data-sc-d1="46.14" data-rk-d1="95" data-mo-d1="-1.89" data-d3="-2.809" data-sc-d3="46.76" data-rk-d3="98" data-mo-d3="-2.81" data-w1="1.5656" data-sc-w1="45.74" data-rk-w1="94" data-mo-w1="1.57" data-w2="-14.4975" data-sc-w2="42.3" data-rk-w2="117" data-mo-w2="-14.5" data-m1="-19.5349" data-sc-m1="42.76" data-rk-m1="114" data-mo-m1="-19.53" data-m3="-43.8919" data-sc-m3="42.24" data-rk-m3="118" data-mo-m3="-43.89" data-m6="-15.3344" data-sc-m6="43.26" data-rk-m6="109" data-mo-m6="-15.33">
+          <tr class="dyn-row rankRow" data-d1="-1.8904" data-sc-d1="46.16" data-rk-d1="95" data-mo-d1="-1.89" data-d3="-2.809" data-sc-d3="46.79" data-rk-d3="97" data-mo-d3="-2.81" data-w1="1.5656" data-sc-w1="45.76" data-rk-w1="94" data-mo-w1="1.57" data-w2="-14.4975" data-sc-w2="42.32" data-rk-w2="117" data-mo-w2="-14.5" data-m1="-19.5349" data-sc-m1="42.79" data-rk-m1="114" data-mo-m1="-19.53" data-m3="-43.8919" data-sc-m3="42.26" data-rk-m3="118" data-mo-m3="-43.89" data-m6="-15.3344" data-sc-m6="43.29" data-rk-m6="109" data-mo-m6="-15.33">
             <td class="rankCell">94</td>
             <td class="l">한국카본</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=017960" target="_blank">017960</a></td>
             <td class="l">조선</td>
-            <td class="score"><span class="scoreVal">45.7</span><span class="bar" style="width:32px"></span></td>
+            <td class="score"><span class="scoreVal">45.8</span><span class="bar" style="width:32px"></span></td>
             <td>14.11</td><td>2.21</td><td>19.30</td>
             <td class="pos">188.5</td>
             <td class="momCell">1.6</td>
@@ -1594,12 +1897,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="2.1341" data-sc-d1="40.53" data-rk-d1="114" data-mo-d1="2.13" data-d3="13.5593" data-sc-d3="47.95" data-rk-d3="88" data-mo-d3="13.56" data-w1="16.3194" data-sc-w1="44.43" data-rk-w1="100" data-mo-w1="16.32" data-w2="10.6524" data-sc-w2="48.23" data-rk-w2="91" data-mo-w2="10.65" data-m1="16.5217" data-sc-m1="48.63" data-rk-m1="89" data-mo-m1="16.52" data-m3="24.3043" data-sc-m3="43.81" data-rk-m3="113" data-mo-m3="24.3" data-m6="12.6997" data-sc-m6="34.52" data-rk-m6="145" data-mo-m6="12.7">
+          <tr class="dyn-row rankRow" data-d1="2.1341" data-sc-d1="40.56" data-rk-d1="113" data-mo-d1="2.13" data-d3="13.5593" data-sc-d3="47.97" data-rk-d3="88" data-mo-d3="13.56" data-w1="16.3194" data-sc-w1="44.46" data-rk-w1="100" data-mo-w1="16.32" data-w2="10.6524" data-sc-w2="48.26" data-rk-w2="91" data-mo-w2="10.65" data-m1="16.5217" data-sc-m1="48.66" data-rk-m1="88" data-mo-m1="16.52" data-m3="24.3043" data-sc-m3="43.83" data-rk-m3="113" data-mo-m3="24.3" data-m6="12.6997" data-sc-m6="34.55" data-rk-m6="145" data-mo-m6="12.7">
             <td class="rankCell">100</td>
             <td class="l">한진칼</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=180640" target="_blank">180640</a></td>
             <td class="l">항공사</td>
-            <td class="score"><span class="scoreVal">44.4</span><span class="bar" style="width:31px"></span></td>
+            <td class="score"><span class="scoreVal">44.5</span><span class="bar" style="width:31px"></span></td>
             <td>53.86</td><td>2.64</td><td>4.75</td>
             <td class="neg">-115.2</td>
             <td class="momCell">16.3</td>
@@ -1684,23 +1987,8 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-2.3829" data-sc-d1="30.43" data-rk-d1="158" data-mo-d1="-2.38" data-d3="-4.8077" data-sc-d3="27.38" data-rk-d3="163" data-mo-d3="-4.81" data-w1="7.804" data-sc-w1="42.43" data-rk-w1="106" data-mo-w1="7.8" data-w2="-13.0944" data-sc-w2="29.59" data-rk-w2="159" data-mo-w2="-13.09" data-m1="-19.5667" data-sc-m1="25.59" data-rk-m1="169" data-mo-m1="-19.57" data-m3="-20.2685" data-sc-m3="29.53" data-rk-m3="164" data-mo-m3="-20.27" data-m6="8.0983" data-sc-m6="39.6" data-rk-m6="125" data-mo-m6="8.1">
+          <tr class="dyn-row rankRow" data-d1="2.0747" data-sc-d1="59.4" data-rk-d1="41" data-mo-d1="2.07" data-d3="-0.6061" data-sc-d3="42.72" data-rk-d3="113" data-mo-d3="-0.61" data-w1="2.3933" data-sc-w1="42.14" data-rk-w1="106" data-mo-w1="2.39" data-w2="-19.739" data-sc-w2="29.67" data-rk-w2="158" data-mo-w2="-19.74" data-m1="-29.7143" data-sc-m1="27.88" data-rk-m1="164" data-mo-m1="-29.71" data-m3="4.9041" data-sc-m3="52.75" data-rk-m3="77" data-mo-m3="4.9" data-m6="59.7403" data-sc-m6="60.93" data-rk-m6="34" data-mo-m6="59.74">
             <td class="rankCell">106</td>
-            <td class="l">HD건설기계</td>
-            <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=267270" target="_blank">267270</a></td>
-            <td class="l">기계</td>
-            <td class="score"><span class="scoreVal">42.4</span><span class="bar" style="width:29px"></span></td>
-            <td>12.10</td><td>1.21</td><td>5.74</td>
-            <td class="neg">-10.2</td>
-            <td class="momCell">7.8</td>
-            <td>3</td>
-            <td>92</td>
-            <td class="retCell">-</td>
-            <td class="l trendCell"></td>
-          </tr>
-        
-          <tr class="dyn-row rankRow" data-d1="2.0747" data-sc-d1="59.4" data-rk-d1="41" data-mo-d1="2.07" data-d3="-0.6061" data-sc-d3="42.72" data-rk-d3="113" data-mo-d3="-0.61" data-w1="2.3933" data-sc-w1="42.14" data-rk-w1="107" data-mo-w1="2.39" data-w2="-19.739" data-sc-w2="29.67" data-rk-w2="158" data-mo-w2="-19.74" data-m1="-29.7143" data-sc-m1="27.88" data-rk-m1="164" data-mo-m1="-29.71" data-m3="4.9041" data-sc-m3="52.75" data-rk-m3="77" data-mo-m3="4.9" data-m6="59.7403" data-sc-m6="60.93" data-rk-m6="34" data-mo-m6="59.74">
-            <td class="rankCell">107</td>
             <td class="l">현대차</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=005380" target="_blank">005380</a></td>
             <td class="l">자동차</td>
@@ -1714,7 +2002,22 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="0.5794" data-sc-d1="40.54" data-rk-d1="113" data-mo-d1="0.58" data-d3="6.6339" data-sc-d3="45.27" data-rk-d3="104" data-mo-d3="6.63" data-w1="9.1824" data-sc-w1="42.03" data-rk-w1="108" data-mo-w1="9.18" data-w2="-3.876" data-sc-w2="42.37" data-rk-w2="116" data-mo-w2="-3.88" data-m1="-0.2299" data-sc-m1="46.85" data-rk-m1="98" data-mo-m1="-0.23" data-m3="-24.1259" data-sc-m3="30.21" data-rk-m3="162" data-mo-m3="-24.13" data-m6="16.9811" data-sc-m6="44.24" data-rk-m6="102" data-mo-m6="16.98">
+          <tr class="dyn-row rankRow" data-d1="-2.3829" data-sc-d1="30.08" data-rk-d1="160" data-mo-d1="-2.38" data-d3="-4.8077" data-sc-d3="27.02" data-rk-d3="165" data-mo-d3="-4.81" data-w1="7.804" data-sc-w1="42.08" data-rk-w1="107" data-mo-w1="7.8" data-w2="-13.0944" data-sc-w2="29.24" data-rk-w2="161" data-mo-w2="-13.09" data-m1="-19.5667" data-sc-m1="25.24" data-rk-m1="170" data-mo-m1="-19.57" data-m3="-20.2685" data-sc-m3="29.18" data-rk-m3="164" data-mo-m3="-20.27" data-m6="8.0983" data-sc-m6="39.25" data-rk-m6="129" data-mo-m6="8.1">
+            <td class="rankCell">107</td>
+            <td class="l">HD건설기계</td>
+            <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=267270" target="_blank">267270</a></td>
+            <td class="l">기계</td>
+            <td class="score"><span class="scoreVal">42.1</span><span class="bar" style="width:29px"></span></td>
+            <td>12.10</td><td>1.21</td><td>5.74</td>
+            <td class="neg">-10.2</td>
+            <td class="momCell">7.8</td>
+            <td>2</td>
+            <td>92</td>
+            <td class="retCell">-</td>
+            <td class="l trendCell"></td>
+          </tr>
+        
+          <tr class="dyn-row rankRow" data-d1="0.5794" data-sc-d1="40.54" data-rk-d1="114" data-mo-d1="0.58" data-d3="6.6339" data-sc-d3="45.27" data-rk-d3="104" data-mo-d3="6.63" data-w1="9.1824" data-sc-w1="42.03" data-rk-w1="108" data-mo-w1="9.18" data-w2="-3.876" data-sc-w2="42.37" data-rk-w2="116" data-mo-w2="-3.88" data-m1="-0.2299" data-sc-m1="46.85" data-rk-m1="98" data-mo-m1="-0.23" data-m3="-24.1259" data-sc-m3="30.21" data-rk-m3="162" data-mo-m3="-24.13" data-m6="16.9811" data-sc-m6="44.24" data-rk-m6="102" data-mo-m6="16.98">
             <td class="rankCell">108</td>
             <td class="l">태광산업</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=003240" target="_blank">003240</a></td>
@@ -1729,7 +2032,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="2.3965" data-sc-d1="57.16" data-rk-d1="54" data-mo-d1="2.4" data-d3="0.8584" data-sc-d3="46.97" data-rk-d3="95" data-mo-d3="0.86" data-w1="2.1739" data-sc-w1="41.92" data-rk-w1="109" data-mo-w1="2.17" data-w2="-14.7005" data-sc-w2="33.02" data-rk-w2="148" data-mo-w2="-14.7" data-m1="-15.3153" data-sc-m1="36.96" data-rk-m1="137" data-mo-m1="-15.32" data-m3="-12.963" data-sc-m3="41.4" data-rk-m3="121" data-mo-m3="-12.96" data-m6="-5.2419" data-sc-m6="39.49" data-rk-m6="127" data-mo-m6="-5.24">
+          <tr class="dyn-row rankRow" data-d1="2.3965" data-sc-d1="57.16" data-rk-d1="54" data-mo-d1="2.4" data-d3="0.8584" data-sc-d3="46.97" data-rk-d3="95" data-mo-d3="0.86" data-w1="2.1739" data-sc-w1="41.92" data-rk-w1="109" data-mo-w1="2.17" data-w2="-14.7005" data-sc-w2="33.02" data-rk-w2="148" data-mo-w2="-14.7" data-m1="-15.3153" data-sc-m1="36.96" data-rk-m1="137" data-mo-m1="-15.32" data-m3="-12.963" data-sc-m3="41.4" data-rk-m3="121" data-mo-m3="-12.96" data-m6="-5.2419" data-sc-m6="39.49" data-rk-m6="126" data-mo-m6="-5.24">
             <td class="rankCell">109</td>
             <td class="l">삼성중공업</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=010140" target="_blank">010140</a></td>
@@ -1744,12 +2047,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="4.0426" data-sc-d1="70.72" data-rk-d1="17" data-mo-d1="4.04" data-d3="0.5139" data-sc-d3="54.33" data-rk-d3="64" data-mo-d3="0.51" data-w1="-1.1122" data-sc-w1="41.85" data-rk-w1="110" data-mo-w1="-1.11" data-w2="-6.6794" data-sc-w2="55.38" data-rk-w2="62" data-mo-w2="-6.68" data-m1="-9.7786" data-sc-m1="52.4" data-rk-m1="75" data-mo-m1="-9.78" data-m3="7.0022" data-sc-m3="58.13" data-rk-m3="46" data-mo-m3="7.0" data-m6="22.8643" data-sc-m6="57.35" data-rk-m6="49" data-mo-m6="22.86">
+          <tr class="dyn-row rankRow" data-d1="4.0426" data-sc-d1="70.69" data-rk-d1="17" data-mo-d1="4.04" data-d3="0.5139" data-sc-d3="54.31" data-rk-d3="64" data-mo-d3="0.51" data-w1="-1.1122" data-sc-w1="41.83" data-rk-w1="110" data-mo-w1="-1.11" data-w2="-6.6794" data-sc-w2="55.35" data-rk-w2="62" data-mo-w2="-6.68" data-m1="-9.7786" data-sc-m1="52.38" data-rk-m1="75" data-mo-m1="-9.78" data-m3="7.0022" data-sc-m3="58.11" data-rk-m3="46" data-mo-m3="7.0" data-m6="22.8643" data-sc-m6="57.32" data-rk-m6="49" data-mo-m6="22.86">
             <td class="rankCell">110</td>
             <td class="l">KCC</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=002380" target="_blank">002380</a></td>
             <td class="l">건축자재</td>
-            <td class="score"><span class="scoreVal">41.9</span><span class="bar" style="width:29px"></span></td>
+            <td class="score"><span class="scoreVal">41.8</span><span class="bar" style="width:29px"></span></td>
             <td>2.54</td><td>0.44</td><td>23.51</td>
             <td class="neg">-9.2</td>
             <td class="momCell">-1.1</td>
@@ -1819,7 +2122,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.2139" data-sc-d1="52.6" data-rk-d1="72" data-mo-d1="1.21" data-d3="3.1821" data-sc-d3="50.71" data-rk-d3="75" data-mo-d3="3.18" data-w1="4.5998" data-sc-w1="40.83" data-rk-w1="115" data-mo-w1="4.6" data-w2="-2.7222" data-sc-w2="48.99" data-rk-w2="89" data-mo-w2="-2.72" data-m1="-2.3424" data-sc-m1="48.66" data-rk-m1="88" data-mo-m1="-2.34" data-m3="11.316" data-sc-m3="55.86" data-rk-m3="60" data-mo-m3="11.32" data-m6="22.791" data-sc-m6="54.09" data-rk-m6="66" data-mo-m6="22.79">
+          <tr class="dyn-row rankRow" data-d1="1.2139" data-sc-d1="52.58" data-rk-d1="72" data-mo-d1="1.21" data-d3="3.1821" data-sc-d3="50.69" data-rk-d3="75" data-mo-d3="3.18" data-w1="4.5998" data-sc-w1="40.8" data-rk-w1="115" data-mo-w1="4.6" data-w2="-2.7222" data-sc-w2="48.96" data-rk-w2="89" data-mo-w2="-2.72" data-m1="-2.3424" data-sc-m1="48.64" data-rk-m1="89" data-mo-m1="-2.34" data-m3="11.316" data-sc-m3="55.84" data-rk-m3="60" data-mo-m3="11.32" data-m6="22.791" data-sc-m6="54.07" data-rk-m6="66" data-mo-m6="22.79">
             <td class="rankCell">115</td>
             <td class="l">KT&G</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=033780" target="_blank">033780</a></td>
@@ -1834,12 +2137,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.7663" data-sc-d1="29.84" data-rk-d1="163" data-mo-d1="-1.77" data-d3="1.4025" data-sc-d3="41.94" data-rk-d3="118" data-mo-d3="1.4" data-w1="5.5474" data-sc-w1="40.73" data-rk-w1="116" data-mo-w1="5.55" data-w2="2.5532" data-sc-w2="56.63" data-rk-w2="57" data-mo-w2="2.55" data-m1="-1.7663" data-sc-m1="48.99" data-rk-m1="87" data-mo-m1="-1.77" data-m3="-17.6538" data-sc-m3="31.12" data-rk-m3="157" data-mo-m3="-17.65" data-m6="-0.5502" data-sc-m6="39.4" data-rk-m6="128" data-mo-m6="-0.55">
+          <tr class="dyn-row rankRow" data-d1="-1.7663" data-sc-d1="29.86" data-rk-d1="163" data-mo-d1="-1.77" data-d3="1.4025" data-sc-d3="41.96" data-rk-d3="118" data-mo-d3="1.4" data-w1="5.5474" data-sc-w1="40.76" data-rk-w1="116" data-mo-w1="5.55" data-w2="2.5532" data-sc-w2="56.66" data-rk-w2="57" data-mo-w2="2.55" data-m1="-1.7663" data-sc-m1="49.02" data-rk-m1="85" data-mo-m1="-1.77" data-m3="-17.6538" data-sc-m3="31.15" data-rk-m3="157" data-mo-m3="-17.65" data-m6="-0.5502" data-sc-m6="39.43" data-rk-m6="127" data-mo-m6="-0.55">
             <td class="rankCell">116</td>
             <td class="l">에스원</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=012750" target="_blank">012750</a></td>
             <td class="l">상업서비스와공급품</td>
-            <td class="score"><span class="scoreVal">40.7</span><span class="bar" style="width:28px"></span></td>
+            <td class="score"><span class="scoreVal">40.8</span><span class="bar" style="width:28px"></span></td>
             <td>17.38</td><td>1.46</td><td>10.45</td>
             <td class="pos">12.1</td>
             <td class="momCell">5.5</td>
@@ -1894,23 +2197,8 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.3076" data-sc-d1="36.73" data-rk-d1="131" data-mo-d1="-1.31" data-d3="4.2763" data-sc-d3="44.23" data-rk-d3="111" data-mo-d3="4.28" data-w1="6.0201" data-sc-w1="39.04" data-rk-w1="120" data-mo-w1="6.02" data-w2="-1.8576" data-sc-w2="47.38" data-rk-w2="95" data-mo-w2="-1.86" data-m1="-0.627" data-sc-m1="49.01" data-rk-m1="85" data-mo-m1="-0.63" data-m3="-9.0126" data-sc-m3="40.37" data-rk-m3="124" data-mo-m3="-9.01" data-m6="-11.6007" data-sc-m6="38.96" data-rk-m6="130" data-mo-m6="-11.6">
+          <tr class="dyn-row rankRow" data-d1="0.9292" data-sc-d1="47.51" data-rk-d1="87" data-mo-d1="0.93" data-d3="3.7472" data-sc-d3="45.26" data-rk-d3="105" data-mo-d3="3.75" data-w1="8.1164" data-sc-w1="39.05" data-rk-w1="120" data-mo-w1="8.12" data-w2="0.4982" data-sc-w2="49.78" data-rk-w2="84" data-mo-w2="0.5" data-m1="-1.3966" data-sc-m1="48.24" data-rk-m1="93" data-mo-m1="-1.4" data-m3="-14.1641" data-sc-m3="33.04" data-rk-m3="151" data-mo-m3="-14.16" data-m6="-17.2333" data-sc-m6="29.7" data-rk-m6="170" data-mo-m6="-17.23">
             <td class="rankCell">120</td>
-            <td class="l">TKG휴켐스</td>
-            <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=069260" target="_blank">069260</a></td>
-            <td class="l">화학</td>
-            <td class="score"><span class="scoreVal">39.0</span><span class="bar" style="width:27px"></span></td>
-            <td>10.91</td><td>0.69</td><td>6.77</td>
-            <td class="neg">-18.8</td>
-            <td class="momCell">6.0</td>
-            <td>5</td>
-            <td>191</td>
-            <td class="retCell">-</td>
-            <td class="l trendCell"></td>
-          </tr>
-        
-          <tr class="dyn-row rankRow" data-d1="0.9292" data-sc-d1="47.49" data-rk-d1="87" data-mo-d1="0.93" data-d3="3.7472" data-sc-d3="45.24" data-rk-d3="106" data-mo-d3="3.75" data-w1="8.1164" data-sc-w1="39.03" data-rk-w1="121" data-mo-w1="8.12" data-w2="0.4982" data-sc-w2="49.76" data-rk-w2="84" data-mo-w2="0.5" data-m1="-1.3966" data-sc-m1="48.21" data-rk-m1="93" data-mo-m1="-1.4" data-m3="-14.1641" data-sc-m3="33.02" data-rk-m3="151" data-mo-m3="-14.16" data-m6="-17.2333" data-sc-m6="29.68" data-rk-m6="170" data-mo-m6="-17.23">
-            <td class="rankCell">121</td>
             <td class="l">한일시멘트</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=300720" target="_blank">300720</a></td>
             <td class="l">건축자재</td>
@@ -1924,7 +2212,22 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.2808" data-sc-d1="34.74" data-rk-d1="142" data-mo-d1="-1.28" data-d3="1.5198" data-sc-d3="45.26" data-rk-d3="105" data-mo-d3="1.52" data-w1="4.4838" data-sc-w1="38.96" data-rk-w1="122" data-mo-w1="4.48" data-w2="-1.2808" data-sc-w2="52.19" data-rk-w2="74" data-mo-w2="-1.28" data-m1="-7.2222" data-sc-m1="44.27" data-rk-m1="110" data-mo-m1="-7.22" data-m3="-12.1053" data-sc-m3="39.43" data-rk-m3="131" data-mo-m3="-12.11" data-m6="-21.1024" data-sc-m6="31.11" data-rk-m6="162" data-mo-m6="-21.1">
+          <tr class="dyn-row rankRow" data-d1="-1.3076" data-sc-d1="36.73" data-rk-d1="131" data-mo-d1="-1.31" data-d3="4.2763" data-sc-d3="44.23" data-rk-d3="111" data-mo-d3="4.28" data-w1="6.0201" data-sc-w1="39.04" data-rk-w1="121" data-mo-w1="6.02" data-w2="-1.8576" data-sc-w2="47.38" data-rk-w2="95" data-mo-w2="-1.86" data-m1="-0.627" data-sc-m1="49.01" data-rk-m1="86" data-mo-m1="-0.63" data-m3="-9.0126" data-sc-m3="40.37" data-rk-m3="124" data-mo-m3="-9.01" data-m6="-11.6007" data-sc-m6="38.96" data-rk-m6="130" data-mo-m6="-11.6">
+            <td class="rankCell">121</td>
+            <td class="l">TKG휴켐스</td>
+            <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=069260" target="_blank">069260</a></td>
+            <td class="l">화학</td>
+            <td class="score"><span class="scoreVal">39.0</span><span class="bar" style="width:27px"></span></td>
+            <td>10.91</td><td>0.69</td><td>6.77</td>
+            <td class="neg">-18.8</td>
+            <td class="momCell">6.0</td>
+            <td>5</td>
+            <td>191</td>
+            <td class="retCell">-</td>
+            <td class="l trendCell"></td>
+          </tr>
+        
+          <tr class="dyn-row rankRow" data-d1="-1.2808" data-sc-d1="34.74" data-rk-d1="142" data-mo-d1="-1.28" data-d3="1.5198" data-sc-d3="45.26" data-rk-d3="106" data-mo-d3="1.52" data-w1="4.4838" data-sc-w1="38.96" data-rk-w1="122" data-mo-w1="4.48" data-w2="-1.2808" data-sc-w2="52.19" data-rk-w2="74" data-mo-w2="-1.28" data-m1="-7.2222" data-sc-m1="44.27" data-rk-m1="110" data-mo-m1="-7.22" data-m3="-12.1053" data-sc-m3="39.43" data-rk-m3="131" data-mo-m3="-12.11" data-m6="-21.1024" data-sc-m6="31.11" data-rk-m6="162" data-mo-m6="-21.1">
             <td class="rankCell">122</td>
             <td class="l">롯데칠성</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=005300" target="_blank">005300</a></td>
@@ -2074,7 +2377,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.122" data-sc-d1="46.23" data-rk-d1="94" data-mo-d1="1.12" data-d3="1.4065" data-sc-d3="38.46" data-rk-d3="133" data-mo-d3="1.41" data-w1="4.3415" data-sc-w1="37.01" data-rk-w1="132" data-mo-w1="4.34" data-w2="-5.8747" data-sc-w2="38.46" data-rk-w2="128" data-mo-w2="-5.87" data-m1="-6.9677" data-sc-m1="34.96" data-rk-m1="141" data-mo-m1="-6.97" data-m3="-18.4389" data-sc-m3="32.53" data-rk-m3="152" data-mo-m3="-18.44" data-m6="-17.1264" data-sc-m6="30.46" data-rk-m6="165" data-mo-m6="-17.13">
+          <tr class="dyn-row rankRow" data-d1="1.122" data-sc-d1="46.26" data-rk-d1="94" data-mo-d1="1.12" data-d3="1.4065" data-sc-d3="38.48" data-rk-d3="133" data-mo-d3="1.41" data-w1="4.3415" data-sc-w1="37.03" data-rk-w1="132" data-mo-w1="4.34" data-w2="-5.8747" data-sc-w2="38.48" data-rk-w2="128" data-mo-w2="-5.87" data-m1="-6.9677" data-sc-m1="34.98" data-rk-m1="141" data-mo-m1="-6.97" data-m3="-18.4389" data-sc-m3="32.55" data-rk-m3="152" data-mo-m3="-18.44" data-m6="-17.1264" data-sc-m6="30.48" data-rk-m6="165" data-mo-m6="-17.13">
             <td class="rankCell">132</td>
             <td class="l">현대엘리베이터</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=017800" target="_blank">017800</a></td>
@@ -2104,7 +2407,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.2618" data-sc-d1="55.27" data-rk-d1="62" data-mo-d1="1.26" data-d3="-7.7586" data-sc-d3="36.16" data-rk-d3="137" data-mo-d3="-7.76" data-w1="-0.4651" data-sc-w1="36.9" data-rk-w1="134" data-mo-w1="-0.47" data-w2="-21.6117" data-sc-w2="36.46" data-rk-w2="135" data-mo-w2="-21.61" data-m1="-34.4229" data-sc-m1="34.95" data-rk-m1="142" data-mo-m1="-34.42" data-m3="-51.3636" data-sc-m3="33.6" data-rk-m3="149" data-mo-m3="-51.36" data-m6="-41.4234" data-sc-m6="35.15" data-rk-m6="141" data-mo-m6="-41.42">
+          <tr class="dyn-row rankRow" data-d1="1.2618" data-sc-d1="55.3" data-rk-d1="62" data-mo-d1="1.26" data-d3="-7.7586" data-sc-d3="36.18" data-rk-d3="137" data-mo-d3="-7.76" data-w1="-0.4651" data-sc-w1="36.93" data-rk-w1="134" data-mo-w1="-0.47" data-w2="-21.6117" data-sc-w2="36.48" data-rk-w2="134" data-mo-w2="-21.61" data-m1="-34.4229" data-sc-m1="34.98" data-rk-m1="142" data-mo-m1="-34.42" data-m3="-51.3636" data-sc-m3="33.63" data-rk-m3="149" data-mo-m3="-51.36" data-m6="-41.4234" data-sc-m6="35.18" data-rk-m6="141" data-mo-m6="-41.42">
             <td class="rankCell">134</td>
             <td class="l">세아베스틸지주</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=001430" target="_blank">001430</a></td>
@@ -2149,12 +2452,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.3187" data-sc-d1="36.94" data-rk-d1="129" data-mo-d1="1.32" data-d3="6.5896" data-sc-d3="37.26" data-rk-d3="136" data-mo-d3="6.59" data-w1="11.7576" data-sc-w1="36.44" data-rk-w1="137" data-mo-w1="11.76" data-w2="-6.9627" data-sc-w2="31.55" data-rk-w2="155" data-mo-w2="-6.96" data-m1="-7.984" data-sc-m1="30.61" data-rk-m1="152" data-mo-m1="-7.98" data-m3="-26.4753" data-sc-m3="22.05" data-rk-m3="183" data-mo-m3="-26.48" data-m6="26.6484" data-sc-m6="38.59" data-rk-m6="133" data-mo-m6="26.65">
+          <tr class="dyn-row rankRow" data-d1="1.3187" data-sc-d1="36.96" data-rk-d1="129" data-mo-d1="1.32" data-d3="6.5896" data-sc-d3="37.29" data-rk-d3="136" data-mo-d3="6.59" data-w1="11.7576" data-sc-w1="36.46" data-rk-w1="137" data-mo-w1="11.76" data-w2="-6.9627" data-sc-w2="31.58" data-rk-w2="155" data-mo-w2="-6.96" data-m1="-7.984" data-sc-m1="30.63" data-rk-m1="152" data-mo-m1="-7.98" data-m3="-26.4753" data-sc-m3="22.07" data-rk-m3="183" data-mo-m3="-26.48" data-m6="26.6484" data-sc-m6="38.61" data-rk-m6="133" data-mo-m6="26.65">
             <td class="rankCell">137</td>
             <td class="l">DL</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=000210" target="_blank">000210</a></td>
             <td class="l">화학</td>
-            <td class="score"><span class="scoreVal">36.4</span><span class="bar" style="width:25px"></span></td>
+            <td class="score"><span class="scoreVal">36.5</span><span class="bar" style="width:25px"></span></td>
             <td>-</td><td>0.25</td><td>-2.17</td>
             <td class="neg">-27.6</td>
             <td class="momCell">11.8</td>
@@ -2404,7 +2707,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-5.2363" data-sc-d1="30.22" data-rk-d1="160" data-mo-d1="-5.24" data-d3="-5.8376" data-sc-d3="33.31" data-rk-d3="144" data-mo-d3="-5.84" data-w1="-1.1984" data-sc-w1="32.85" data-rk-w1="154" data-mo-w1="-1.2" data-w2="-13.5198" data-sc-w2="34.88" data-rk-w2="140" data-mo-w2="-13.52" data-m1="-36.8511" data-sc-m1="29.4" data-rk-m1="155" data-mo-m1="-36.85" data-m3="28.8194" data-sc-m3="61.72" data-rk-m3="35" data-mo-m3="28.82" data-m6="17.965" data-sc-m6="52.03" data-rk-m6="75" data-mo-m6="17.97">
+          <tr class="dyn-row rankRow" data-d1="-5.2363" data-sc-d1="30.22" data-rk-d1="159" data-mo-d1="-5.24" data-d3="-5.8376" data-sc-d3="33.31" data-rk-d3="144" data-mo-d3="-5.84" data-w1="-1.1984" data-sc-w1="32.85" data-rk-w1="154" data-mo-w1="-1.2" data-w2="-13.5198" data-sc-w2="34.88" data-rk-w2="140" data-mo-w2="-13.52" data-m1="-36.8511" data-sc-m1="29.4" data-rk-m1="155" data-mo-m1="-36.85" data-m3="28.8194" data-sc-m3="61.72" data-rk-m3="35" data-mo-m3="28.82" data-m6="17.965" data-sc-m6="52.03" data-rk-m6="75" data-mo-m6="17.97">
             <td class="rankCell">154</td>
             <td class="l">LG씨엔에스</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=064400" target="_blank">064400</a></td>
@@ -2434,12 +2737,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.6843" data-sc-d1="22.36" data-rk-d1="183" data-mo-d1="-1.68" data-d3="-2.7761" data-sc-d3="19.02" data-rk-d3="186" data-mo-d3="-2.78" data-w1="9.5205" data-sc-w1="32.55" data-rk-w1="156" data-mo-w1="9.52" data-w2="-15.4053" data-sc-w2="17.91" data-rk-w2="186" data-mo-w2="-15.41" data-m1="-11.4607" data-sc-m1="22.1" data-rk-m1="179" data-mo-m1="-11.46" data-m3="-27.7064" data-sc-m3="17.27" data-rk-m3="189" data-mo-m3="-27.71" data-m6="-36.5795" data-sc-m6="18.1" data-rk-m6="193" data-mo-m6="-36.58">
+          <tr class="dyn-row rankRow" data-d1="-1.6843" data-sc-d1="22.38" data-rk-d1="183" data-mo-d1="-1.68" data-d3="-2.7761" data-sc-d3="19.05" data-rk-d3="185" data-mo-d3="-2.78" data-w1="9.5205" data-sc-w1="32.57" data-rk-w1="156" data-mo-w1="9.52" data-w2="-15.4053" data-sc-w2="17.94" data-rk-w2="186" data-mo-w2="-15.41" data-m1="-11.4607" data-sc-m1="22.12" data-rk-m1="179" data-mo-m1="-11.46" data-m3="-27.7064" data-sc-m3="17.3" data-rk-m3="189" data-mo-m3="-27.71" data-m6="-36.5795" data-sc-m6="18.12" data-rk-m6="193" data-mo-m6="-36.58">
             <td class="rankCell">156</td>
             <td class="l">SK아이이테크놀로지</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=361610" target="_blank">361610</a></td>
             <td class="l">전기제품</td>
-            <td class="score"><span class="scoreVal">32.5</span><span class="bar" style="width:23px"></span></td>
+            <td class="score"><span class="scoreVal">32.6</span><span class="bar" style="width:23px"></span></td>
             <td>-</td><td>0.50</td><td>-8.58</td>
             <td class="pos">15.3</td>
             <td class="momCell">9.5</td>
@@ -2464,7 +2767,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="2.1212" data-sc-d1="51.84" data-rk-d1="75" data-mo-d1="2.12" data-d3="3.9054" data-sc-d3="46.77" data-rk-d3="97" data-mo-d3="3.91" data-w1="2.5355" data-sc-w1="32.3" data-rk-w1="158" data-mo-w1="2.54" data-w2="-7.1625" data-sc-w2="36.46" data-rk-w2="134" data-mo-w2="-7.16" data-m1="-17.738" data-sc-m1="29.25" data-rk-m1="157" data-mo-m1="-17.74" data-m3="14.3665" data-sc-m3="54.35" data-rk-m3="70" data-mo-m3="14.37" data-m6="19.9288" data-sc-m6="51.11" data-rk-m6="81" data-mo-m6="19.93">
+          <tr class="dyn-row rankRow" data-d1="2.1212" data-sc-d1="51.84" data-rk-d1="75" data-mo-d1="2.12" data-d3="3.9054" data-sc-d3="46.77" data-rk-d3="98" data-mo-d3="3.91" data-w1="2.5355" data-sc-w1="32.3" data-rk-w1="158" data-mo-w1="2.54" data-w2="-7.1625" data-sc-w2="36.46" data-rk-w2="135" data-mo-w2="-7.16" data-m1="-17.738" data-sc-m1="29.25" data-rk-m1="157" data-mo-m1="-17.74" data-m3="14.3665" data-sc-m3="54.35" data-rk-m3="70" data-mo-m3="14.37" data-m6="19.9288" data-sc-m6="51.11" data-rk-m6="81" data-mo-m6="19.93">
             <td class="rankCell">158</td>
             <td class="l">LG</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=003550" target="_blank">003550</a></td>
@@ -2584,7 +2887,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-0.6897" data-sc-d1="34.87" data-rk-d1="141" data-mo-d1="-0.69" data-d3="-3.7862" data-sc-d3="31.29" data-rk-d3="150" data-mo-d3="-3.79" data-w1="-0.2309" data-sc-w1="30.31" data-rk-w1="166" data-mo-w1="-0.23" data-w2="-4.0" data-sc-w2="36.88" data-rk-w2="132" data-mo-w2="-4.0" data-m1="-2.7027" data-sc-m1="38.73" data-rk-m1="129" data-mo-m1="-2.7" data-m3="24.2093" data-sc-m3="50.43" data-rk-m3="88" data-mo-m3="24.21" data-m6="10.9969" data-sc-m6="39.87" data-rk-m6="124" data-mo-m6="11.0">
+          <tr class="dyn-row rankRow" data-d1="-0.6897" data-sc-d1="34.89" data-rk-d1="141" data-mo-d1="-0.69" data-d3="-3.7862" data-sc-d3="31.32" data-rk-d3="150" data-mo-d3="-3.79" data-w1="-0.2309" data-sc-w1="30.33" data-rk-w1="166" data-mo-w1="-0.23" data-w2="-4.0" data-sc-w2="36.9" data-rk-w2="132" data-mo-w2="-4.0" data-m1="-2.7027" data-sc-m1="38.75" data-rk-m1="129" data-mo-m1="-2.7" data-m3="24.2093" data-sc-m3="50.45" data-rk-m3="88" data-mo-m3="24.21" data-m6="10.9969" data-sc-m6="39.9" data-rk-m6="124" data-mo-m6="11.0">
             <td class="rankCell">166</td>
             <td class="l">HD현대마린솔루션</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=443060" target="_blank">443060</a></td>
@@ -2599,7 +2902,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.9435" data-sc-d1="18.33" data-rk-d1="191" data-mo-d1="-1.94" data-d3="2.0221" data-sc-d3="31.13" data-rk-d3="151" data-mo-d3="2.02" data-w1="5.3131" data-sc-w1="29.89" data-rk-w1="167" data-mo-w1="5.31" data-w2="-5.4514" data-sc-w2="32.82" data-rk-w2="150" data-mo-w2="-5.45" data-m1="-18.5022" data-sc-m1="19.98" data-rk-m1="184" data-mo-m1="-18.5" data-m3="-31.7343" data-sc-m3="16.44" data-rk-m3="190" data-mo-m3="-31.73" data-m6="30.5882" data-sc-m6="39.25" data-rk-m6="129" data-mo-m6="30.59">
+          <tr class="dyn-row rankRow" data-d1="-1.9435" data-sc-d1="18.33" data-rk-d1="191" data-mo-d1="-1.94" data-d3="2.0221" data-sc-d3="31.13" data-rk-d3="151" data-mo-d3="2.02" data-w1="5.3131" data-sc-w1="29.89" data-rk-w1="167" data-mo-w1="5.31" data-w2="-5.4514" data-sc-w2="32.82" data-rk-w2="150" data-mo-w2="-5.45" data-m1="-18.5022" data-sc-m1="19.98" data-rk-m1="184" data-mo-m1="-18.5" data-m3="-31.7343" data-sc-m3="16.44" data-rk-m3="190" data-mo-m3="-31.73" data-m6="30.5882" data-sc-m6="39.25" data-rk-m6="128" data-mo-m6="30.59">
             <td class="rankCell">167</td>
             <td class="l">효성티앤씨</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=298020" target="_blank">298020</a></td>
@@ -2629,7 +2932,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.0249" data-sc-d1="44.84" data-rk-d1="101" data-mo-d1="1.02" data-d3="-17.2662" data-sc-d3="27.11" data-rk-d3="165" data-mo-d3="-17.27" data-w1="-15.3374" data-sc-w1="29.52" data-rk-w1="169" data-mo-w1="-15.34" data-w2="-4.6961" data-sc-w2="44.78" data-rk-w2="104" data-mo-w2="-4.7" data-m1="10.4" data-sc-m1="56.94" data-rk-m1="60" data-mo-m1="10.4" data-m3="119.7452" data-sc-m3="61.08" data-rk-m3="37" data-mo-m3="119.75" data-m6="140.0" data-sc-m6="60.66" data-rk-m6="35" data-mo-m6="140.0">
+          <tr class="dyn-row rankRow" data-d1="1.0249" data-sc-d1="44.84" data-rk-d1="101" data-mo-d1="1.02" data-d3="-17.2662" data-sc-d3="27.11" data-rk-d3="164" data-mo-d3="-17.27" data-w1="-15.3374" data-sc-w1="29.52" data-rk-w1="169" data-mo-w1="-15.34" data-w2="-4.6961" data-sc-w2="44.78" data-rk-w2="104" data-mo-w2="-4.7" data-m1="10.4" data-sc-m1="56.94" data-rk-m1="60" data-mo-m1="10.4" data-m3="119.7452" data-sc-m3="61.08" data-rk-m3="37" data-mo-m3="119.75" data-m6="140.0" data-sc-m6="60.66" data-rk-m6="35" data-mo-m6="140.0">
             <td class="rankCell">169</td>
             <td class="l">SK</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=034730" target="_blank">034730</a></td>
@@ -2794,22 +3097,22 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-0.656" data-sc-d1="17.68" data-rk-d1="194" data-mo-d1="-0.66" data-d3="-4.9327" data-sc-d3="9.34" data-rk-d3="199" data-mo-d3="-4.93" data-w1="7.179" data-sc-w1="23.97" data-rk-w1="180" data-mo-w1="7.18" data-w2="-17.5739" data-sc-w2="8.24" data-rk-w2="199" data-mo-w2="-17.57" data-m1="-24.2316" data-sc-m1="8.44" data-rk-m1="198" data-mo-m1="-24.23" data-m3="-37.8664" data-sc-m3="7.27" data-rk-m3="199" data-mo-m3="-37.87" data-m6="3.3138" data-sc-m6="22.87" data-rk-m6="187" data-mo-m6="3.31">
+          <tr class="dyn-row rankRow" data-d1="-0.656" data-sc-d1="17.81" data-rk-d1="194" data-mo-d1="-0.66" data-d3="-4.9327" data-sc-d3="9.47" data-rk-d3="199" data-mo-d3="-4.93" data-w1="7.179" data-sc-w1="24.1" data-rk-w1="180" data-mo-w1="7.18" data-w2="-17.5739" data-sc-w2="8.36" data-rk-w2="199" data-mo-w2="-17.57" data-m1="-24.2316" data-sc-m1="8.56" data-rk-m1="198" data-mo-m1="-24.23" data-m3="-37.8664" data-sc-m3="7.4" data-rk-m3="199" data-mo-m3="-37.87" data-m6="3.3138" data-sc-m6="22.99" data-rk-m6="187" data-mo-m6="3.31">
             <td class="rankCell">180</td>
             <td class="l">엘앤에프</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=066970" target="_blank">066970</a></td>
             <td class="l">전기제품</td>
-            <td class="score"><span class="scoreVal">24.0</span><span class="bar" style="width:17px"></span></td>
+            <td class="score"><span class="scoreVal">24.1</span><span class="bar" style="width:17px"></span></td>
             <td>-</td><td>6.21</td><td>-76.95</td>
             <td class="pos">71.9</td>
             <td class="momCell">7.2</td>
-            <td>11</td>
+            <td>12</td>
             <td>106</td>
             <td class="retCell">-</td>
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-2.2628" data-sc-d1="29.04" data-rk-d1="167" data-mo-d1="-2.26" data-d3="-1.3181" data-sc-d3="27.46" data-rk-d3="162" data-mo-d3="-1.32" data-w1="0.3575" data-sc-w1="23.64" data-rk-w1="181" data-mo-w1="0.36" data-w2="-11.6444" data-sc-w2="29.41" data-rk-w2="160" data-mo-w2="-11.64" data-m1="-21.7422" data-sc-m1="25.35" data-rk-m1="170" data-mo-m1="-21.74" data-m3="-53.2083" data-sc-m3="21.85" data-rk-m3="184" data-mo-m3="-53.21" data-m6="-7.1901" data-sc-m6="29.91" data-rk-m6="169" data-mo-m6="-7.19">
+          <tr class="dyn-row rankRow" data-d1="-2.2628" data-sc-d1="29.04" data-rk-d1="167" data-mo-d1="-2.26" data-d3="-1.3181" data-sc-d3="27.46" data-rk-d3="162" data-mo-d3="-1.32" data-w1="0.3575" data-sc-w1="23.64" data-rk-w1="181" data-mo-w1="0.36" data-w2="-11.6444" data-sc-w2="29.41" data-rk-w2="159" data-mo-w2="-11.64" data-m1="-21.7422" data-sc-m1="25.35" data-rk-m1="169" data-mo-m1="-21.74" data-m3="-53.2083" data-sc-m3="21.85" data-rk-m3="184" data-mo-m3="-53.21" data-m6="-7.1901" data-sc-m6="29.91" data-rk-m6="169" data-mo-m6="-7.19">
             <td class="rankCell">181</td>
             <td class="l">세아제강지주</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=003030" target="_blank">003030</a></td>
@@ -2884,12 +3187,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-4.9679" data-sc-d1="12.72" data-rk-d1="197" data-mo-d1="-4.97" data-d3="-4.9679" data-sc-d3="15.68" data-rk-d3="191" data-mo-d3="-4.97" data-w1="2.5952" data-sc-w1="20.04" data-rk-w1="186" data-mo-w1="2.6" data-w2="16.7323" data-sc-w2="41.13" data-rk-w2="119" data-mo-w2="16.73" data-m1="2.418" data-sc-m1="34.87" data-rk-m1="143" data-mo-m1="2.42" data-m3="26.0361" data-sc-m3="30.53" data-rk-m3="160" data-mo-m3="26.04" data-m6="27.9396" data-sc-m6="24.38" data-rk-m6="184" data-mo-m6="27.94">
+          <tr class="dyn-row rankRow" data-d1="-4.9679" data-sc-d1="12.75" data-rk-d1="197" data-mo-d1="-4.97" data-d3="-4.9679" data-sc-d3="15.7" data-rk-d3="191" data-mo-d3="-4.97" data-w1="2.5952" data-sc-w1="20.07" data-rk-w1="186" data-mo-w1="2.6" data-w2="16.7323" data-sc-w2="41.15" data-rk-w2="119" data-mo-w2="16.73" data-m1="2.418" data-sc-m1="34.9" data-rk-m1="143" data-mo-m1="2.42" data-m3="26.0361" data-sc-m3="30.56" data-rk-m3="160" data-mo-m3="26.04" data-m6="27.9396" data-sc-m6="24.41" data-rk-m6="184" data-mo-m6="27.94">
             <td class="rankCell">186</td>
             <td class="l">한올바이오파마</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=009420" target="_blank">009420</a></td>
             <td class="l">제약</td>
-            <td class="score"><span class="scoreVal">20.0</span><span class="bar" style="width:14px"></span></td>
+            <td class="score"><span class="scoreVal">20.1</span><span class="bar" style="width:14px"></span></td>
             <td>-</td><td>18.55</td><td>-3.37</td>
             <td class="neg">-550.0</td>
             <td class="momCell">2.6</td>
@@ -2929,7 +3232,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-1.1442" data-sc-d1="24.46" data-rk-d1="176" data-mo-d1="-1.14" data-d3="-2.2624" data-sc-d3="27.15" data-rk-d3="164" data-mo-d3="-2.26" data-w1="-4.6358" data-sc-w1="19.64" data-rk-w1="189" data-mo-w1="-4.64" data-w2="-8.9568" data-sc-w2="32.24" data-rk-w2="153" data-mo-w2="-8.96" data-m1="-18.797" data-sc-m1="22.71" data-rk-m1="178" data-mo-m1="-18.8" data-m3="7.4627" data-sc-m3="44.44" data-rk-m3="111" data-mo-m3="7.46" data-m6="62.406" data-sc-m6="51.46" data-rk-m6="78" data-mo-m6="62.41">
+          <tr class="dyn-row rankRow" data-d1="-1.1442" data-sc-d1="24.46" data-rk-d1="176" data-mo-d1="-1.14" data-d3="-2.2624" data-sc-d3="27.15" data-rk-d3="163" data-mo-d3="-2.26" data-w1="-4.6358" data-sc-w1="19.64" data-rk-w1="189" data-mo-w1="-4.64" data-w2="-8.9568" data-sc-w2="32.24" data-rk-w2="153" data-mo-w2="-8.96" data-m1="-18.797" data-sc-m1="22.71" data-rk-m1="178" data-mo-m1="-18.8" data-m3="7.4627" data-sc-m3="44.44" data-rk-m3="111" data-mo-m3="7.46" data-m6="62.406" data-sc-m6="51.46" data-rk-m6="78" data-mo-m6="62.41">
             <td class="rankCell">189</td>
             <td class="l">SK텔레콤</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=017670" target="_blank">017670</a></td>
@@ -2944,7 +3247,7 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="-0.7859" data-sc-d1="22.48" data-rk-d1="182" data-mo-d1="-0.79" data-d3="-4.717" data-sc-d3="19.16" data-rk-d3="184" data-mo-d3="-4.72" data-w1="-0.3945" data-sc-w1="18.92" data-rk-w1="190" data-mo-w1="-0.39" data-w2="-23.716" data-sc-w2="15.28" data-rk-w2="192" data-mo-w2="-23.72" data-m1="-39.5933" data-sc-m1="14.52" data-rk-m1="194" data-mo-m1="-39.59" data-m3="35.3887" data-sc-m3="47.9" data-rk-m3="97" data-mo-m3="35.39" data-m6="61.859" data-sc-m6="43.84" data-rk-m6="105" data-mo-m6="61.86">
+          <tr class="dyn-row rankRow" data-d1="-0.7859" data-sc-d1="22.45" data-rk-d1="182" data-mo-d1="-0.79" data-d3="-4.717" data-sc-d3="19.13" data-rk-d3="184" data-mo-d3="-4.72" data-w1="-0.3945" data-sc-w1="18.89" data-rk-w1="190" data-mo-w1="-0.39" data-w2="-23.716" data-sc-w2="15.26" data-rk-w2="192" data-mo-w2="-23.72" data-m1="-39.5933" data-sc-m1="14.49" data-rk-m1="194" data-mo-m1="-39.59" data-m3="35.3887" data-sc-m3="47.88" data-rk-m3="97" data-mo-m3="35.39" data-m6="61.859" data-sc-m6="43.82" data-rk-m6="105" data-mo-m6="61.86">
             <td class="rankCell">190</td>
             <td class="l">현대오토에버</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=307950" target="_blank">307950</a></td>
@@ -3049,12 +3352,12 @@
             <td class="l trendCell"></td>
           </tr>
         
-          <tr class="dyn-row rankRow" data-d1="1.5606" data-sc-d1="30.59" data-rk-d1="156" data-mo-d1="1.56" data-d3="-6.3123" data-sc-d3="10.57" data-rk-d3="196" data-mo-d3="-6.31" data-w1="-0.4706" data-sc-w1="12.36" data-rk-w1="197" data-mo-w1="-0.47" data-w2="-16.8959" data-sc-w2="10.35" data-rk-w2="198" data-mo-w2="-16.9" data-m1="-39.7006" data-sc-m1="5.94" data-rk-m1="199" data-mo-m1="-39.7" data-m3="3.8037" data-sc-m3="27.13" data-rk-m3="173" data-mo-m3="3.8" data-m6="4.1872" data-sc-m6="22.09" data-rk-m6="188" data-mo-m6="4.19">
+          <tr class="dyn-row rankRow" data-d1="1.5606" data-sc-d1="30.56" data-rk-d1="156" data-mo-d1="1.56" data-d3="-6.3123" data-sc-d3="10.54" data-rk-d3="196" data-mo-d3="-6.31" data-w1="-0.4706" data-sc-w1="12.33" data-rk-w1="197" data-mo-w1="-0.47" data-w2="-16.8959" data-sc-w2="10.32" data-rk-w2="198" data-mo-w2="-16.9" data-m1="-39.7006" data-sc-m1="5.92" data-rk-m1="199" data-mo-m1="-39.7" data-m3="3.8037" data-sc-m3="27.11" data-rk-m3="173" data-mo-m3="3.8" data-m6="4.1872" data-sc-m6="22.06" data-rk-m6="188" data-mo-m6="4.19">
             <td class="rankCell">197</td>
             <td class="l">두산로보틱스</td>
             <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=454910" target="_blank">454910</a></td>
             <td class="l">기계</td>
-            <td class="score"><span class="scoreVal">12.4</span><span class="bar" style="width:9px"></span></td>
+            <td class="score"><span class="scoreVal">12.3</span><span class="bar" style="width:9px"></span></td>
             <td>-</td><td>16.08</td><td>-14.78</td>
             <td class="neg">-44.4</td>
             <td class="momCell">-0.5</td>
@@ -3510,7 +3813,7 @@
             <tr class="dyn-row" data-d1="3.3123" data-d3="11.7747" data-w1="18.231" data-w2="-2.819" data-m1="-0.4559" data-m3="-11.7251" data-m6="-29.8715">
               <td class="l medal m1">1위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=071970" target="_blank">HD현대마린엔진</a></td>
-              <td class="score">65.4</td>
+              <td class="score">65.5</td>
               <td>12.39</td><td>4.45</td><td>41.36</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -3824,7 +4127,7 @@
             <tr class="dyn-row" data-d1="-1.4301" data-d3="1.7026" data-w1="5.5359" data-w2="-5.6842" data-m1="-6.7638" data-m3="-6.2762" data-m6="4.6729">
               <td class="l medal m2">2위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=004000" target="_blank">롯데정밀화학</a></td>
-              <td class="score">51.6</td>
+              <td class="score">51.7</td>
               <td>9.44</td><td>0.47</td><td>4.42</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -4143,7 +4446,7 @@
             <tr class="dyn-row" data-d1="2.1341" data-d3="13.5593" data-w1="16.3194" data-w2="10.6524" data-m1="16.5217" data-m3="24.3043" data-m6="12.6997">
               <td class="l medal m1">1위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=180640" target="_blank">한진칼</a></td>
-              <td class="score">44.4</td>
+              <td class="score">44.5</td>
               <td>53.86</td><td>2.64</td><td>4.75</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -4180,7 +4483,7 @@
             <tr class="dyn-row" data-d1="-2.3829" data-d3="-4.8077" data-w1="7.804" data-w2="-13.0944" data-m1="-19.5667" data-m3="-20.2685" data-m6="8.0983">
               <td class="l medal m2">2위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=267270" target="_blank">HD건설기계</a></td>
-              <td class="score">42.4</td>
+              <td class="score">42.1</td>
               <td>12.10</td><td>1.21</td><td>5.74</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -4209,7 +4512,7 @@
             <tr class="dyn-row" data-d1="4.0426" data-d3="0.5139" data-w1="-1.1122" data-w2="-6.6794" data-m1="-9.7786" data-m3="7.0022" data-m6="22.8643">
               <td class="l medal m1">1위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=002380" target="_blank">KCC</a></td>
-              <td class="score">41.9</td>
+              <td class="score">41.8</td>
               <td>2.54</td><td>0.44</td><td>23.51</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -4333,7 +4636,7 @@
             <tr class="dyn-row" data-d1="-1.7663" data-d3="1.4025" data-w1="5.5474" data-w2="2.5532" data-m1="-1.7663" data-m3="-17.6538" data-m6="-0.5502">
               <td class="l medal m1">1위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=012750" target="_blank">에스원</a></td>
-              <td class="score">40.7</td>
+              <td class="score">40.8</td>
               <td>17.38</td><td>1.46</td><td>10.45</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -4565,7 +4868,7 @@
             <tr class="dyn-row" data-d1="-1.6843" data-d3="-2.7761" data-w1="9.5205" data-w2="-15.4053" data-m1="-11.4607" data-m3="-27.7064" data-m6="-36.5795">
               <td class="l medal m2">2위</td>
               <td class="l"><a class="code" href="https://finance.naver.com/item/main.naver?code=361610" target="_blank">SK아이이테크놀로지</a></td>
-              <td class="score">32.5</td>
+              <td class="score">32.6</td>
               <td>-</td><td>0.50</td><td>-8.58</td>
               <td class="retCell">-</td><td class="l trendCell"></td>
             </tr>
@@ -4762,7 +5065,7 @@
     document.querySelectorAll('.view').forEach(function(x){ x.style.display='none'; });
     document.getElementById('view-'+v).style.display='block';
     document.querySelectorAll('.navTab').forEach(function(b){ b.classList.toggle('active', b.dataset.v===v); });
-    document.getElementById('periodBar').style.display = (v==='score') ? 'none' : 'flex';
+    document.getElementById('periodBar').style.display = (v==='score' || v==='summary') ? 'none' : 'flex';
   }
   function numAttr(tr, attr){ var v=tr.getAttribute(attr); return (v===null||v==='')?null:parseFloat(v); }
 
@@ -4845,7 +5148,7 @@
   });
   // 초기화
   applyPeriod('w1');
-  showView('rank');
+  showView('summary');
 </script>
 </body>
 </html>
