@@ -12,6 +12,16 @@ from jinja2 import Template
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import config
 
+# UI에 노출되는 기간 탭: 맨 앞에 '토탈'(종합순위) 추가
+UI_PERIODS = [("토탈", "total", 0)] + list(config.PERIODS)
+
+
+def _plabel(period_key):
+    if period_key == "total":
+        return "종합(3개월내)"
+    return next((l for l, k, d in UI_PERIODS if k == period_key), period_key)
+
+
 TEMPLATE = Template(r"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,6 +42,8 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .periodBar .cap { font-size:12px; color:#5a6472; margin-right:6px; }
   .periodTab { background:#fff; border:1px solid #cfd6df; color:#333; padding:6px 12px; border-radius:16px; font-size:13px; cursor:pointer; }
   .periodTab.active { background:#0f2540; color:#fff; border-color:#0f2540; font-weight:700; }
+  .periodTab[data-k="total"] { font-weight:800; border-color:#c0392b; color:#c0392b; }
+  .periodTab[data-k="total"].active { background:#c0392b; border-color:#c0392b; color:#fff; }
   .wrap { padding:20px 24px 60px; }
   .cards { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:20px; }
   .card { background:#fff; border-radius:10px; padding:14px 18px; box-shadow:0 1px 3px rgba(0,0,0,.08); min-width:130px; }
@@ -141,7 +153,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
 </div>
 
 <div class="periodBar" id="periodBar">
-  <span class="cap">등락 기간 (선택하면 해당 기간 기준으로 순위 재정렬)</span>
+  <span class="cap">순위 기준 (<b style="color:#c0392b">토탈</b>=3개월내 종합·저평가전환 가중 / 개별 기간 선택 시 그 기간 기준 재정렬)</span>
   {% for label, key, days in periods %}
   <button class="periodTab" data-k="{{ key }}" onclick="applyPeriod('{{ key }}')">{{ label }}</button>
   {% endfor %}
@@ -235,13 +247,13 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       <div class="panel">
         <div class="ph"><b>📈 상승률 상위</b><span class="hint">일간 등락률 기준 · 국내 주식형 ETF</span></div>
         <div class="pb"><table class="t10 etfTable"><thead><tr>
-          <th class="l">#</th><th class="l">ETF</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
+          <th class="l">#</th><th class="l">ETF</th><th>종합</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
         </tr></thead><tbody id="etfUp"></tbody></table></div>
       </div>
       <div class="panel">
         <div class="ph"><b>📉 하락률 상위</b><span class="hint">일간 등락률 기준 · 국내 주식형 ETF</span></div>
         <div class="pb"><table class="t10 etfTable"><thead><tr>
-          <th class="l">#</th><th class="l">ETF</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
+          <th class="l">#</th><th class="l">ETF</th><th>종합</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
         </tr></thead><tbody id="etfDown"></tbody></table></div>
       </div>
     </div>
@@ -330,6 +342,16 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
          함께 보는 7개 팩터로 재설계했습니다. 싼 것만이 아니라 <b>싸면서 실적이 늘고, 주가가 돌기 시작하며,
          업종·시장의 관심을 받는</b> 종목이 상위에 오도록 했습니다.</p>
 
+      <h2>0. 토탈(종합) 순위 · 저평가→상승 전환 가중치</h2>
+      <p>기간 탭 맨 앞의 <b style="color:#c0392b">토탈</b>은 여러 기간을 묶은 <b>종합순위</b>입니다.
+         당일·3일·1주·2주·1개월·3개월 등락률을 가중 평균한 <b>종합 모멘텀</b>(6개월은 제외, 3개월까지만 반영)을
+         기반으로 아래 7개 팩터를 계산하고, 여기에 <b>‘저평가 → 상승 전환’ 가중치({{ trans_w }})</b>를 더합니다.</p>
+      <ul>
+        <li><b>저평가 → 상승 전환</b>: 밸류에이션이 싸면서(저PER·저PBR), 최근 1~2주 상승이 1~3개월 흐름보다
+            <b>가속(turn-up)</b>되는 종목에 가점합니다. “싸다가 이제 막 오르기 시작하는” 구간을 잡기 위한 지표입니다.</li>
+        <li>기간 탭을 개별 기간(당일·1주일 등)으로 바꾸면 그 기간 기준 순위로, <b>토탈</b>이면 위 종합 기준으로 재정렬됩니다.</li>
+      </ul>
+
       <h2>1. 7개 팩터와 방향</h2>
       <table class="wtable">
         <tr><th>팩터</th><th>의미 / 반영한 요청</th><th>좋은 방향</th><th>가중치</th></tr>
@@ -392,12 +414,18 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   var ETFS = {{ etf_json }};
   function etfPct(v){ if(v===null||v===undefined) return '-'; return (v>0?'+':'')+v.toFixed(2)+'%'; }
   function etfAmt(v){ if(v===null||v===undefined) return '-'; return v>=10000?(v/10000).toFixed(1)+'조':Math.round(v).toLocaleString()+'억'; }
+  function etfSig(sc){
+    if(sc===null||sc===undefined) return '<span class="sig s4">-</span>';
+    var c = sc>=75?'s1':(sc>=60?'s2':(sc>=45?'s3':'s4'));
+    return '<span class="sig '+c+'">'+sc+'</span>';
+  }
   function etfRow(e,i){
     var lev = e.lev ? ' <span class="levTag">레버리지</span>' : '';
     var chgc = e.chg>0?'sret up':(e.chg<0?'sret down':'');
     var r3c = (e.r3m>0)?'sret up':((e.r3m<0)?'sret down':'');
     return '<tr><td class="l rk">'+(i+1)+'</td>'+
       '<td class="l"><span class="nm"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+e.code+'">'+e.name+'</a></span>'+lev+'</td>'+
+      '<td>'+etfSig(e.sc)+'</td>'+
       '<td>'+(e.now?e.now.toLocaleString():'-')+'</td>'+
       '<td class="'+chgc+'">'+etfPct(e.chg)+'</td>'+
       '<td class="'+r3c+'">'+etfPct(e.r3m)+'</td>'+
@@ -524,7 +552,7 @@ def _fmt(v, nd=2):
 
 def _rets_dict(row):
     d = {}
-    for _label, key, _days in config.PERIODS:
+    for _label, key, _days in UI_PERIODS:
         col = f"ret_{key}"
         v = row.get(col)
         d[key] = None if (v is None or pd.isna(v)) else round(float(v), 4)
@@ -534,7 +562,7 @@ def _rets_dict(row):
 def _pdata_dict(row):
     """기간별 {score, rank, mom} — JS 재랭킹용."""
     d = {}
-    for _label, key, _days in config.PERIODS:
+    for _label, key, _days in UI_PERIODS:
         sc = row.get(f"pscore_{key}")
         rk = row.get(f"prank_{key}")
         mo = row.get(f"pmom_{key}")
@@ -662,7 +690,7 @@ def _bubble_svg(df, ret_col):
 
 def _prepare_summary(df, market, period_key):
     ret_col = f"ret_{period_key}"
-    plabel = next((l for l, k, d in config.PERIODS if k == period_key), period_key)
+    plabel = _plabel(period_key)
     idx = market.get("index") or {}
     index = {
         "value": _fmt(idx.get("value"), 2), "change": _fmt(idx.get("change"), 2),
@@ -724,17 +752,26 @@ def _prepare_summary(df, market, period_key):
 
 
 def _prepare_etf(market):
-    """ETF 페이지용 JSON 직렬화 가능한 목록."""
+    """ETF 페이지용 JSON 직렬화 가능한 목록. 종합점수(일간+3개월 백분위 블렌드) 포함."""
+    rows = market.get("etf_list") or []
+    if not rows:
+        return []
+    dfe = pd.DataFrame(rows)
+    d_pct = dfe["change_rate"].rank(pct=True)
+    r_pct = dfe["rate3m"].rank(pct=True)
+    d_pct = d_pct.fillna(d_pct.mean() if d_pct.notna().any() else 0.5)
+    r_pct = r_pct.fillna(r_pct.mean() if r_pct.notna().any() else 0.5)
+    dfe["sc"] = ((d_pct * 0.5 + r_pct * 0.5) * 100).round(0)
     out = []
-    for e in (market.get("etf_list") or []):
+    for _, e in dfe.iterrows():
         out.append({
             "name": e["name"], "code": e["code"],
-            "now": e.get("now"),
-            "chg": e.get("change_rate"),
-            "r3m": e.get("rate3m"),
-            "amt": e.get("amount_eok"),
+            "now": None if pd.isna(e.get("now")) else e.get("now"),
+            "chg": None if pd.isna(e.get("change_rate")) else float(e.get("change_rate")),
+            "r3m": None if pd.isna(e.get("rate3m")) else float(e.get("rate3m")),
+            "amt": None if pd.isna(e.get("amount_eok")) else float(e.get("amount_eok")),
             "lev": bool(e.get("leverage")),
-            "tag": _etf_tag(e["name"]),
+            "sc": None if pd.isna(e.get("sc")) else int(e.get("sc")),
         })
     return out
 
@@ -762,20 +799,20 @@ def build(df, generated, market=None):
 
     top = df.iloc[0]
     w = config.SCORE_WEIGHTS
-    # 기간별 요약 (기간 탭 반응용)
-    sum_list = [(key, _prepare_summary(df, market, key)) for _l, key, _d in config.PERIODS]
+    # 기간별 요약 (기간 탭 반응용) — 토탈 포함
+    sum_list = [(key, _prepare_summary(df, market, key)) for _l, key, _d in UI_PERIODS]
     sum_map = dict(sum_list)
     sdef = sum_map[config.DEFAULT_PERIOD_KEY]
     up_by_period = {key: s["up_cnt"] for key, s in sum_list}
     etf_json = json.dumps(_prepare_etf(market), ensure_ascii=False)
     html = TEMPLATE.render(
-        generated=generated, total=len(df), periods=config.PERIODS,
+        generated=generated, total=len(df), periods=UI_PERIODS,
         default_key=config.DEFAULT_PERIOD_KEY,
         rows=rows, sectors=sectors,
         sum_list=sum_list, sdef=sdef, up_by_period=json.dumps(up_by_period),
         etf_json=etf_json,
         top_name=top["name"], top_score=_fmt(top["score"], 1),
-        w=w, w_total=sum(w.values()),
+        w=w, w_total=sum(w.values()), trans_w=config.TRANSITION_WEIGHT,
     )
     tmp = config.DASHBOARD_HTML + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
