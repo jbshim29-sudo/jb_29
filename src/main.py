@@ -78,10 +78,12 @@ def main():
                 log(f"  진행 {done}/{len(constituents)}")
 
     log(f"수집 완료 {len(records)}개. 시장 데이터(지수·ETF) 수집 중...")
+    etf_list = fetch_market.fetch_etf_list(sess)
     market = {
         "index": fetch_market.fetch_index(sess),
-        "etfs": fetch_market.fetch_theme_etfs(sess),
+        "etf_list": etf_list,
     }
+    log(f"  지수 + 국내 ETF {len(etf_list)}개 수집")
 
     log("스코어 계산 중...")
     df = score_mod.compute_scores(records)

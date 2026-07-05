@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """HTML 대시보드 생성: 전체 랭킹(기간탭) + 업종별 TOP3 + 스코어 설명."""
+import json
 import math
 import os
 import sys
@@ -116,6 +117,13 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   .etf .foot { display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#9aa2ad; }
   .etf .track { background:#eef1f5; border-radius:5px; height:8px; margin-top:8px; overflow:hidden; }
   .etf .track .fill { height:100%; background:linear-gradient(90deg,#f6c65a,#e08a2e); border-radius:5px; }
+  /* ETF 페이지 탭 */
+  .etfTabs { display:flex; gap:8px; align-items:center; margin-bottom:16px; }
+  .etfTab { background:#fff; border:1px solid #cfd6df; color:#333; padding:8px 16px; border-radius:8px; font-size:13.5px; cursor:pointer; font-weight:600; }
+  .etfTab.active { background:#0f2540; color:#fff; border-color:#0f2540; }
+  .etfNote { font-size:12px; color:#9aa2ad; margin-left:6px; }
+  .levTag { font-size:10px; background:#fbeaea; color:#c0392b; padding:1px 5px; border-radius:4px; margin-left:4px; }
+  .etfTable td.l .nm { font-weight:600; }
 </style>
 </head>
 <body>
@@ -128,6 +136,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   <button class="navTab active" data-v="summary" onclick="showView('summary')">📊 요약 대시보드</button>
   <button class="navTab" data-v="rank" onclick="showView('rank')">💎 저평가 전체 랭킹</button>
   <button class="navTab" data-v="sector" onclick="showView('sector')">🏭 업종별 TOP3</button>
+  <button class="navTab" data-v="etf" onclick="showView('etf')">📦 ETF 등락률</button>
   <button class="navTab" data-v="score" onclick="showView('score')">📐 스코어 산정 방식</button>
 </div>
 
@@ -144,86 +153,99 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     <div class="statRow">
       <div class="stat">
         <div class="t">KOSPI 200 지수</div>
-        <div class="v">{{ summary.index.value }}</div>
-        <div class="s {{ 'up' if summary.index.up else 'down' }}">{{ '▲' if summary.index.up else '▼' }} {{ summary.index.change }} ({{ summary.index.rate }}%)</div>
+        <div class="v">{{ sdef.index.value }}</div>
+        <div class="s {{ 'up' if sdef.index.up else 'down' }}">{{ '▲' if sdef.index.up else '▼' }} {{ sdef.index.change }} ({{ sdef.index.rate }}%)</div>
       </div>
       <div class="stat">
-        <div class="t">상승 종목 비율 ({{ summary.period_label }} 누적)</div>
-        <div class="v">{{ summary.up_cnt }} <span class="u">/ {{ summary.total }}</span></div>
-        <div class="s {{ 'up' if summary.up_cnt*2 >= summary.total else 'down' }}">{{ '상승 우위 시장' if summary.up_cnt*2 >= summary.total else '하락 우위 시장' }}</div>
+        <div class="t">상승 종목 비율 (<span id="sumPlabel">{{ sdef.period_label }}</span> 누적)</div>
+        <div class="v"><span id="sumUp">{{ sdef.up_cnt }}</span> <span class="u">/ {{ sdef.total }}</span></div>
+        <div class="s" id="sumBreadth">시장 폭</div>
       </div>
       <div class="stat">
         <div class="t">평균 PER</div>
-        <div class="v">{{ summary.avg_per }}<span class="u">배</span></div>
-        <div class="s">중앙값 {{ summary.med_per }}배</div>
+        <div class="v">{{ sdef.avg_per }}<span class="u">배</span></div>
+        <div class="s">중앙값 {{ sdef.med_per }}배</div>
       </div>
       <div class="stat">
         <div class="t">평균 PBR</div>
-        <div class="v">{{ summary.avg_pbr }}<span class="u">배</span></div>
-        <div class="s">중앙값 {{ summary.med_pbr }}배</div>
+        <div class="v">{{ sdef.avg_pbr }}<span class="u">배</span></div>
+        <div class="s">중앙값 {{ sdef.med_pbr }}배</div>
       </div>
     </div>
 
+    {% for pkey, s in sum_list %}
+    <div class="sumBlock" data-k="{{ pkey }}" style="display:none">
+      <div class="panels">
+        <div class="panel">
+          <div class="ph"><b>💡 유망종목 TOP 10</b><span class="hint">종합 스코어 상위 · {{ s.period_label }} 누적상승률</span></div>
+          <div class="pb">
+            <table class="t10">
+              <thead><tr><th class="l">#</th><th class="l">종목 / 섹터</th><th>누적상승률</th><th>PER</th><th>PBR</th><th>시그널</th></tr></thead>
+              <tbody>
+              {% for r in s.top10 %}
+                <tr>
+                  <td class="l rk">{{ r.rank }}</td>
+                  <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.name }}</a></span><span class="sec">{{ r.industry }}</span></td>
+                  <td class="sret {{ 'up' if r.ret_raw is not none and r.ret_raw>0 else 'down' }}">{{ r.ret }}</td>
+                  <td>{{ r.per }}</td><td>{{ r.pbr }}</td>
+                  <td><span class="sig {{ r.sig_class }}">{{ r.sig }}</span></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="ph"><b>🏭 섹터 강도 랭킹</b><span class="hint">{{ s.period_label }} 평균 상승률 기준</span></div>
+          <div class="pb">
+            {% for sc in s.sectors %}
+            <div class="sbar">
+              <div class="nm">{{ sc.name }}<small>평균 {{ sc.avg }}</small></div>
+              <div class="track"><div class="fill {{ 'pos' if sc.pos else 'neg' }}" style="width:{{ sc.width }}%"></div></div>
+              <div class="sc">{{ sc.strength }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="ph"><b>🫧 밸류에이션 맵 — PER vs {{ s.period_label }} 누적상승률</b><span class="hint">버블 크기 = 시가총액</span></div>
+        <div class="bubbleWrap">{{ s.svg }}</div>
+        <div class="blegend">
+          <span><i style="background:#d9534f"></i>상승 종목</span>
+          <span><i style="background:#3b7dd8"></i>하락 종목</span>
+          <span><i style="background:#e0a92e"></i>유망 구간 (저PER + 상승)</span>
+          <span>버블 크기 = 시가총액</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="foot">⚠️ 개인 투자 참고용(네이버 금융 공개 데이터 가공). 누적상승률은 상단에서 선택한 기간 기준입니다. 투자 판단·책임은 이용자 본인에게 있습니다.</div>
+  </div>
+
+  <!-- ============ ETF 등락률 ============ -->
+  <div class="view" id="view-etf" style="display:none">
+    <div class="etfTabs">
+      <button class="etfTab active" data-c="total" onclick="renderEtf('total')">토탈</button>
+      <button class="etfTab" data-c="lev" onclick="renderEtf('lev')">레버리지 / 인버스</button>
+      <button class="etfTab" data-c="normal" onclick="renderEtf('normal')">일반</button>
+      <span class="etfNote" id="etfCount"></span>
+    </div>
     <div class="panels">
       <div class="panel">
-        <div class="ph"><b>💡 유망종목 TOP 10</b><span class="hint">종합 스코어 상위 · {{ summary.period_label }} 누적상승률</span></div>
-        <div class="pb">
-          <table class="t10">
-            <thead><tr><th class="l">#</th><th class="l">종목 / 섹터</th><th>누적상승률</th><th>PER</th><th>PBR</th><th>시그널</th></tr></thead>
-            <tbody>
-            {% for r in summary.top10 %}
-              <tr>
-                <td class="l rk">{{ r.rank }}</td>
-                <td class="l"><span class="nm"><a class="code" href="https://finance.naver.com/item/main.naver?code={{ r.code }}" target="_blank">{{ r.name }}</a></span><span class="sec">{{ r.industry }}</span></td>
-                <td class="sret {{ 'up' if r.ret_raw is not none and r.ret_raw>0 else 'down' }}">{{ r.ret }}</td>
-                <td>{{ r.per }}</td><td>{{ r.pbr }}</td>
-                <td><span class="sig {{ r.sig_class }}">{{ r.sig }}</span></td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
+        <div class="ph"><b>📈 상승률 상위</b><span class="hint">일간 등락률 기준 · 국내 주식형 ETF</span></div>
+        <div class="pb"><table class="t10 etfTable"><thead><tr>
+          <th class="l">#</th><th class="l">ETF</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
+        </tr></thead><tbody id="etfUp"></tbody></table></div>
       </div>
-
       <div class="panel">
-        <div class="ph"><b>🏭 섹터 강도 랭킹</b><span class="hint">{{ summary.period_label }} 평균 상승률 기준</span></div>
-        <div class="pb">
-          {% for s in summary.sectors %}
-          <div class="sbar">
-            <div class="nm">{{ s.name }}<small>평균 {{ s.avg }}</small></div>
-            <div class="track"><div class="fill {{ 'pos' if s.pos else 'neg' }}" style="width:{{ s.width }}%"></div></div>
-            <div class="sc">{{ s.strength }}</div>
-          </div>
-          {% endfor %}
-        </div>
+        <div class="ph"><b>📉 하락률 상위</b><span class="hint">일간 등락률 기준 · 국내 주식형 ETF</span></div>
+        <div class="pb"><table class="t10 etfTable"><thead><tr>
+          <th class="l">#</th><th class="l">ETF</th><th>현재가</th><th>일간</th><th>3개월</th><th>거래대금</th>
+        </tr></thead><tbody id="etfDown"></tbody></table></div>
       </div>
     </div>
-
-    <div class="panel" style="margin-bottom:16px">
-      <div class="ph"><b>🫧 밸류에이션 맵 — PER vs {{ summary.period_label }} 누적상승률</b><span class="hint">버블 크기 = 시가총액</span></div>
-      <div class="bubbleWrap">{{ summary.svg }}</div>
-      <div class="blegend">
-        <span><i style="background:#d9534f"></i>상승 종목</span>
-        <span><i style="background:#3b7dd8"></i>하락 종목</span>
-        <span><i style="background:#e0a92e"></i>유망 구간 (저PER + 상승)</span>
-        <span>버블 크기 = 시가총액</span>
-      </div>
-    </div>
-
-    <div class="panel" style="border:0;box-shadow:none;background:transparent">
-      <div class="ph" style="border:0;padding-left:2px"><b>📦 ETF 테마 강도 — 누적수익률(3개월) 기준</b><span class="hint">거래대금 상위 국내 테마 ETF</span></div>
-      <div class="etfGrid">
-        {% for e in summary.etfs %}
-        <div class="etf">
-          <div class="en">{{ e.name }}</div><span class="tag">{{ e.tag }}</span>
-          <div class="er {{ 'up' if e.up else 'down' }}">{{ e.rate }}</div>
-          <div class="foot"><span>거래대금 {{ e.amount }}</span></div>
-          <div class="track"><div class="fill" style="width:{{ e.width }}%"></div></div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    <div class="foot">⚠️ 개인 투자 참고용(네이버 금융 공개 데이터 가공). 누적상승률은 <b>{{ summary.period_label }}</b> 기준입니다. 투자 판단·책임은 이용자 본인에게 있습니다.</div>
+    <div class="foot">⚠️ 개인 투자 참고용. 국내 주식형 ETF(시장지수·업종/테마·레버리지/인버스) 중 유동성 있는 종목만 표시. 일간 등락률·3개월 수익률은 네이버 금융 기준입니다.</div>
   </div>
 
   <!-- ============ 전체 랭킹 ============ -->
@@ -362,14 +384,55 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     document.querySelectorAll('.view').forEach(function(x){ x.style.display='none'; });
     document.getElementById('view-'+v).style.display='block';
     document.querySelectorAll('.navTab').forEach(function(b){ b.classList.toggle('active', b.dataset.v===v); });
-    document.getElementById('periodBar').style.display = (v==='score' || v==='summary') ? 'none' : 'flex';
+    document.getElementById('periodBar').style.display = (v==='score' || v==='etf') ? 'none' : 'flex';
+    if(v==='etf' && !document.getElementById('etfUp').innerHTML){ renderEtf('total'); }
   }
+
+  // ---- ETF 페이지 ----
+  var ETFS = {{ etf_json }};
+  function etfPct(v){ if(v===null||v===undefined) return '-'; return (v>0?'+':'')+v.toFixed(2)+'%'; }
+  function etfAmt(v){ if(v===null||v===undefined) return '-'; return v>=10000?(v/10000).toFixed(1)+'조':Math.round(v).toLocaleString()+'억'; }
+  function etfRow(e,i){
+    var lev = e.lev ? ' <span class="levTag">레버리지</span>' : '';
+    var chgc = e.chg>0?'sret up':(e.chg<0?'sret down':'');
+    var r3c = (e.r3m>0)?'sret up':((e.r3m<0)?'sret down':'');
+    return '<tr><td class="l rk">'+(i+1)+'</td>'+
+      '<td class="l"><span class="nm"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+e.code+'">'+e.name+'</a></span>'+lev+'</td>'+
+      '<td>'+(e.now?e.now.toLocaleString():'-')+'</td>'+
+      '<td class="'+chgc+'">'+etfPct(e.chg)+'</td>'+
+      '<td class="'+r3c+'">'+etfPct(e.r3m)+'</td>'+
+      '<td>'+etfAmt(e.amt)+'</td></tr>';
+  }
+  function renderEtf(cat){
+    document.querySelectorAll('.etfTab').forEach(function(b){ b.classList.toggle('active', b.dataset.c===cat); });
+    var list = ETFS.filter(function(e){ return cat==='total' ? true : (cat==='lev'?e.lev:!e.lev); });
+    var withChg = list.filter(function(e){ return e.chg!==null && e.chg!==undefined; });
+    var up = withChg.slice().sort(function(a,b){ return b.chg-a.chg; }).slice(0,20);
+    var down = withChg.slice().sort(function(a,b){ return a.chg-b.chg; }).slice(0,20);
+    document.getElementById('etfUp').innerHTML = up.map(etfRow).join('');
+    document.getElementById('etfDown').innerHTML = down.map(etfRow).join('');
+    var c=document.getElementById('etfCount'); if(c) c.textContent='총 '+list.length+'개';
+  }
+  var SUM_UP = {{ up_by_period }};
+  var SUM_TOTAL = {{ sdef.total }};
+
   function numAttr(tr, attr){ var v=tr.getAttribute(attr); return (v===null||v==='')?null:parseFloat(v); }
 
   function applyPeriod(key){
     document.querySelectorAll('.periodTab').forEach(function(b){ b.classList.toggle('active', b.dataset.k===key); });
+    var plabel='';
+    document.querySelectorAll('.periodTab').forEach(function(b){ if(b.dataset.k===key) plabel=b.textContent; });
     var lab=document.getElementById('periodLabel');
-    document.querySelectorAll('.periodTab').forEach(function(b){ if(b.dataset.k===key && lab) lab.textContent=b.textContent; });
+    if(lab) lab.textContent=plabel;
+
+    // 요약 대시보드: 기간 블록 토글 + 상승비율 카드 갱신
+    document.querySelectorAll('.sumBlock').forEach(function(b){ b.style.display = (b.dataset.k===key)?'block':'none'; });
+    var su=document.getElementById('sumUp'), sl=document.getElementById('sumPlabel'), sb=document.getElementById('sumBreadth');
+    if(sl) sl.textContent=plabel;
+    if(su && SUM_UP[key]!==undefined){
+      var uc=SUM_UP[key]; su.textContent=uc;
+      if(sb){ var win=uc*2>=SUM_TOTAL; sb.textContent=win?'상승 우위 시장':'하락 우위 시장'; sb.className='s '+(win?'up':'down'); }
+    }
 
     // 1) 모든 표의 등락/추세 셀 갱신 (랭킹 + 업종별)
     document.querySelectorAll('.dyn-row').forEach(function(tr){
@@ -646,25 +709,29 @@ def _prepare_summary(df, market, period_key):
             "strength": int(row["strength"]), "width": max(6, int(row["strength"])),
         })
 
-    etfs = []
-    raw = market.get("etfs") or []
-    maxrate = max([abs(e["rate3m"]) for e in raw], default=1) or 1
-    for e in raw:
-        r3 = e["rate3m"]
-        etfs.append({
-            "name": e["name"], "tag": _etf_tag(e["name"]),
-            "rate": ("+" if r3 > 0 else "") + f"{r3:,.1f}%", "up": r3 >= 0,
-            "amount": _amount_fmt(e["amount_eok"]),
-            "width": max(6, int(abs(r3) / maxrate * 100)),
-        })
-
     return {
         "index": index, "up_cnt": up_cnt, "total": total, "period_label": plabel,
         "avg_per": _fmt(_trimmed_mean(per_v), 1), "med_per": _fmt(per_v.median(), 1),
         "avg_pbr": _fmt(_trimmed_mean(pbr_v), 2), "med_pbr": _fmt(pbr_v.median(), 2),
-        "top10": top10, "sectors": sectors, "etfs": etfs,
+        "top10": top10, "sectors": sectors,
         "svg": _bubble_svg(df, ret_col),
     }
+
+
+def _prepare_etf(market):
+    """ETF 페이지용 JSON 직렬화 가능한 목록."""
+    out = []
+    for e in (market.get("etf_list") or []):
+        out.append({
+            "name": e["name"], "code": e["code"],
+            "now": e.get("now"),
+            "chg": e.get("change_rate"),
+            "r3m": e.get("rate3m"),
+            "amt": e.get("amount_eok"),
+            "lev": bool(e.get("leverage")),
+            "tag": _etf_tag(e["name"]),
+        })
+    return out
 
 
 def build(df, generated, market=None):
@@ -690,11 +757,18 @@ def build(df, generated, market=None):
 
     top = df.iloc[0]
     w = config.SCORE_WEIGHTS
-    summary = _prepare_summary(df, market, config.DEFAULT_PERIOD_KEY)
+    # 기간별 요약 (기간 탭 반응용)
+    sum_list = [(key, _prepare_summary(df, market, key)) for _l, key, _d in config.PERIODS]
+    sum_map = dict(sum_list)
+    sdef = sum_map[config.DEFAULT_PERIOD_KEY]
+    up_by_period = {key: s["up_cnt"] for key, s in sum_list}
+    etf_json = json.dumps(_prepare_etf(market), ensure_ascii=False)
     html = TEMPLATE.render(
         generated=generated, total=len(df), periods=config.PERIODS,
         default_key=config.DEFAULT_PERIOD_KEY,
-        rows=rows, sectors=sectors, summary=summary,
+        rows=rows, sectors=sectors,
+        sum_list=sum_list, sdef=sdef, up_by_period=json.dumps(up_by_period),
+        etf_json=etf_json,
         top_name=top["name"], top_score=_fmt(top["score"], 1),
         w=w, w_total=sum(w.values()),
     )
