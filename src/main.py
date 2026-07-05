@@ -14,6 +14,7 @@ import naver
 import fetch_constituents
 import fetch_fundamentals
 import fetch_prices
+import fetch_news
 import score as score_mod
 import build_dashboard
 
@@ -41,6 +42,7 @@ def collect_one(code, name, industry_map):
     for key, val in rets.items():
         rec[f"ret_{key}"] = val
     rec["last_close"] = latest
+    rec["news_buzz"] = fetch_news.fetch_news_buzz(sess, code)
     return rec
 
 
@@ -80,8 +82,10 @@ def main():
     # CSV 저장 (최신 + 일자별 히스토리)
     day = datetime.now(KST).strftime("%Y%m%d")
     ret_cols = [f"ret_{key}" for _l, key, _d in config.PERIODS]
+    score_cols = [f"score_{k}" for k in config.SCORE_WEIGHTS]
     cols = ["rank", "code", "name", "industry", "score", "per", "pbr", "roe", "eps",
-            "op_profit", "op_growth", "market_cap_eok", "market_cap_rank"] + ret_cols
+            "op_profit", "op_growth", "peg_ratio", "momentum", "sector_mom",
+            "news_buzz", "market_cap_eok", "market_cap_rank"] + score_cols + ret_cols
     csv_cols = [c for c in cols if c in df.columns]
     df[csv_cols].to_csv(os.path.join(config.DATA_DIR, "latest.csv"), index=False, encoding="utf-8-sig")
     df[csv_cols].to_csv(os.path.join(config.DATA_DIR, f"{day}.csv"), index=False, encoding="utf-8-sig")

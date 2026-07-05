@@ -102,7 +102,8 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
           <th data-t="num">순위</th><th class="l" data-t="str">종목명</th><th class="l" data-t="str">코드</th>
           <th class="l" data-t="str">업종</th><th data-t="num">종합<br>스코어</th>
           <th data-t="num">PER</th><th data-t="num">PBR</th><th data-t="num">ROE(%)</th>
-          <th data-t="num">EPS</th><th data-t="num">영업이익<br>(억)</th><th data-t="num">영업이익<br>증가율(%)</th>
+          <th data-t="num">영업이익<br>증가율(%)</th><th data-t="num">모멘텀<br>(1·3개월)</th>
+          <th data-t="num">뉴스<br>(7일)</th>
           <th data-t="num">시총<br>순위</th><th data-t="num">등락(%)</th><th class="l" data-t="str">추세</th>
         </tr></thead>
         <tbody>
@@ -114,8 +115,9 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
             <td class="l">{{ r.industry }}</td>
             <td class="score">{{ r.score }}<span class="bar" style="width:{{ r.barw }}px"></span></td>
             <td>{{ r.per }}</td><td>{{ r.pbr }}</td><td>{{ r.roe }}</td>
-            <td>{{ r.eps }}</td><td>{{ r.op_profit }}</td>
             <td class="{{ 'pos' if r.op_growth_raw is not none and r.op_growth_raw>0 else ('neg' if r.op_growth_raw is not none and r.op_growth_raw<0 else '') }}">{{ r.op_growth }}</td>
+            <td class="{{ 'pos' if r.momentum_raw is not none and r.momentum_raw>0 else ('neg' if r.momentum_raw is not none and r.momentum_raw<0 else '') }}">{{ r.momentum }}</td>
+            <td>{{ r.news_buzz }}</td>
             <td>{{ r.market_cap_rank }}</td>
             <td class="retCell">-</td>
             <td class="l trendCell"></td>
@@ -163,46 +165,56 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   <div class="view" id="view-score" style="display:none">
     <div class="doc">
       <h2>종합 스코어는 어떻게 만들어졌나</h2>
-      <p>“저평가이면서 우량한” 종목을 하나의 숫자로 줄 세우기 위해, 성격이 다른 4개 지표를
-         <b>가치(저평가) · 수익성 · 성장성</b> 관점에서 골고루 반영했습니다.</p>
+      <p>초기 버전은 <b>저평가(가치) 지표만</b> 봤기 때문에, “싸지만 계속 빠지는” <b>가치 함정</b> 종목이
+         1위가 되는 문제가 있었습니다. 이를 바로잡기 위해 <b>가치 · 성장 · 추세(모멘텀) · 관심도</b>를
+         함께 보는 7개 팩터로 재설계했습니다. 싼 것만이 아니라 <b>싸면서 실적이 늘고, 주가가 돌기 시작하며,
+         업종·시장의 관심을 받는</b> 종목이 상위에 오도록 했습니다.</p>
 
-      <h2>1. 사용 지표와 방향</h2>
+      <h2>1. 7개 팩터와 방향</h2>
       <table class="wtable">
-        <tr><th>지표</th><th>관점</th><th>좋은 방향</th><th>가중치</th></tr>
-        <tr><td>PER (주가수익비율)</td><td>가치 / 저평가</td><td>낮을수록 ▲</td><td>{{ w.per }}</td></tr>
-        <tr><td>PBR (주가순자산비율)</td><td>가치 / 저평가</td><td>낮을수록 ▲</td><td>{{ w.pbr }}</td></tr>
-        <tr><td>ROE (자기자본이익률)</td><td>수익성 / 자본효율</td><td>높을수록 ▲</td><td>{{ w.roe }}</td></tr>
-        <tr><td>영업이익 증가율(전년比)</td><td>성장성 / 실적개선</td><td>높을수록 ▲</td><td>{{ w.op_growth }}</td></tr>
+        <tr><th>팩터</th><th>의미 / 반영한 요청</th><th>좋은 방향</th><th>가중치</th></tr>
+        <tr><td>PER</td><td>가치 · 저평가</td><td>낮을수록 ▲</td><td>{{ w.per }}</td></tr>
+        <tr><td>PBR</td><td>가치 · 저평가</td><td>낮을수록 ▲</td><td>{{ w.pbr }}</td></tr>
+        <tr><td>ROE</td><td>수익성 · 자본효율</td><td>높을수록 ▲</td><td>{{ w.roe }}</td></tr>
+        <tr><td>성장대비 저평가 (PEG류)</td><td>영업이익 증가율 대비 아직 싼가 = 영업이익증가율 ÷ PER</td><td>높을수록 ▲</td><td>{{ w.peg }}</td></tr>
+        <tr><td>가격 모멘텀</td><td>최근 1·3개월 상승 추세 (하락 종목 감점 = 가치함정 회피)</td><td>높을수록 ▲</td><td>{{ w.momentum }}</td></tr>
+        <tr><td>업종 모멘텀</td><td>같은 업종의 평균 상승 (뜨는 업종 우대)</td><td>높을수록 ▲</td><td>{{ w.sector_mom }}</td></tr>
+        <tr><td>대형주 상승 보너스</td><td>시가총액 상위 종목이 오를 때 가점 (시총순위 × 모멘텀)</td><td>높을수록 ▲</td><td>{{ w.largecap_mom }}</td></tr>
+        <tr><td>뉴스 버즈</td><td>최근 7일 기사량 = 시장 관심도/전망 프록시</td><td>많을수록 ▲</td><td>{{ w.news_buzz }}</td></tr>
       </table>
-      <p>PER·PBR은 “싼가”를, ROE는 “돈을 잘 버는가”를, 영업이익 증가율은 “좋아지고 있는가”를 봅니다.
-         저평가 함정(싸지만 부실한 기업)을 피하기 위해 수익성·성장성을 함께 넣었습니다.</p>
 
-      <h2>2. 백분위(퍼센타일) 정규화</h2>
-      <p>PER(배), ROE(%), 증가율(%)은 단위와 범위가 제각각이라 그대로 더할 수 없습니다.
-         그래서 각 지표를 <b>KOSPI 200 유니버스 안에서의 순위 백분위(0~100점)</b>로 변환합니다.
-         예를 들어 PER이 전체 종목 중 가장 낮으면(가장 싸면) PER 항목에서 100점에 가깝습니다.
-         이렇게 하면 모든 지표가 “동일한 0~100 척도”가 되어 공정하게 합산됩니다.</p>
+      <h2>2. 각 팩터가 반영한 요청</h2>
+      <ul>
+        <li><b>① 최근 상승하는 업종 우대</b> → <b>업종 모멘텀</b> 팩터 (같은 업종 종목들의 평균 상승률).</li>
+        <li><b>② 시총 큰 종목이 크게 오를 때 가점</b> → <b>대형주 상승 보너스</b> (시가총액 백분위 × 모멘텀).</li>
+        <li><b>③ 영업이익 증가율 대비 저평가</b> → <b>성장대비 저평가(PEG류)</b> = 영업이익증가율 ÷ PER. 성장은 큰데 아직 싼 종목일수록 고득점.</li>
+        <li><b>④ 전망 좋은/관심 많은 업종·업체</b> → <b>뉴스 버즈</b> (네이버 최근 기사량). ※ 기사 “내용의 긍정/부정”까지는 아직 판단하지 않고, 관심도(양)만 반영합니다.</li>
+        <li>추가로 <b>가격 모멘텀</b>을 넣어, 아무리 싸도 <b>주가가 계속 빠지는 종목은 감점</b>되도록 했습니다(핵심 개선).</li>
+      </ul>
 
-      <h2>3. 종합 점수 계산</h2>
+      <h2>3. 백분위 정규화 & 합산</h2>
+      <p>단위가 제각각인 팩터(PER 배, ROE %, 기사 수 …)를 그대로 더할 수 없어,
+         각 팩터를 <b>KOSPI 200 안에서의 순위 백분위(0~100점)</b>로 변환한 뒤 가중 평균합니다.</p>
       <div class="formula">
-        종합 스코어 = ( PER점수×{{ w.per }} + PBR점수×{{ w.pbr }} + ROE점수×{{ w.roe }} + 영업이익증가율점수×{{ w.op_growth }} ) ÷ {{ w_total }}
+        종합 스코어 = Σ ( 팩터별 백분위점수 × 가중치 ) ÷ {{ w_total }}&nbsp;&nbsp;→ 0~100
       </div>
-      <p>각 항목 점수는 0~100의 백분위이며, 가중 평균이므로 종합 스코어도 0~100입니다. 높을수록 투자 우선순위가 앞섭니다.</p>
+      <p>높을수록 투자 우선순위가 앞섭니다. 가격/업종 모멘텀 컬럼은 랭킹 표에서 직접 확인할 수 있습니다.</p>
 
       <h2>4. 예외 처리</h2>
       <ul>
-        <li>PER·PBR이 <b>0 이하</b>(적자·자본잠식)이거나 값이 없으면 해당 지표는 <b>최하위(0점)</b>로 처리합니다. (음수 PER을 “싸다”고 오인하지 않도록)</li>
-        <li>최신 <b>영업이익이 적자</b>인 종목은 증가율 지표를 0점 처리합니다.</li>
-        <li>결측치는 해당 항목만 0점이 되고 나머지 지표는 정상 반영됩니다.</li>
+        <li>PER·PBR이 <b>0 이하</b>(적자·자본잠식)이거나 결측이면 해당 팩터 <b>최하위(0점)</b>.</li>
+        <li>PEG는 <b>PER·영업이익증가율이 모두 양수</b>일 때만 계산(그 외 0점).</li>
+        <li>모멘텀·업종모멘텀·뉴스 등 결측치는 해당 팩터만 0점, 나머지는 정상 반영.</li>
       </ul>
 
       <h2>5. 한계와 올바른 사용</h2>
       <ul>
-        <li>이 점수는 <b>상대평가</b>입니다. 시장 전체가 고평가여도 “상대적으로 나은” 순위는 나옵니다.</li>
-        <li>업종마다 적정 PER·ROE 수준이 다릅니다. 이를 보완하려면 <b>업종별 TOP3</b> 시트를 함께 보세요.</li>
-        <li>재무는 과거 확정 실적 기준이며, 미래 실적·재료·수급은 반영되지 않습니다. <b>참고 지표</b>로만 활용하세요.</li>
+        <li><b>상대평가</b>입니다. 시장 전체가 하락해도 “상대적으로 나은” 순위는 나옵니다.</li>
+        <li>뉴스 버즈는 <b>기사 수(관심도)</b>일 뿐, 호재/악재 방향은 구분하지 않습니다. 상위 종목은 실제 기사를 직접 확인하세요.</li>
+        <li>모멘텀 비중이 커진 만큼 <b>단기 추세에 민감</b>합니다. 급등 후 고점 매수 위험에 유의하세요.</li>
+        <li>과거 확정 실적·최근 주가 기반이며 미래를 보장하지 않습니다. <b>참고 지표</b>로만 활용하세요.</li>
       </ul>
-      <p>가중치는 <code>config.py</code>의 <code>SCORE_WEIGHTS</code>에서 자유롭게 조정할 수 있으며, 변경 후 재실행하면 이 페이지의 숫자도 함께 갱신됩니다.</p>
+      <p>가중치는 <code>config.py</code>의 <code>SCORE_WEIGHTS</code>에서 조정할 수 있고, 변경 후 재실행하면 이 페이지 숫자도 함께 갱신됩니다.</p>
     </div>
   </div>
 </div>
@@ -301,6 +313,9 @@ def _row_view(r, max_score):
         "op_growth": _fmt(r["op_growth"], 1),
         "op_growth_raw": None if pd.isna(r["op_growth"]) else float(r["op_growth"]),
         "market_cap_rank": _fmt(None if pd.isna(r["market_cap_rank"]) else int(r["market_cap_rank"])),
+        "momentum": _fmt(r.get("momentum"), 1),
+        "momentum_raw": None if pd.isna(r.get("momentum")) else float(r.get("momentum")),
+        "news_buzz": _fmt(None if pd.isna(r.get("news_buzz")) else int(r.get("news_buzz"))),
         "rets": _rets_dict(r),
     }
 
