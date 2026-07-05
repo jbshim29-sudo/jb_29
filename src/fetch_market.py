@@ -62,7 +62,8 @@ def fetch_etf_list(session, min_amount_eok=30):
     return out
 
 
-ETF_PERIODS = [("당일", "d1", 1), ("1주일", "w1", 5), ("1개월", "m1", 20), ("3개월", "m3", 60)]
+ETF_PERIODS = [("당일", "d1", 1), ("1주", "w1", 5), ("2주", "w2", 10),
+               ("3주", "w3", 15), ("1개월", "m1", 20), ("3개월", "m3", 60)]
 _ETF_PRICE_URL = "https://m.stock.naver.com/api/stock/{code}/price?pageSize=60&page=1"
 
 

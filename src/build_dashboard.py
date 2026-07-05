@@ -264,7 +264,9 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     <div class="etfTabs">
       <span style="font-size:12px;color:#8a93a0;margin-right:2px;align-self:center">기간</span>
       <button class="etfPTab active" data-p="d1" onclick="etfSetPeriod('d1')">당일</button>
-      <button class="etfPTab" data-p="w1" onclick="etfSetPeriod('w1')">1주일</button>
+      <button class="etfPTab" data-p="w1" onclick="etfSetPeriod('w1')">1주</button>
+      <button class="etfPTab" data-p="w2" onclick="etfSetPeriod('w2')">2주</button>
+      <button class="etfPTab" data-p="w3" onclick="etfSetPeriod('w3')">3주</button>
       <button class="etfPTab" data-p="m1" onclick="etfSetPeriod('m1')">1개월</button>
       <button class="etfPTab" data-p="m3" onclick="etfSetPeriod('m3')">3개월</button>
     </div>
@@ -816,7 +818,7 @@ def _prepare_etf(market):
             "lev": bool(e.get("leverage")),
             "sc": None if pd.isna(e.get("sc")) else int(e.get("sc")),
             "rets": {k: (None if rets.get(k) is None else float(rets.get(k)))
-                     for k in ["d1", "w1", "m1", "m3"]},
+                     for k in ["d1", "w1", "w2", "w3", "m1", "m3"]},
         })
     return out
 
