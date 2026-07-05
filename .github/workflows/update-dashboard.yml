@@ -2,9 +2,9 @@ name: Update KOSPI200 dashboard
 
 on:
   schedule:
-    # cron은 UTC 기준. 한국시간(KST=UTC+9) 평일 08:00~20:00 매시간.
-    - cron: "0 23 * * 0-4"    # KST 08:00 (월~금)
-    - cron: "0 0-11 * * 1-5"  # KST 09:00~20:00 (월~금)
+    # cron은 UTC 기준. 한국시간(KST=UTC+9) 평일 08:00~20:45, 15분 간격.
+    - cron: "*/15 23 * * 0-4"    # KST 08:00~08:45 (월~금)
+    - cron: "*/15 0-11 * * 1-5"  # KST 09:00~20:45 (월~금)
   workflow_dispatch: {}       # 수동 실행 버튼
 
 permissions:
