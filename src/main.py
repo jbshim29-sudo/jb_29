@@ -17,6 +17,7 @@ import fetch_prices
 import fetch_news
 import fetch_market
 import score as score_mod
+import portfolio
 import build_dashboard
 
 KST = timezone(timedelta(hours=9))
@@ -97,6 +98,13 @@ def main():
     log("스코어 계산 중...")
     df = score_mod.compute_scores(records)
 
+    # 모의투자(test 페이지) 상태 갱신
+    paper = portfolio.update(df)
+    if paper.get("established"):
+        log(f"모의투자 추적 중 (매수일 {paper.get('buy_date')})")
+    else:
+        log(f"모의투자 매수 대기 (시작 예정일 {paper.get('start_date')})")
+
     # CSV 저장 (최신 + 일자별 히스토리)
     day = datetime.now(KST).strftime("%Y%m%d")
     ret_cols = [f"ret_{key}" for _l, key, _d in config.PERIODS]
@@ -109,7 +117,7 @@ def main():
     df[csv_cols].to_csv(os.path.join(config.DATA_DIR, f"{day}.csv"), index=False, encoding="utf-8-sig")
 
     generated = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
-    path = build_dashboard.build(df, generated, market)
+    path = build_dashboard.build(df, generated, market, paper)
     log(f"대시보드 생성: {path}")
 
     # GitHub Pages용 사본 (docs/index.html)

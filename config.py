@@ -11,6 +11,9 @@ DASHBOARD_HTML = os.path.join(OUTPUT_DIR, "dashboard.html")
 # GitHub Pages 서빙용 (main 브랜치 /docs). 클라우드 루틴이 이 파일을 커밋한다.
 DOCS_DIR = os.path.join(BASE_DIR, "docs")
 DOCS_HTML = os.path.join(DOCS_DIR, "index.html")
+# 모의투자 상태 저장(추적 지속을 위해 저장소에 커밋되는 파일)
+STATE_DIR = os.path.join(BASE_DIR, "state")
+PORTFOLIO_FILE = os.path.join(STATE_DIR, "portfolios.json")
 
 # ---- 네트워크 ----
 USER_AGENT = (
@@ -68,3 +71,15 @@ NEWS_RECENT_DAYS = 7          # 최근 N일 기사 수를 버즈로 집계
 NEWS_PAGE_SIZE = 20           # 뉴스 API 한 페이지 클러스터 수
 
 # 스코어가 높을수록(=저평가+성장+추세+관심) 투자 우선순위 상위.
+
+# ---- 모의투자(test 페이지) ----
+# 각 기간 유망종목 TOP10을 종목당 1천만원씩 매수했다고 가정하고 수익률을 지속 추적.
+PAPER_START_DATE = "2026-07-06"       # 이 날짜(장중 9시 이후) 첫 실행에 매수가를 고정
+PAPER_AMOUNT_PER_STOCK = 10_000_000   # 종목당 매수 금액(원)
+PAPER_TOP_N = 10                      # 기간별 상위 몇 종목
+PAPER_HISTORY_CAP = 2000             # 기간별 수익률 히스토리 최대 보관 포인트
+# (표시라벨, pscore 키) — 요약 유망종목 TOP10과 동일 기준
+PAPER_PERIODS = [
+    ("당일", "d1"), ("최근 3일", "d3"), ("최근 1주일", "w1"), ("최근 2주일", "w2"),
+    ("최근 1개월", "m1"), ("최근 3개월", "m3"), ("최근 6개월", "m6"),
+]

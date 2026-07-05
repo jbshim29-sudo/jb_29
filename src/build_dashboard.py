@@ -174,6 +174,7 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
   <button class="navTab" data-v="sector" onclick="showView('sector')">🏭 업종별 TOP3</button>
   <button class="navTab" data-v="etf" onclick="showView('etf')">📦 ETF 등락률</button>
   <button class="navTab" data-v="score" onclick="showView('score')">📐 스코어 산정 방식</button>
+  <button class="navTab" data-v="test" onclick="showView('test')">🧪 test (모의투자)</button>
 </div>
 
 <div class="periodBar" id="periodBar">
@@ -409,6 +410,21 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
       <p>가중치는 <code>config.py</code>의 <code>SCORE_WEIGHTS</code>에서 조정할 수 있고, 변경 후 재실행하면 이 페이지 숫자도 함께 갱신됩니다.</p>
     </div>
   </div>
+
+  <!-- ============ test (모의투자) ============ -->
+  <div class="view" id="view-test" style="display:none">
+    <h2>🧪 유망종목 모의투자 추적</h2>
+    <p style="font-size:13px;color:#667;margin:-4px 0 12px">
+      각 기간의 <b>유망종목 TOP{{ paper_topn }}</b>을 <b>{{ paper_start }}</b>부터 종목당 <b>1천만원</b>씩(기간당 1억원) 매수했다고 가정하고 수익률을 지속 추적합니다.
+    </p>
+    <div class="etfTabs" id="paperTabs">
+      {% for label, key in paper_periods %}
+      <button class="etfPTab{{ ' active' if loop.first else '' }}" data-p="{{ key }}" onclick="paperSel('{{ key }}')">{{ label }}</button>
+      {% endfor %}
+    </div>
+    <div id="paperBody"></div>
+    <div class="foot">⚠️ 실제 매매가 아닌 <b>모의(페이퍼) 투자</b>입니다. 매수가는 추적 시작 시점의 종가 기준이며, 수수료·세금·슬리피지는 반영하지 않습니다. 참고용입니다.</div>
+  </div>
 </div>
 
 <script>
@@ -416,8 +432,9 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
     document.querySelectorAll('.view').forEach(function(x){ x.style.display='none'; });
     document.getElementById('view-'+v).style.display='block';
     document.querySelectorAll('.navTab').forEach(function(b){ b.classList.toggle('active', b.dataset.v===v); });
-    document.getElementById('periodBar').style.display = (v==='score' || v==='etf') ? 'none' : 'flex';
+    document.getElementById('periodBar').style.display = (v==='score' || v==='etf' || v==='test') ? 'none' : 'flex';
     if(v==='etf' && !document.getElementById('etfUp').innerHTML){ renderEtf(); }
+    if(v==='test' && !document.getElementById('paperBody').innerHTML){ renderPaper(paperCur); }
   }
 
   // ---- 업종별 종목 등락률 ----
@@ -457,6 +474,69 @@ TEMPLATE = Template(r"""<!DOCTYPE html>
         ' <span class="secAvg '+avgCls+'">평균 '+avgTxt+'</span></h3>'+
         '<div class="stList">'+rows+'</div></div>';
     }).join('');
+  }
+
+  // ---- test 모의투자 ----
+  var PAPER = {{ paper_json }};
+  var paperCur = "{{ paper_periods[0][1] }}";
+  function wonC(n){
+    n=Math.round(n||0); var s=n<0?'-':''; n=Math.abs(n);
+    if(n>=100000000){ var eok=Math.floor(n/100000000), man=Math.floor((n%100000000)/10000); return s+eok+'억'+(man?' '+man.toLocaleString()+'만':'')+'원'; }
+    if(n>=10000){ var m=Math.floor(n/10000), rem=n%10000; return s+m.toLocaleString()+'만'+(rem?' '+rem.toLocaleString():'')+'원'; }
+    return s+n.toLocaleString()+'원';
+  }
+  function pcT(v){ return (v>0?'+':'')+(v==null?0:v).toFixed(2)+'%'; }
+  function updn(v){ return v>0?'up':(v<0?'down':''); }
+  function paperChart(hist){
+    if(!hist || hist.length<2) return '<div style="padding:26px;text-align:center;color:#9aa2ad;font-size:13px">수익률 추이는 데이터가 쌓이면 표시됩니다.</div>';
+    var W=900,H=200,ML=44,MR=16,MT=14,MB=22,x0=ML,x1=W-MR,y0=MT,y1=H-MB;
+    var rets=hist.map(function(p){return p.ret;});
+    var mn=Math.min(0,Math.min.apply(null,rets)), mx=Math.max(0,Math.max.apply(null,rets));
+    if(mx-mn<0.5){ mx+=0.5; mn-=0.5; }
+    function sx(i){ return x0+(hist.length<=1?0:i/(hist.length-1))*(x1-x0); }
+    function sy(v){ return y0+(1-(v-mn)/(mx-mn))*(y1-y0); }
+    var yz=sy(0), last=rets[rets.length-1];
+    var col=last>0?'#c0392b':(last<0?'#2563d1':'#8a93a0');
+    var pts=hist.map(function(p,i){return sx(i).toFixed(1)+','+sy(p.ret).toFixed(1);}).join(' ');
+    var o=['<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto">'];
+    o.push('<line x1="'+x0+'" y1="'+yz.toFixed(1)+'" x2="'+x1+'" y2="'+yz.toFixed(1)+'" stroke="#d7dde4"/>');
+    o.push('<text x="'+(x0-6)+'" y="'+(yz+4).toFixed(1)+'" font-size="10" fill="#9aa2ad" text-anchor="end">0%</text>');
+    o.push('<text x="'+(x0-6)+'" y="'+(sy(mx)+8).toFixed(1)+'" font-size="10" fill="#9aa2ad" text-anchor="end">'+mx.toFixed(1)+'</text>');
+    o.push('<text x="'+(x0-6)+'" y="'+(sy(mn)).toFixed(1)+'" font-size="10" fill="#9aa2ad" text-anchor="end">'+mn.toFixed(1)+'</text>');
+    o.push('<polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2"/>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function paperSel(k){ renderPaper(k); }
+  function renderPaper(pkey){
+    paperCur=pkey;
+    document.querySelectorAll('#paperTabs .etfPTab').forEach(function(b){ b.classList.toggle('active', b.dataset.p===pkey); });
+    var body=document.getElementById('paperBody');
+    if(!PAPER.established){
+      body.innerHTML='<div class="panel"><div style="padding:40px;text-align:center;color:#667">'+
+        '<div style="font-size:34px">🗓️</div><div style="font-size:16px;font-weight:700;margin:8px 0 4px">'+(PAPER.start_date||'')+'부터 추적을 시작합니다</div>'+
+        '<div style="font-size:13px;color:#8a93a0">해당 날짜 장중 첫 실행에서 각 기간 유망종목 TOP10을 매수가로 고정한 뒤, 이후 수익률 변화를 여기서 보여드립니다.</div></div></div>';
+      return;
+    }
+    var p=PAPER.periods[pkey]; if(!p){ body.innerHTML=''; return; }
+    var stats='<div class="statRow">'+
+      '<div class="stat"><div class="t">투자원금</div><div class="v" style="font-size:20px">'+wonC(p.invested)+'</div><div class="s">'+p.holdings.length+'종목 × 1천만원</div></div>'+
+      '<div class="stat"><div class="t">현재 평가액</div><div class="v" style="font-size:20px">'+wonC(p.value)+'</div><div class="s">매수일 '+(PAPER.buy_date||'')+'</div></div>'+
+      '<div class="stat"><div class="t">총 수익률</div><div class="v '+updn(p.ret)+'" style="font-size:24px">'+pcT(p.ret)+'</div></div>'+
+      '<div class="stat"><div class="t">평가손익</div><div class="v '+updn(p.profit)+'" style="font-size:20px">'+(p.profit>0?'+':'')+wonC(p.profit)+'</div></div>'+
+      '</div>';
+    var chart='<div class="panel" style="margin-bottom:14px"><div class="ph"><b>📈 수익률 추이</b><span class="hint">추적 시작 이후</span></div><div style="padding:10px 12px">'+paperChart(p.history)+'</div></div>';
+    var rows=p.holdings.slice().sort(function(a,b){return (b.ret||0)-(a.ret||0);}).map(function(h,i){
+      return '<tr><td class="l rk">'+(i+1)+'</td>'+
+        '<td class="l"><a class="code" target="_blank" href="https://finance.naver.com/item/main.naver?code='+h.code+'">'+h.name+'</a></td>'+
+        '<td>'+Math.round(h.buy_price).toLocaleString()+'</td>'+
+        '<td>'+Math.round(h.last_price).toLocaleString()+'</td>'+
+        '<td class="'+(h.ret>0?'sret up':(h.ret<0?'sret down':''))+'">'+pcT(h.ret)+'</td>'+
+        '<td>'+wonC(h.value)+'</td></tr>';
+    }).join('');
+    var table='<div class="panel"><div class="ph"><b>보유 종목 ('+p.label+' 유망 TOP'+p.holdings.length+')</b><span class="hint">수익률 순</span></div>'+
+      '<div class="pb"><table class="t10"><thead><tr><th class="l">#</th><th class="l">종목</th><th>매수가</th><th>현재가</th><th>수익률</th><th>평가액</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+    body.innerHTML=stats+chart+table;
   }
 
   // ---- ETF 페이지 ----
@@ -847,8 +927,9 @@ def _prepare_etf(market):
     return out
 
 
-def build(df, generated, market=None):
+def build(df, generated, market=None, paper=None):
     market = market or {}
+    paper = paper or {"established": False, "start_date": config.PAPER_START_DATE, "periods": {}}
     max_score = df["score"].max() or 1
     rows = [_row_view(r, max_score) for _, r in df.iterrows()]
 
@@ -880,7 +961,9 @@ def build(df, generated, market=None):
         default_key=config.DEFAULT_PERIOD_KEY,
         rows=rows, sectors_json=sectors_json,
         sum_list=sum_list, sdef=sdef, up_by_period=json.dumps(up_by_period),
-        etf_json=etf_json,
+        etf_json=etf_json, paper_json=json.dumps(paper, ensure_ascii=False),
+        paper_periods=config.PAPER_PERIODS, paper_start=config.PAPER_START_DATE,
+        paper_amount=config.PAPER_AMOUNT_PER_STOCK, paper_topn=config.PAPER_TOP_N,
         top_name=top["name"], top_score=_fmt(top["score"], 1),
         w=w, w_total=sum(w.values()), trans_w=config.TRANSITION_WEIGHT,
     )
