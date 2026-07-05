@@ -681,16 +681,21 @@ def _prepare_summary(df, market, period_key):
         lo, hi = s.quantile(0.05), s.quantile(0.95)
         return s[(s >= lo) & (s <= hi)].mean()
 
+    # 선택 기간의 스코어로 재정렬해 TOP10 산출 (기간마다 종목·순위가 달라짐)
+    pscore_col = f"pscore_{period_key}"
+    dfp = df.sort_values(pscore_col, ascending=False) if pscore_col in df.columns else df
     top10 = []
-    for _, r in df.head(10).iterrows():
+    for i, (_, r) in enumerate(dfp.head(10).iterrows(), start=1):
         rv = r.get(ret_col)
+        sc = r.get(pscore_col)
+        sc = float(sc) if (sc is not None and not pd.isna(sc)) else float(r["score"])
         top10.append({
-            "rank": int(r["rank"]), "code": r["code"], "name": r["name"],
+            "rank": i, "code": r["code"], "name": r["name"],
             "industry": r.get("industry") or "-",
             "ret": "-" if pd.isna(rv) else ("+" if rv > 0 else "") + f"{rv:,.1f}%",
             "ret_raw": None if pd.isna(rv) else float(rv),
             "per": _fmt(r["per"]), "pbr": _fmt(r["pbr"]),
-            "sig": str(int(round(r["score"]))), "sig_class": _sig_class(r["score"]),
+            "sig": str(int(round(sc))), "sig_class": _sig_class(sc),
         })
 
     grp = df.groupby("industry").agg(avg=(ret_col, "mean"), n=(ret_col, "size"))
