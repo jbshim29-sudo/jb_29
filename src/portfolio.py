@@ -5,7 +5,7 @@
 - rebal(주기적 재매입): 각 기간 주기마다 현재 TOP10으로 전량 교체(리밸런싱).
     매도 시 실효 세금(REBAL_TAX_RATE)을 차감하고 평가금액을 복리로 재투자.
 
-매수(고정)는 PAPER_START_DATE 당일 장중(KST 9시 이후) 첫 실행에서 1회.
+매수(고정)는 PAPER_START_DATE 당일 첫 실행에서 1회.
 상태는 state/portfolios.json 에 저장(저장소 커밋으로 추적 지속).
 """
 import copy
@@ -100,8 +100,8 @@ def update(df):
 
     state = _load() or {"start_date": config.PAPER_START_DATE, "established": False, "periods": {}}
 
-    # ---- 매수 고정 (start_date 당일 장중 9시 이후 첫 실행) ----
-    if not state.get("established") and today >= state.get("start_date", config.PAPER_START_DATE) and now.hour >= 9:
+    # ---- 매수 고정 (start_date 당일 첫 실행) ----
+    if not state.get("established") and today >= state.get("start_date", config.PAPER_START_DATE):
         periods = {}
         for label, pkey in config.PAPER_PERIODS:
             holds = _basket(df, pkey, n, prices, initial)
