@@ -1,12 +1,10 @@
 name: Update KOSPI200 dashboard
 
+# 트리거는 외부 스케줄러(cron-job.org)가 30분마다 workflow_dispatch로 호출한다.
+# GitHub 내장 schedule(cron)은 불안정한데다, 뒤늦게 발동하면 cron-job.org 호출과
+# 겹쳐 동시 push 충돌로 실패하므로 사용하지 않는다.
 on:
-  schedule:
-    # cron은 UTC 기준. 한국시간(KST=UTC+9) 평일 08:00~20:30, 30분 간격.
-    # (GitHub은 촘촘한 크론을 자주 건너뛰므로 30분으로 완화. 그래도 수십분 지연 가능)
-    - cron: "0,30 23 * * 0-4"    # KST 08:00, 08:30 (월~금)
-    - cron: "0,30 0-11 * * 1-5"  # KST 09:00~20:30 (월~금)
-  workflow_dispatch: {}       # 수동 실행 버튼
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -43,5 +41,10 @@ jobs:
             echo "변경 없음 - 커밋 생략"
           else
             git commit -m "chore: 대시보드 자동 갱신 ($(date -u +%Y-%m-%dT%H:%MZ) UTC)"
-            git push
+            # 동시 실행/원격 선행 커밋 대비: rebase 후 push (최대 3회)
+            for i in 1 2 3; do
+              git pull --rebase origin main && git push origin main && break
+              echo "push 재시도 $i..."
+              sleep 5
+            done
           fi
