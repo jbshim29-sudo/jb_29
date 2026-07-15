@@ -11,90 +11,90 @@
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "375500",
       "name": "DL이앤씨",
       "buy_price": 66600.0,
       "shares": 150.15015,
-      "last_price": 61800.0,
-      "ret": -7.21,
-      "value": 9279279
+      "last_price": 62600.0,
+      "ret": -6.01,
+      "value": 9399399
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "030200",
       "name": "KT",
       "buy_price": 54500.0,
       "shares": 183.486239,
-      "last_price": 52500.0,
-      "ret": -3.67,
-      "value": 9633028
+      "last_price": 52600.0,
+      "ret": -3.49,
+      "value": 9651376
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      },
      {
       "code": "009540",
       "name": "HD한국조선해양",
       "buy_price": 365000.0,
       "shares": 27.39726,
-      "last_price": 335500.0,
-      "ret": -8.08,
-      "value": 9191781
+      "last_price": 338500.0,
+      "ret": -7.26,
+      "value": 9273973
      },
      {
       "code": "006800",
       "name": "미래에셋증권",
       "buy_price": 44750.0,
       "shares": 223.463687,
-      "last_price": 41650.0,
-      "ret": -6.93,
-      "value": 9307263
+      "last_price": 41600.0,
+      "ret": -7.04,
+      "value": 9296089
      }
     ],
     "history": [
@@ -1701,12 +1701,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -6.32
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -5.95
      }
     ],
-    "value": 93676978,
+    "value": 94046926,
     "invested": 100000000,
-    "ret": -6.32,
-    "profit": -6323022
+    "ret": -5.95,
+    "profit": -5953074
    },
    "rebal": {
     "holdings": [
@@ -1715,90 +1719,90 @@
       "name": "한국전력",
       "buy_price": 33950.0,
       "shares": 256.029649,
-      "last_price": 34800.0,
-      "ret": 2.5,
-      "value": 8909832
+      "last_price": 34775.0,
+      "ret": 2.43,
+      "value": 8903431
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18170.0,
       "shares": 478.382311,
-      "last_price": 18560.0,
-      "ret": 2.15,
-      "value": 8878776
+      "last_price": 18320.0,
+      "ret": 0.83,
+      "value": 8763964
      },
      {
       "code": "402340",
       "name": "SK스퀘어",
       "buy_price": 1190000.0,
       "shares": 7.304375,
-      "last_price": 1190000.0,
-      "ret": 0.0,
-      "value": 8692206
+      "last_price": 1392000.0,
+      "ret": 16.97,
+      "value": 10167690
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 65500.0,
       "shares": 132.705444,
-      "last_price": 65400.0,
-      "ret": -0.15,
-      "value": 8678936
+      "last_price": 66400.0,
+      "ret": 1.37,
+      "value": 8811641
      },
      {
       "code": "375500",
       "name": "DL이앤씨",
       "buy_price": 59500.0,
       "shares": 146.087506,
-      "last_price": 61800.0,
-      "ret": 3.87,
-      "value": 9028208
+      "last_price": 62600.0,
+      "ret": 5.21,
+      "value": 9145078
      },
      {
       "code": "000660",
       "name": "SK하이닉스",
       "buy_price": 1913000.0,
       "shares": 4.543757,
-      "last_price": 1913000.0,
-      "ret": 0.0,
-      "value": 8692207
+      "last_price": 2144000.0,
+      "ret": 12.08,
+      "value": 9741815
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 134000.0,
       "shares": 64.867213,
-      "last_price": 136400.0,
-      "ret": 1.79,
-      "value": 8847888
+      "last_price": 135100.0,
+      "ret": 0.82,
+      "value": 8763560
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 84100.0,
       "shares": 103.355607,
-      "last_price": 86700.0,
-      "ret": 3.09,
-      "value": 8960931
+      "last_price": 83500.0,
+      "ret": -0.71,
+      "value": 8630193
      },
      {
       "code": "021240",
       "name": "코웨이",
       "buy_price": 94200.0,
       "shares": 92.273955,
-      "last_price": 95800.0,
-      "ret": 1.7,
-      "value": 8839845
+      "last_price": 95500.0,
+      "ret": 1.38,
+      "value": 8812163
      },
      {
       "code": "088350",
       "name": "한화생명",
       "buy_price": 4305.0,
       "shares": 2019.095607,
-      "last_price": 4440.0,
-      "ret": 3.14,
-      "value": 8964784
+      "last_price": 4515.0,
+      "ret": 4.88,
+      "value": 9116217
      }
     ],
     "last_rebalance": "2026-07-15",
@@ -3409,12 +3413,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -11.51
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -9.14
      }
     ],
-    "value": 88493613,
+    "value": 90855752,
     "invested": 100000000,
-    "ret": -11.51,
-    "profit": -11506387
+    "ret": -9.14,
+    "profit": -9144248
    }
   },
   "d3": {
@@ -3426,90 +3434,90 @@
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 83800.0,
       "shares": 119.331742,
-      "last_price": 86700.0,
-      "ret": 3.46,
-      "value": 10346062
+      "last_price": 83500.0,
+      "ret": -0.36,
+      "value": 9964200
      },
      {
       "code": "015760",
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      },
      {
       "code": "009970",
       "name": "영원무역홀딩스",
       "buy_price": 181900.0,
       "shares": 54.975261,
-      "last_price": 191400.0,
-      "ret": 5.22,
-      "value": 10522265
+      "last_price": 187200.0,
+      "ret": 2.91,
+      "value": 10291369
      },
      {
       "code": "001450",
       "name": "현대해상",
       "buy_price": 36700.0,
       "shares": 272.479564,
-      "last_price": 37300.0,
-      "ret": 1.63,
-      "value": 10163488
+      "last_price": 37450.0,
+      "ret": 2.04,
+      "value": 10204360
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 124800.0,
       "shares": 80.128205,
-      "last_price": 136400.0,
-      "ret": 9.29,
-      "value": 10929487
+      "last_price": 135100.0,
+      "ret": 8.25,
+      "value": 10825320
      },
      {
       "code": "069620",
       "name": "대웅제약",
       "buy_price": 133300.0,
       "shares": 75.018755,
-      "last_price": 125300.0,
-      "ret": -6.0,
-      "value": 9399850
+      "last_price": 119900.0,
+      "ret": -10.05,
+      "value": 8994749
      }
     ],
     "history": [
@@ -5116,12 +5124,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -1.49
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -2.47
      }
     ],
-    "value": 98510370,
+    "value": 97533577,
     "invested": 100000000,
-    "ret": -1.49,
-    "profit": -1489630
+    "ret": -2.47,
+    "profit": -2466423
    },
    "rebal": {
     "holdings": [
@@ -5130,90 +5142,90 @@
       "name": "SK스퀘어",
       "buy_price": 1409000.0,
       "shares": 6.838949,
-      "last_price": 1190000.0,
-      "ret": -15.54,
-      "value": 8138349
+      "last_price": 1392000.0,
+      "ret": -1.21,
+      "value": 9519817
      },
      {
       "code": "001450",
       "name": "현대해상",
       "buy_price": 38150.0,
       "shares": 252.58398,
-      "last_price": 37300.0,
-      "ret": -2.23,
-      "value": 9421382
+      "last_price": 37450.0,
+      "ret": -1.83,
+      "value": 9459270
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 67400.0,
       "shares": 142.968528,
-      "last_price": 65400.0,
-      "ret": -2.97,
-      "value": 9350142
+      "last_price": 66400.0,
+      "ret": -1.48,
+      "value": 9493110
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 87000.0,
       "shares": 110.759527,
-      "last_price": 86700.0,
-      "ret": -0.34,
-      "value": 9602851
+      "last_price": 83500.0,
+      "ret": -4.02,
+      "value": 9248421
      },
      {
       "code": "073240",
       "name": "금호타이어",
       "buy_price": 7800.0,
       "shares": 1235.39472,
-      "last_price": 6580.0,
-      "ret": -15.64,
-      "value": 8128897
+      "last_price": 6545.0,
+      "ret": -16.09,
+      "value": 8085658
      },
      {
       "code": "088350",
       "name": "한화생명",
       "buy_price": 4650.0,
       "shares": 2072.275015,
-      "last_price": 4440.0,
-      "ret": -4.52,
-      "value": 9200901
+      "last_price": 4515.0,
+      "ret": -2.9,
+      "value": 9356322
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 128500.0,
       "shares": 74.98894,
-      "last_price": 136400.0,
-      "ret": 6.15,
-      "value": 10228491
+      "last_price": 135100.0,
+      "ret": 5.14,
+      "value": 10131006
      },
      {
       "code": "005830",
       "name": "DB손해보험",
       "buy_price": 155800.0,
       "shares": 61.84903,
-      "last_price": 162500.0,
-      "ret": 4.3,
-      "value": 10050467
+      "last_price": 163800.0,
+      "ret": 5.13,
+      "value": 10130871
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 239000.0,
       "shares": 40.318321,
-      "last_price": 229000.0,
-      "ret": -4.18,
-      "value": 9232896
+      "last_price": 231000.0,
+      "ret": -3.35,
+      "value": 9313532
      },
      {
       "code": "105560",
       "name": "KB금융",
       "buy_price": 184400.0,
       "shares": 52.256393,
-      "last_price": 183700.0,
-      "ret": -0.38,
-      "value": 9599499
+      "last_price": 180200.0,
+      "ret": -2.28,
+      "value": 9416602
      }
     ],
     "last_rebalance": "2026-07-13",
@@ -6824,12 +6836,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -7.05
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -5.85
      }
     ],
-    "value": 92953877,
+    "value": 94154609,
     "invested": 100000000,
-    "ret": -7.05,
-    "profit": -7046123
+    "ret": -5.85,
+    "profit": -5845391
    }
   },
   "w1": {
@@ -6841,90 +6857,90 @@
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 83800.0,
       "shares": 119.331742,
-      "last_price": 86700.0,
-      "ret": 3.46,
-      "value": 10346062
+      "last_price": 83500.0,
+      "ret": -0.36,
+      "value": 9964200
      },
      {
       "code": "015760",
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "030200",
       "name": "KT",
       "buy_price": 54500.0,
       "shares": 183.486239,
-      "last_price": 52500.0,
-      "ret": -3.67,
-      "value": 9633028
+      "last_price": 52600.0,
+      "ret": -3.49,
+      "value": 9651376
      },
      {
       "code": "016360",
       "name": "삼성증권",
       "buy_price": 121300.0,
       "shares": 82.440231,
-      "last_price": 107800.0,
-      "ret": -11.13,
-      "value": 8887057
+      "last_price": 109000.0,
+      "ret": -10.14,
+      "value": 8985985
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 124800.0,
       "shares": 80.128205,
-      "last_price": 136400.0,
-      "ret": 9.29,
-      "value": 10929487
+      "last_price": 135100.0,
+      "ret": 8.25,
+      "value": 10825320
      },
      {
       "code": "001450",
       "name": "현대해상",
       "buy_price": 36700.0,
       "shares": 272.479564,
-      "last_price": 37300.0,
-      "ret": 1.63,
-      "value": 10163488
+      "last_price": 37450.0,
+      "ret": 2.04,
+      "value": 10204360
      }
     ],
     "history": [
@@ -8531,12 +8547,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -3.36
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -3.68
      }
     ],
-    "value": 96635306,
+    "value": 96321261,
     "invested": 100000000,
-    "ret": -3.36,
-    "profit": -3364694
+    "ret": -3.68,
+    "profit": -3678739
    },
    "rebal": {
     "holdings": [
@@ -8545,90 +8565,90 @@
       "name": "현대해상",
       "buy_price": 38550.0,
       "shares": 250.085191,
-      "last_price": 37300.0,
-      "ret": -3.24,
-      "value": 9328178
+      "last_price": 37450.0,
+      "ret": -2.85,
+      "value": 9365690
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18220.0,
       "shares": 529.131949,
-      "last_price": 18560.0,
-      "ret": 1.87,
-      "value": 9820689
+      "last_price": 18320.0,
+      "ret": 0.55,
+      "value": 9693697
      },
      {
       "code": "009970",
       "name": "영원무역홀딩스",
       "buy_price": 193100.0,
       "shares": 49.926381,
-      "last_price": 191400.0,
-      "ret": -0.88,
-      "value": 9555909
+      "last_price": 187200.0,
+      "ret": -3.06,
+      "value": 9346219
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 132600.0,
       "shares": 72.705763,
-      "last_price": 136400.0,
-      "ret": 2.87,
-      "value": 9917066
+      "last_price": 135100.0,
+      "ret": 1.89,
+      "value": 9822549
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 84600.0,
       "shares": 113.957259,
-      "last_price": 86700.0,
-      "ret": 2.48,
-      "value": 9880094
+      "last_price": 83500.0,
+      "ret": -1.3,
+      "value": 9515431
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 66700.0,
       "shares": 144.539492,
-      "last_price": 65400.0,
-      "ret": -1.95,
-      "value": 9452883
+      "last_price": 66400.0,
+      "ret": -0.45,
+      "value": 9597422
      },
      {
       "code": "005830",
       "name": "DB손해보험",
       "buy_price": 159100.0,
       "shares": 60.595752,
-      "last_price": 162500.0,
-      "ret": 2.14,
-      "value": 9846810
+      "last_price": 163800.0,
+      "ret": 2.95,
+      "value": 9925584
      },
      {
       "code": "175330",
       "name": "JB금융지주",
       "buy_price": 28000.0,
       "shares": 344.313718,
-      "last_price": 27800.0,
-      "ret": -0.71,
-      "value": 9571921
+      "last_price": 27100.0,
+      "ret": -3.21,
+      "value": 9330902
      },
      {
       "code": "006040",
       "name": "동원산업",
       "buy_price": 34500.0,
       "shares": 279.443018,
-      "last_price": 33350.0,
-      "ret": -3.33,
-      "value": 9319425
+      "last_price": 33200.0,
+      "ret": -3.77,
+      "value": 9277508
      },
      {
       "code": "028670",
       "name": "팬오션",
       "buy_price": 5240.0,
       "shares": 1839.844296,
-      "last_price": 5240.0,
-      "ret": 0.0,
-      "value": 9640784
+      "last_price": 5280.0,
+      "ret": 0.76,
+      "value": 9714378
      }
     ],
     "last_rebalance": "2026-07-14",
@@ -10239,12 +10259,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -3.67
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -4.41
      }
     ],
-    "value": 96333759,
+    "value": 95589380,
     "invested": 100000000,
-    "ret": -3.67,
-    "profit": -3666241
+    "ret": -4.41,
+    "profit": -4410620
    }
   },
   "w2": {
@@ -10256,90 +10280,90 @@
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 83800.0,
       "shares": 119.331742,
-      "last_price": 86700.0,
-      "ret": 3.46,
-      "value": 10346062
+      "last_price": 83500.0,
+      "ret": -0.36,
+      "value": 9964200
      },
      {
       "code": "015760",
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "069620",
       "name": "대웅제약",
       "buy_price": 133300.0,
       "shares": 75.018755,
-      "last_price": 125300.0,
-      "ret": -6.0,
-      "value": 9399850
+      "last_price": 119900.0,
+      "ret": -10.05,
+      "value": 8994749
      },
      {
       "code": "009970",
       "name": "영원무역홀딩스",
       "buy_price": 181900.0,
       "shares": 54.975261,
-      "last_price": 191400.0,
-      "ret": 5.22,
-      "value": 10522265
+      "last_price": 187200.0,
+      "ret": 2.91,
+      "value": 10291369
      },
      {
       "code": "030200",
       "name": "KT",
       "buy_price": 54500.0,
       "shares": 183.486239,
-      "last_price": 52500.0,
-      "ret": -3.67,
-      "value": 9633028
+      "last_price": 52600.0,
+      "ret": -3.49,
+      "value": 9651376
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      }
     ],
     "history": [
@@ -11946,12 +11970,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -3.83
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -4.67
      }
     ],
-    "value": 96166832,
+    "value": 95327783,
     "invested": 100000000,
-    "ret": -3.83,
-    "profit": -3833168
+    "ret": -4.67,
+    "profit": -4672217
    },
    "rebal": {
     "holdings": [
@@ -11960,90 +11988,90 @@
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 83800.0,
       "shares": 119.331742,
-      "last_price": 86700.0,
-      "ret": 3.46,
-      "value": 10346062
+      "last_price": 83500.0,
+      "ret": -0.36,
+      "value": 9964200
      },
      {
       "code": "015760",
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "069620",
       "name": "대웅제약",
       "buy_price": 133300.0,
       "shares": 75.018755,
-      "last_price": 125300.0,
-      "ret": -6.0,
-      "value": 9399850
+      "last_price": 119900.0,
+      "ret": -10.05,
+      "value": 8994749
      },
      {
       "code": "009970",
       "name": "영원무역홀딩스",
       "buy_price": 181900.0,
       "shares": 54.975261,
-      "last_price": 191400.0,
-      "ret": 5.22,
-      "value": 10522265
+      "last_price": 187200.0,
+      "ret": 2.91,
+      "value": 10291369
      },
      {
       "code": "030200",
       "name": "KT",
       "buy_price": 54500.0,
       "shares": 183.486239,
-      "last_price": 52500.0,
-      "ret": -3.67,
-      "value": 9633028
+      "last_price": 52600.0,
+      "ret": -3.49,
+      "value": 9651376
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      }
     ],
     "last_rebalance": "2026-07-07",
@@ -13654,12 +13682,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -3.83
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -4.67
      }
     ],
-    "value": 96166832,
+    "value": 95327783,
     "invested": 100000000,
-    "ret": -3.83,
-    "profit": -3833168
+    "ret": -4.67,
+    "profit": -4672217
    }
   },
   "m1": {
@@ -13671,90 +13703,90 @@
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "015760",
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 83800.0,
       "shares": 119.331742,
-      "last_price": 86700.0,
-      "ret": 3.46,
-      "value": 10346062
+      "last_price": 83500.0,
+      "ret": -0.36,
+      "value": 9964200
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "402340",
       "name": "SK스퀘어",
       "buy_price": 1495000.0,
       "shares": 6.688963,
-      "last_price": 1190000.0,
-      "ret": -20.4,
-      "value": 7959866
+      "last_price": 1392000.0,
+      "ret": -6.89,
+      "value": 9311036
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      },
      {
       "code": "069620",
       "name": "대웅제약",
       "buy_price": 133300.0,
       "shares": 75.018755,
-      "last_price": 125300.0,
-      "ret": -6.0,
-      "value": 9399850
+      "last_price": 119900.0,
+      "ret": -10.05,
+      "value": 8994749
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 124800.0,
       "shares": 80.128205,
-      "last_price": 136400.0,
-      "ret": 9.29,
-      "value": 10929487
+      "last_price": 135100.0,
+      "ret": 8.25,
+      "value": 10825320
      }
     ],
     "history": [
@@ -15361,12 +15393,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -5.1
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -4.48
      }
     ],
-    "value": 94900893,
+    "value": 95521395,
     "invested": 100000000,
-    "ret": -5.1,
-    "profit": -5099107
+    "ret": -4.48,
+    "profit": -4478605
    },
    "rebal": {
     "holdings": [
@@ -15375,90 +15411,90 @@
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "015760",
       "name": "한국전력",
       "buy_price": 39150.0,
       "shares": 255.427842,
-      "last_price": 34800.0,
-      "ret": -11.11,
-      "value": 8888889
+      "last_price": 34775.0,
+      "ret": -11.17,
+      "value": 8882503
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "111770",
       "name": "영원무역",
       "buy_price": 83800.0,
       "shares": 119.331742,
-      "last_price": 86700.0,
-      "ret": 3.46,
-      "value": 10346062
+      "last_price": 83500.0,
+      "ret": -0.36,
+      "value": 9964200
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "402340",
       "name": "SK스퀘어",
       "buy_price": 1495000.0,
       "shares": 6.688963,
-      "last_price": 1190000.0,
-      "ret": -20.4,
-      "value": 7959866
+      "last_price": 1392000.0,
+      "ret": -6.89,
+      "value": 9311036
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      },
      {
       "code": "069620",
       "name": "대웅제약",
       "buy_price": 133300.0,
       "shares": 75.018755,
-      "last_price": 125300.0,
-      "ret": -6.0,
-      "value": 9399850
+      "last_price": 119900.0,
+      "ret": -10.05,
+      "value": 8994749
      },
      {
       "code": "086790",
       "name": "하나금융지주",
       "buy_price": 124800.0,
       "shares": 80.128205,
-      "last_price": 136400.0,
-      "ret": 9.29,
-      "value": 10929487
+      "last_price": 135100.0,
+      "ret": 8.25,
+      "value": 10825320
      }
     ],
     "last_rebalance": "2026-07-07",
@@ -17069,12 +17105,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -5.1
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -4.48
      }
     ],
-    "value": 94900893,
+    "value": 95521395,
     "invested": 100000000,
-    "ret": -5.1,
-    "profit": -5099107
+    "ret": -4.48,
+    "profit": -4478605
    }
   },
   "m3": {
@@ -17086,90 +17126,90 @@
       "name": "SK스퀘어",
       "buy_price": 1495000.0,
       "shares": 6.688963,
-      "last_price": 1190000.0,
-      "ret": -20.4,
-      "value": 7959866
+      "last_price": 1392000.0,
+      "ret": -6.89,
+      "value": 9311036
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "001450",
       "name": "현대해상",
       "buy_price": 36700.0,
       "shares": 272.479564,
-      "last_price": 37300.0,
-      "ret": 1.63,
-      "value": 10163488
+      "last_price": 37450.0,
+      "ret": 2.04,
+      "value": 10204360
      },
      {
       "code": "000660",
       "name": "SK하이닉스",
       "buy_price": 2343000.0,
       "shares": 4.268032,
-      "last_price": 1913000.0,
-      "ret": -18.35,
-      "value": 8164745
+      "last_price": 2144000.0,
+      "ret": -8.49,
+      "value": 9150661
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      },
      {
       "code": "036570",
       "name": "NC",
       "buy_price": 252500.0,
       "shares": 39.60396,
-      "last_price": 235500.0,
-      "ret": -6.73,
-      "value": 9326733
+      "last_price": 232500.0,
+      "ret": -7.92,
+      "value": 9207921
      },
      {
       "code": "088350",
       "name": "한화생명",
       "buy_price": 4500.0,
       "shares": 2222.222222,
-      "last_price": 4440.0,
-      "ret": -1.33,
-      "value": 9866667
+      "last_price": 4515.0,
+      "ret": 0.33,
+      "value": 10033333
      },
      {
       "code": "069960",
       "name": "현대백화점",
       "buy_price": 176500.0,
       "shares": 56.657224,
-      "last_price": 158500.0,
-      "ret": -10.2,
-      "value": 8980170
+      "last_price": 157000.0,
+      "ret": -11.05,
+      "value": 8895184
      },
      {
       "code": "016360",
       "name": "삼성증권",
       "buy_price": 121300.0,
       "shares": 82.440231,
-      "last_price": 107800.0,
-      "ret": -11.13,
-      "value": 8887057
+      "last_price": 109000.0,
+      "ret": -10.14,
+      "value": 8985985
      }
     ],
     "history": [
@@ -18776,12 +18816,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -7.74
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -5.21
      }
     ],
-    "value": 92258601,
+    "value": 94793996,
     "invested": 100000000,
-    "ret": -7.74,
-    "profit": -7741399
+    "ret": -5.21,
+    "profit": -5206004
    },
    "rebal": {
     "holdings": [
@@ -18790,90 +18834,90 @@
       "name": "SK스퀘어",
       "buy_price": 1495000.0,
       "shares": 6.688963,
-      "last_price": 1190000.0,
-      "ret": -20.4,
-      "value": 7959866
+      "last_price": 1392000.0,
+      "ret": -6.89,
+      "value": 9311036
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "001450",
       "name": "현대해상",
       "buy_price": 36700.0,
       "shares": 272.479564,
-      "last_price": 37300.0,
-      "ret": 1.63,
-      "value": 10163488
+      "last_price": 37450.0,
+      "ret": 2.04,
+      "value": 10204360
      },
      {
       "code": "000660",
       "name": "SK하이닉스",
       "buy_price": 2343000.0,
       "shares": 4.268032,
-      "last_price": 1913000.0,
-      "ret": -18.35,
-      "value": 8164745
+      "last_price": 2144000.0,
+      "ret": -8.49,
+      "value": 9150661
      },
      {
       "code": "071320",
       "name": "지역난방공사",
       "buy_price": 68200.0,
       "shares": 146.627566,
-      "last_price": 65400.0,
-      "ret": -4.11,
-      "value": 9589443
+      "last_price": 66400.0,
+      "ret": -2.64,
+      "value": 9736070
      },
      {
       "code": "036570",
       "name": "NC",
       "buy_price": 252500.0,
       "shares": 39.60396,
-      "last_price": 235500.0,
-      "ret": -6.73,
-      "value": 9326733
+      "last_price": 232500.0,
+      "ret": -7.92,
+      "value": 9207921
      },
      {
       "code": "088350",
       "name": "한화생명",
       "buy_price": 4500.0,
       "shares": 2222.222222,
-      "last_price": 4440.0,
-      "ret": -1.33,
-      "value": 9866667
+      "last_price": 4515.0,
+      "ret": 0.33,
+      "value": 10033333
      },
      {
       "code": "069960",
       "name": "현대백화점",
       "buy_price": 176500.0,
       "shares": 56.657224,
-      "last_price": 158500.0,
-      "ret": -10.2,
-      "value": 8980170
+      "last_price": 157000.0,
+      "ret": -11.05,
+      "value": 8895184
      },
      {
       "code": "016360",
       "name": "삼성증권",
       "buy_price": 121300.0,
       "shares": 82.440231,
-      "last_price": 107800.0,
-      "ret": -11.13,
-      "value": 8887057
+      "last_price": 109000.0,
+      "ret": -10.14,
+      "value": 8985985
      }
     ],
     "last_rebalance": "2026-07-07",
@@ -20484,12 +20528,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -7.74
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -5.21
      }
     ],
-    "value": 92258601,
+    "value": 94793996,
     "invested": 100000000,
-    "ret": -7.74,
-    "profit": -7741399
+    "ret": -5.21,
+    "profit": -5206004
    }
   },
   "m6": {
@@ -20501,90 +20549,90 @@
       "name": "DL이앤씨",
       "buy_price": 66600.0,
       "shares": 150.15015,
-      "last_price": 61800.0,
-      "ret": -7.21,
-      "value": 9279279
+      "last_price": 62600.0,
+      "ret": -6.01,
+      "value": 9399399
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "402340",
       "name": "SK스퀘어",
       "buy_price": 1495000.0,
       "shares": 6.688963,
-      "last_price": 1190000.0,
-      "ret": -20.4,
-      "value": 7959866
+      "last_price": 1392000.0,
+      "ret": -6.89,
+      "value": 9311036
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "088350",
       "name": "한화생명",
       "buy_price": 4500.0,
       "shares": 2222.222222,
-      "last_price": 4440.0,
-      "ret": -1.33,
-      "value": 9866667
+      "last_price": 4515.0,
+      "ret": 0.33,
+      "value": 10033333
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "016360",
       "name": "삼성증권",
       "buy_price": 121300.0,
       "shares": 82.440231,
-      "last_price": 107800.0,
-      "ret": -11.13,
-      "value": 8887057
+      "last_price": 109000.0,
+      "ret": -10.14,
+      "value": 8985985
      },
      {
       "code": "000660",
       "name": "SK하이닉스",
       "buy_price": 2343000.0,
       "shares": 4.268032,
-      "last_price": 1913000.0,
-      "ret": -18.35,
-      "value": 8164745
+      "last_price": 2144000.0,
+      "ret": -8.49,
+      "value": 9150661
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "006800",
       "name": "미래에셋증권",
       "buy_price": 44750.0,
       "shares": 223.463687,
-      "last_price": 41650.0,
-      "ret": -6.93,
-      "value": 9307263
+      "last_price": 41600.0,
+      "ret": -7.04,
+      "value": 9296089
      }
     ],
     "history": [
@@ -22191,12 +22239,16 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -8.75
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -6.02
      }
     ],
-    "value": 91252172,
+    "value": 93984020,
     "invested": 100000000,
-    "ret": -8.75,
-    "profit": -8747828
+    "ret": -6.02,
+    "profit": -6015980
    },
    "rebal": {
     "holdings": [
@@ -22205,90 +22257,90 @@
       "name": "DL이앤씨",
       "buy_price": 66600.0,
       "shares": 150.15015,
-      "last_price": 61800.0,
-      "ret": -7.21,
-      "value": 9279279
+      "last_price": 62600.0,
+      "ret": -6.01,
+      "value": 9399399
      },
      {
       "code": "071050",
       "name": "한국금융지주",
       "buy_price": 249500.0,
       "shares": 40.08016,
-      "last_price": 229000.0,
-      "ret": -8.22,
-      "value": 9178357
+      "last_price": 231000.0,
+      "ret": -7.41,
+      "value": 9258517
      },
      {
       "code": "402340",
       "name": "SK스퀘어",
       "buy_price": 1495000.0,
       "shares": 6.688963,
-      "last_price": 1190000.0,
-      "ret": -20.4,
-      "value": 7959866
+      "last_price": 1392000.0,
+      "ret": -6.89,
+      "value": 9311036
      },
      {
       "code": "005940",
       "name": "NH투자증권",
       "buy_price": 33100.0,
       "shares": 302.114804,
-      "last_price": 30950.0,
-      "ret": -6.5,
-      "value": 9350453
+      "last_price": 31000.0,
+      "ret": -6.34,
+      "value": 9365559
      },
      {
       "code": "088350",
       "name": "한화생명",
       "buy_price": 4500.0,
       "shares": 2222.222222,
-      "last_price": 4440.0,
-      "ret": -1.33,
-      "value": 9866667
+      "last_price": 4515.0,
+      "ret": 0.33,
+      "value": 10033333
      },
      {
       "code": "139130",
       "name": "iM금융지주",
       "buy_price": 18300.0,
       "shares": 546.448087,
-      "last_price": 18560.0,
-      "ret": 1.42,
-      "value": 10142076
+      "last_price": 18320.0,
+      "ret": 0.11,
+      "value": 10010929
      },
      {
       "code": "016360",
       "name": "삼성증권",
       "buy_price": 121300.0,
       "shares": 82.440231,
-      "last_price": 107800.0,
-      "ret": -11.13,
-      "value": 8887057
+      "last_price": 109000.0,
+      "ret": -10.14,
+      "value": 8985985
      },
      {
       "code": "000660",
       "name": "SK하이닉스",
       "buy_price": 2343000.0,
       "shares": 4.268032,
-      "last_price": 1913000.0,
-      "ret": -18.35,
-      "value": 8164745
+      "last_price": 2144000.0,
+      "ret": -8.49,
+      "value": 9150661
      },
      {
       "code": "039490",
       "name": "키움증권",
       "buy_price": 356500.0,
       "shares": 28.050491,
-      "last_price": 325000.0,
-      "ret": -8.84,
-      "value": 9116410
+      "last_price": 327000.0,
+      "ret": -8.27,
+      "value": 9172511
      },
      {
       "code": "006800",
       "name": "미래에셋증권",
       "buy_price": 44750.0,
       "shares": 223.463687,
-      "last_price": 41650.0,
-      "ret": -6.93,
-      "value": 9307263
+      "last_price": 41600.0,
+      "ret": -7.04,
+      "value": 9296089
      }
     ],
     "last_rebalance": "2026-07-07",
@@ -23899,16 +23951,20 @@
      {
       "t": "2026-07-15 09:02",
       "ret": -8.75
+     },
+     {
+      "t": "2026-07-15 09:31",
+      "ret": -6.02
      }
     ],
-    "value": 91252172,
+    "value": 93984020,
     "invested": 100000000,
-    "ret": -8.75,
-    "profit": -8747828
+    "ret": -6.02,
+    "profit": -6015980
    }
   }
  },
  "buy_date": "2026-07-07 00:04",
  "initial": 100000000,
- "updated": "2026-07-15 09:02"
+ "updated": "2026-07-15 09:31"
 }
